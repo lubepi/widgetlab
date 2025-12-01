@@ -31,7 +31,6 @@ pickle-email-*.html
 !/log/.keep
 !/tmp/.keep
 
-# TODO Comment out this rule if you are OK with secrets being uploaded to the repo
 config/initializers/secret_token.rb
 config/master.key
 
@@ -39,7 +38,6 @@ config/master.key
 # config/secrets.yml
 
 # dotenv, dotenv-rails
-# TODO Comment out these rules if environment variables can be committed
 .env
 .env.*
 
@@ -156,7 +154,6 @@ fabric.properties
 
 # Android studio 3.1+ serialized cache file
 .idea/caches/build_file_checksums.ser
-
 
 
 # End of https://mrkandreev.name/snippets/gitignore-generator/#Git,Rails,JetBrains+all,Env,VSC

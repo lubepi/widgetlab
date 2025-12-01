@@ -4,16 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7fbd75af-17a1-49c8-9aac-106b1a82ae09" name="Changes" comment="feat: add widgets and dashboard widgets resources with associations">
+    <list default="true" id="7fbd75af-17a1-49c8-9aac-106b1a82ae09" name="Changes" comment="feat: add .gitignore file for environment and IDE settings">
+      <change afterPath="$PROJECT_DIR$/.env" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Gemfile" beforeDir="false" afterPath="$PROJECT_DIR$/Gemfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Gemfile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/Gemfile.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/user.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/user.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/user_group.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/user_group.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/widget.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/widget.rb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/config/database.yml" beforeDir="false" afterPath="$PROJECT_DIR$/config/database.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/routes.rb" beforeDir="false" afterPath="$PROJECT_DIR$/config/routes.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tmp/cache/bootsnap/load-path-cache" beforeDir="false" afterPath="$PROJECT_DIR$/tmp/cache/bootsnap/load-path-cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/migrate/20251201140223_create_user_group_roles.rb" beforeDir="false" afterPath="$PROJECT_DIR$/db/migrate/20251201140223_create_user_group_roles.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/migrate/20251201144845_create_data_sources.rb" beforeDir="false" afterPath="$PROJECT_DIR$/db/migrate/20251201144845_create_data_sources.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/log/development.log" beforeDir="false" afterPath="$PROJECT_DIR$/log/development.log" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,24 +33,24 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;com.intellij.lang.ruby.rbs.tools.collection.workspace.sync.RbsCollectionUpdateProjectActivity#LAST_UPDATE_TIMESTAMP&quot;: &quot;1764595431721&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;ruby.structure.view.model.defaults.configured&quot;: &quot;true&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "com.intellij.lang.ruby.rbs.tools.collection.workspace.sync.RbsCollectionUpdateProjectActivity#LAST_UPDATE_TIMESTAMP": "1764602131716",
+    "git-widget-placeholder": "main",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "ruby.structure.view.model.defaults.configured": "true",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RubyModuleManagerSettings">
     <option name="blackListedRootsPaths">
       <list>
@@ -308,6 +306,7 @@
       <workItem from="1764342121256" duration="2185000" />
       <workItem from="1764595269973" duration="77000" />
       <workItem from="1764595373503" duration="932000" />
+      <workItem from="1764602072263" duration="691000" />
     </task>
     <task id="LOCAL-00001" summary="feat: add UserDashboardRole resource">
       <option name="closed" value="true" />
@@ -333,7 +332,23 @@
       <option name="project" value="LOCAL" />
       <updated>1764600109405</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="feat: add data source &amp; management features">
+      <option name="closed" value="true" />
+      <created>1764602102412</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1764602102412</updated>
+    </task>
+    <task id="LOCAL-00005" summary="feat: add .gitignore file for environment and IDE settings">
+      <option name="closed" value="true" />
+      <created>1764602198140</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1764602198140</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -343,7 +358,9 @@
     <MESSAGE value="feat: add UserDashboardRole resource" />
     <MESSAGE value="feat: add UserGroup &amp; UserGroupRoles scaffolds/resource" />
     <MESSAGE value="feat: add widgets and dashboard widgets resources with associations" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: add widgets and dashboard widgets resources with associations" />
+    <MESSAGE value="feat: add data source &amp; management features" />
+    <MESSAGE value="feat: add .gitignore file for environment and IDE settings" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: add .gitignore file for environment and IDE settings" />
   </component>
   <component name="github-copilot-workspace">
     <instructionFileLocations>
