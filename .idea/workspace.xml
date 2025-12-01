@@ -4,8 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7fbd75af-17a1-49c8-9aac-106b1a82ae09" name="Changes" comment="feat: add UserDashboardRole resource">
+    <list default="true" id="7fbd75af-17a1-49c8-9aac-106b1a82ae09" name="Changes" comment="feat: add UserGroup &amp; UserGroupRoles scaffolds/resource">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/models/dashboard.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/dashboard.rb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/models/user.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/user.rb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/config/routes.rb" beforeDir="false" afterPath="$PROJECT_DIR$/config/routes.rb" afterDir="false" />
     </list>
@@ -308,7 +309,15 @@
       <option name="project" value="LOCAL" />
       <updated>1764597661900</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="feat: add UserGroup &amp; UserGroupRoles scaffolds/resource">
+      <option name="closed" value="true" />
+      <created>1764598014617</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1764598014617</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -316,7 +325,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="feat: add UserDashboardRole resource" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: add UserDashboardRole resource" />
+    <MESSAGE value="feat: add UserGroup &amp; UserGroupRoles scaffolds/resource" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: add UserGroup &amp; UserGroupRoles scaffolds/resource" />
   </component>
   <component name="github-copilot-workspace">
     <instructionFileLocations>

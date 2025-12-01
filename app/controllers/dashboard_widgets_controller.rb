@@ -1,0 +1,2 @@
+class DashboardWidgetsController < ApplicationController
+end

@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  dashboard: one
+  widget: one
+  width: 1
+  height: 1
+  position_x: 1
+  position_y: 1
+  color: MyString
+
+two:
+  dashboard: two
+  widget: two
+  width: 1
+  height: 1
+  position_x: 1
+  position_y: 1
+  color: MyString

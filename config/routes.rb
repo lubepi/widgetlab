@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  resources :dashboard_widgets
+  resources :user_widget_roles
+  resources :widgets
   resources :user_group_roles
   resources :user_groups
   resources :dashboard_user_roles

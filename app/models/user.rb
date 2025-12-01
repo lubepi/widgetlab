@@ -4,4 +4,7 @@ class User < ApplicationRecord
 
   has_many :user_group_roles, dependent: :destroy
   has_many :user_groups, through: :user_group_roles, source: :user_group
+
+  has_many :user_widget_roles, dependent: :destroy
+  has_many :widgets, through: :user_widget_roles, source: :widget
 end

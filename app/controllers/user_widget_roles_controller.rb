@@ -1,0 +1,2 @@
+class UserWidgetRolesController < ApplicationController
+end
