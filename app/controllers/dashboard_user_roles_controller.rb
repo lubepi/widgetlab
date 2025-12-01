@@ -1,0 +1,2 @@
+class DashboardUserRolesController < ApplicationController
+end
