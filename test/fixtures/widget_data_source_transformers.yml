@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  widget: one
+  data_source: one
+  config: 
+
+two:
+  widget: two
+  data_source: two
+  config: 

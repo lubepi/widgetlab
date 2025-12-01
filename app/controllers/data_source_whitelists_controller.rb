@@ -1,0 +1,2 @@
+class DataSourceWhitelistsController < ApplicationController
+end

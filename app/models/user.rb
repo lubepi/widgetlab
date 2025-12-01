@@ -7,4 +7,6 @@ class User < ApplicationRecord
 
   has_many :user_widget_roles, dependent: :destroy
   has_many :widgets, through: :user_widget_roles, source: :widget
+
+  has_many :data_source_whitelists, dependent: :destroy, as: :whitelistable
 end

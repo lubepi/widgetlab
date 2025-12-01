@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  resources :data_source_whitelists
+  resources :widget_data_source_transformers
+  resources :data_sources
   resources :dashboard_widgets
   resources :user_widget_roles
   resources :widgets

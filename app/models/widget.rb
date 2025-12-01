@@ -5,5 +5,8 @@ class Widget < ApplicationRecord
   has_many :dashboard_widgets, dependent: :destroy
   has_many :dashboards, through: :dashboard_widgets, source: :dashboard
 
+  has_many :widget_data_source_transformers, dependent: :destroy
+  has_many :widgets, through: :widget_data_source_transformers, source: :widget
+
   enum :type, { value: 0, line: 1, bar: 2, column: 3, pie: 4 }
 end

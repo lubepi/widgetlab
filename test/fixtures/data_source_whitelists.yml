@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  data_source: one
+  whitelistable: one
+  whitelistable_type: Whitelistable
+
+two:
+  data_source: two
+  whitelistable: two
+  whitelistable_type: Whitelistable
