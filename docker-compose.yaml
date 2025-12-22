@@ -1,0 +1,27 @@
+services:
+  mqtt-broker:
+    image: eclipse-mosquitto:2.0.22
+    container_name: mqtt-broker
+    ports:
+      - "1883:1883" #default mqtt port
+      - "9001:9001" #default mqtt port for websockets
+    volumes:
+      - ./docker/mqtt/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+      - mqtt_broker_data:/mosquitto/data:rw
+      - mqtt_broker_log:/mosquitto/log:rw
+    restart: unless-stopped
+  postgres:
+    image: postgres:18.1-alpine
+    container_name: postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - postgres-data:/var/lib/postgresql
+# volumes for mapping data,config and log
+volumes:
+  mqtt_broker_data:
+  mqtt_broker_log:
+  postgres-data:
