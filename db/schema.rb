@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_12_01_150621) do
+ActiveRecord::Schema[8.1].define(version: 2025_12_22_133717) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -45,6 +45,17 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_01_150621) do
     t.boolean "is_public"
     t.string "name"
     t.datetime "updated_at", null: false
+  end
+
+  create_table "data_source_storages", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.bigint "data_source_id", null: false
+    t.datetime "stored_at", null: false
+    t.datetime "updated_at", null: false
+    t.jsonb "value", default: {}, null: false
+    t.index ["data_source_id", "stored_at"], name: "index_data_source_storages_on_data_source_id_and_stored_at"
+    t.index ["data_source_id"], name: "index_data_source_storages_on_data_source_id"
+    t.index ["stored_at"], name: "index_data_source_storages_on_stored_at"
   end
 
   create_table "data_source_whitelists", force: :cascade do |t|
@@ -129,6 +140,7 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_01_150621) do
   add_foreign_key "dashboard_user_roles", "users"
   add_foreign_key "dashboard_widgets", "dashboards"
   add_foreign_key "dashboard_widgets", "widgets"
+  add_foreign_key "data_source_storages", "data_sources"
   add_foreign_key "data_source_whitelists", "data_sources"
   add_foreign_key "data_sources", "users", column: "creator_id"
   add_foreign_key "user_group_roles", "user_groups"

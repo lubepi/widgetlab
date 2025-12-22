@@ -153,3 +153,395 @@ FOREIGN KEY ("data_source_id")
   [1m[35mSQL (0.3ms)[0m  [1m[35mSET search_path TO public /*application='Widgetlab'*/[0m
   [1m[35mSQL (0.3ms)[0m  [1m[35mSET search_path TO "$user", public /*application='Widgetlab'*/[0m
   [1m[36mActiveRecord::SchemaMigration Load (1.4ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='Widgetlab'*/[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[35mSET search_path TO public /*application='Widgetlab'*/[0m
+  [1m[35m (74.0ms)[0m  [1m[35mCREATE DATABASE "widgetlab_development" ENCODING = 'unicode' /*application='Widgetlab'*/[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[35mCREATE EXTENSION IF NOT EXISTS "plpgsql" SCHEMA pg_catalog /*application='Widgetlab'*/[0m
+  [1m[35m (0.2ms)[0m  [1m[35mDROP TABLE IF EXISTS "dashboard_user_roles" CASCADE /*application='Widgetlab'*/[0m
+  [1m[35m (5.0ms)[0m  [1m[35mCREATE TABLE "dashboard_user_roles" ("id" bigserial primary key, "created_at" timestamp(6) NOT NULL, "dashboard_id" bigint NOT NULL, "role" integer, "updated_at" timestamp(6) NOT NULL, "user_id" bigint NOT NULL) /*application='Widgetlab'*/[0m
+  [1m[35m (1.4ms)[0m  [1m[35mCREATE INDEX "index_dashboard_user_roles_on_dashboard_id" ON "dashboard_user_roles" ("dashboard_id") /*application='Widgetlab'*/[0m
+  [1m[35m (1.0ms)[0m  [1m[35mCREATE INDEX "index_dashboard_user_roles_on_user_id" ON "dashboard_user_roles" ("user_id") /*application='Widgetlab'*/[0m
+  [1m[35m (0.2ms)[0m  [1m[35mDROP TABLE IF EXISTS "dashboard_widgets" CASCADE /*application='Widgetlab'*/[0m
+  [1m[35m (3.2ms)[0m  [1m[35mCREATE TABLE "dashboard_widgets" ("id" bigserial primary key, "color" character varying, "created_at" timestamp(6) NOT NULL, "dashboard_id" bigint NOT NULL, "height" integer, "position_x" integer, "position_y" integer, "updated_at" timestamp(6) NOT NULL, "widget_id" bigint NOT NULL, "width" integer) /*application='Widgetlab'*/[0m
+  [1m[35m (1.0ms)[0m  [1m[35mCREATE INDEX "index_dashboard_widgets_on_dashboard_id" ON "dashboard_widgets" ("dashboard_id") /*application='Widgetlab'*/[0m
+  [1m[35m (1.0ms)[0m  [1m[35mCREATE INDEX "index_dashboard_widgets_on_widget_id" ON "dashboard_widgets" ("widget_id") /*application='Widgetlab'*/[0m
+  [1m[35m (0.2ms)[0m  [1m[35mDROP TABLE IF EXISTS "dashboards" CASCADE /*application='Widgetlab'*/[0m
+  [1m[35m (3.3ms)[0m  [1m[35mCREATE TABLE "dashboards" ("id" bigserial primary key, "columns" integer, "created_at" timestamp(6) NOT NULL, "icon" character varying, "is_public" boolean, "name" character varying, "updated_at" timestamp(6) NOT NULL) /*application='Widgetlab'*/[0m
+  [1m[35m (0.2ms)[0m  [1m[35mDROP TABLE IF EXISTS "data_source_whitelists" CASCADE /*application='Widgetlab'*/[0m
+  [1m[35m (3.1ms)[0m  [1m[35mCREATE TABLE "data_source_whitelists" ("id" bigserial primary key, "created_at" timestamp(6) NOT NULL, "data_source_id" bigint NOT NULL, "updated_at" timestamp(6) NOT NULL, "whitelistable_id" bigint NOT NULL, "whitelistable_type" character varying NOT NULL) /*application='Widgetlab'*/[0m
+  [1m[35m (1.0ms)[0m  [1m[35mCREATE INDEX "index_data_source_whitelists_on_data_source_id" ON "data_source_whitelists" ("data_source_id") /*application='Widgetlab'*/[0m
+  [1m[35m (1.5ms)[0m  [1m[35mCREATE INDEX "index_data_source_whitelists_on_whitelistable" ON "data_source_whitelists" ("whitelistable_type", "whitelistable_id") /*application='Widgetlab'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE IF EXISTS "data_sources" CASCADE /*application='Widgetlab'*/[0m
+  [1m[35m (3.3ms)[0m  [1m[35mCREATE TABLE "data_sources" ("id" bigserial primary key, "config" jsonb, "created_at" timestamp(6) NOT NULL, "creator_id" bigint NOT NULL, "is_public" boolean, "name" character varying, "source_type" integer, "updated_at" timestamp(6) NOT NULL) /*application='Widgetlab'*/[0m
+  [1m[35m (1.1ms)[0m  [1m[35mCREATE INDEX "index_data_sources_on_creator_id" ON "data_sources" ("creator_id") /*application='Widgetlab'*/[0m
+  [1m[35m (0.2ms)[0m  [1m[35mDROP TABLE IF EXISTS "user_group_roles" CASCADE /*application='Widgetlab'*/[0m
+  [1m[35m (24.7ms)[0m  [1m[35mCREATE TABLE "user_group_roles" ("id" bigserial primary key, "created_at" timestamp(6) NOT NULL, "role" integer, "updated_at" timestamp(6) NOT NULL, "user_group_id" bigint NOT NULL, "user_id" bigint NOT NULL) /*application='Widgetlab'*/[0m
+  [1m[35m (1.3ms)[0m  [1m[35mCREATE INDEX "index_user_group_roles_on_user_group_id" ON "user_group_roles" ("user_group_id") /*application='Widgetlab'*/[0m
+  [1m[35m (1.1ms)[0m  [1m[35mCREATE INDEX "index_user_group_roles_on_user_id" ON "user_group_roles" ("user_id") /*application='Widgetlab'*/[0m
+  [1m[35m (0.2ms)[0m  [1m[35mDROP TABLE IF EXISTS "user_groups" CASCADE /*application='Widgetlab'*/[0m
+  [1m[35m (3.1ms)[0m  [1m[35mCREATE TABLE "user_groups" ("id" bigserial primary key, "created_at" timestamp(6) NOT NULL, "name" character varying, "updated_at" timestamp(6) NOT NULL) /*application='Widgetlab'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE IF EXISTS "user_widget_roles" CASCADE /*application='Widgetlab'*/[0m
+  [1m[35m (2.4ms)[0m  [1m[35mCREATE TABLE "user_widget_roles" ("id" bigserial primary key, "created_at" timestamp(6) NOT NULL, "role" integer, "updated_at" timestamp(6) NOT NULL, "user_id" bigint NOT NULL, "widget_id" bigint NOT NULL) /*application='Widgetlab'*/[0m
+  [1m[35m (1.0ms)[0m  [1m[35mCREATE INDEX "index_user_widget_roles_on_user_id" ON "user_widget_roles" ("user_id") /*application='Widgetlab'*/[0m
+  [1m[35m (1.0ms)[0m  [1m[35mCREATE INDEX "index_user_widget_roles_on_widget_id" ON "user_widget_roles" ("widget_id") /*application='Widgetlab'*/[0m
+  [1m[35m (0.3ms)[0m  [1m[35mDROP TABLE IF EXISTS "users" CASCADE /*application='Widgetlab'*/[0m
+  [1m[35m (2.9ms)[0m  [1m[35mCREATE TABLE "users" ("id" bigserial primary key, "created_at" timestamp(6) NOT NULL, "email" character varying, "first_name" character varying, "last_name" character varying, "sub" character varying, "updated_at" timestamp(6) NOT NULL) /*application='Widgetlab'*/[0m
+  [1m[35m (1.0ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_users_on_email" ON "users" ("email") /*application='Widgetlab'*/[0m
+  [1m[35m (1.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_users_on_sub" ON "users" ("sub") /*application='Widgetlab'*/[0m
+  [1m[35m (0.2ms)[0m  [1m[35mDROP TABLE IF EXISTS "widget_data_source_transformers" CASCADE /*application='Widgetlab'*/[0m
+  [1m[35m (3.0ms)[0m  [1m[35mCREATE TABLE "widget_data_source_transformers" ("id" bigserial primary key, "config" jsonb, "created_at" timestamp(6) NOT NULL, "data_source_id" bigint NOT NULL, "updated_at" timestamp(6) NOT NULL, "widget_id" bigint NOT NULL) /*application='Widgetlab'*/[0m
+  [1m[35m (1.0ms)[0m  [1m[35mCREATE INDEX "index_widget_data_source_transformers_on_data_source_id" ON "widget_data_source_transformers" ("data_source_id") /*application='Widgetlab'*/[0m
+  [1m[35m (1.0ms)[0m  [1m[35mCREATE INDEX "index_widget_data_source_transformers_on_widget_id" ON "widget_data_source_transformers" ("widget_id") /*application='Widgetlab'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE IF EXISTS "widgets" CASCADE /*application='Widgetlab'*/[0m
+  [1m[35m (3.0ms)[0m  [1m[35mCREATE TABLE "widgets" ("id" bigserial primary key, "color" character varying, "created_at" timestamp(6) NOT NULL, "description" character varying, "is_public" boolean, "name" character varying, "type" integer, "updated_at" timestamp(6) NOT NULL) /*application='Widgetlab'*/[0m
+  [1m[35m (3.1ms)[0m  [1m[35mALTER TABLE "dashboard_user_roles" ADD CONSTRAINT "fk_rails_f0db296c6f"
+FOREIGN KEY ("dashboard_id")
+  REFERENCES "dashboards" ("id")
+ /*application='Widgetlab'*/[0m
+  [1m[35m (1.9ms)[0m  [1m[35mALTER TABLE "dashboard_user_roles" ADD CONSTRAINT "fk_rails_694b862e5b"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+ /*application='Widgetlab'*/[0m
+  [1m[35m (1.9ms)[0m  [1m[35mALTER TABLE "dashboard_widgets" ADD CONSTRAINT "fk_rails_834da0b127"
+FOREIGN KEY ("dashboard_id")
+  REFERENCES "dashboards" ("id")
+ /*application='Widgetlab'*/[0m
+  [1m[35m (1.6ms)[0m  [1m[35mALTER TABLE "dashboard_widgets" ADD CONSTRAINT "fk_rails_e3fc13fbac"
+FOREIGN KEY ("widget_id")
+  REFERENCES "widgets" ("id")
+ /*application='Widgetlab'*/[0m
+  [1m[35m (1.9ms)[0m  [1m[35mALTER TABLE "data_source_whitelists" ADD CONSTRAINT "fk_rails_690e844bd9"
+FOREIGN KEY ("data_source_id")
+  REFERENCES "data_sources" ("id")
+ /*application='Widgetlab'*/[0m
+  [1m[35m (1.6ms)[0m  [1m[35mALTER TABLE "data_sources" ADD CONSTRAINT "fk_rails_a71137ae54"
+FOREIGN KEY ("creator_id")
+  REFERENCES "users" ("id")
+ /*application='Widgetlab'*/[0m
+  [1m[35m (1.9ms)[0m  [1m[35mALTER TABLE "user_group_roles" ADD CONSTRAINT "fk_rails_001bed7361"
+FOREIGN KEY ("user_group_id")
+  REFERENCES "user_groups" ("id")
+ /*application='Widgetlab'*/[0m
+  [1m[35m (1.6ms)[0m  [1m[35mALTER TABLE "user_group_roles" ADD CONSTRAINT "fk_rails_733a938649"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+ /*application='Widgetlab'*/[0m
+  [1m[35m (1.7ms)[0m  [1m[35mALTER TABLE "user_widget_roles" ADD CONSTRAINT "fk_rails_520779acc6"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+ /*application='Widgetlab'*/[0m
+  [1m[35m (1.8ms)[0m  [1m[35mALTER TABLE "user_widget_roles" ADD CONSTRAINT "fk_rails_ea925eb503"
+FOREIGN KEY ("widget_id")
+  REFERENCES "widgets" ("id")
+ /*application='Widgetlab'*/[0m
+  [1m[35m (1.8ms)[0m  [1m[35mALTER TABLE "widget_data_source_transformers" ADD CONSTRAINT "fk_rails_891e0a11d8"
+FOREIGN KEY ("data_source_id")
+  REFERENCES "data_sources" ("id")
+ /*application='Widgetlab'*/[0m
+  [1m[35m (1.5ms)[0m  [1m[35mALTER TABLE "widget_data_source_transformers" ADD CONSTRAINT "fk_rails_d7c8d64c29"
+FOREIGN KEY ("widget_id")
+  REFERENCES "widgets" ("id")
+ /*application='Widgetlab'*/[0m
+  [1m[35m (2.6ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" character varying NOT NULL PRIMARY KEY) /*application='Widgetlab'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='Widgetlab'*/[0m
+  [1m[35m (0.7ms)[0m  [1m[32mINSERT INTO "schema_migrations" (version) VALUES (20251201150621) /*application='Widgetlab'*/[0m
+  [1m[35m (0.5ms)[0m  [1m[32mINSERT INTO "schema_migrations" (version) VALUES
+(20251201145706),
+(20251201144845),
+(20251201143920),
+(20251201143131),
+(20251201143052),
+(20251201140223),
+(20251201140128),
+(20251201135020),
+(20251201134340),
+(20251201134014); /*application='Widgetlab'*/[0m
+  [1m[35m (3.0ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" character varying NOT NULL PRIMARY KEY, "value" character varying, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL) /*application='Widgetlab'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Load (1.1ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = 'environment' ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1 /*application='Widgetlab'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Create (0.7ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ('environment', 'development', '2025-12-22 14:04:45.013195', '2025-12-22 14:04:45.013197') RETURNING "key" /*application='Widgetlab'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.2ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = 'environment' ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1 /*application='Widgetlab'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.2ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = 'schema_sha1' ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1 /*application='Widgetlab'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Create (0.5ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ('schema_sha1', 'bc20ecd4bf3af4be0093cb3b7edf36ce25fccea2', '2025-12-22 14:04:45.016990', '2025-12-22 14:04:45.016992') RETURNING "key" /*application='Widgetlab'*/[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT pg_try_advisory_lock(2291495787603786435) /*application='Widgetlab'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='Widgetlab'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.2ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = 'environment' ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1 /*application='Widgetlab'*/[0m
+Migrating to CreateDataSourceStorages (20251222133717)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN /*application='Widgetlab'*/[0m
+  [1m[35m (4.3ms)[0m  [1m[35mCREATE TABLE "data_source_storages" ("id" bigserial primary key, "data_source_id" bigint NOT NULL, "value" jsonb DEFAULT '{}' NOT NULL, "stored_at" timestamp(6) NOT NULL, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL, CONSTRAINT "fk_rails_cb38c82dd9"
+FOREIGN KEY ("data_source_id")
+  REFERENCES "data_sources" ("id")
+) /*application='Widgetlab'*/[0m
+  [1m[35m (0.8ms)[0m  [1m[35mCREATE INDEX "index_data_source_storages_on_data_source_id" ON "data_source_storages" ("data_source_id") /*application='Widgetlab'*/[0m
+  [1m[35m (1.3ms)[0m  [1m[35mCREATE INDEX "index_data_source_storages_on_data_source_id_and_stored_at" ON "data_source_storages" ("data_source_id", "stored_at") /*application='Widgetlab'*/[0m
+  [1m[35m (0.7ms)[0m  [1m[35mCREATE INDEX "index_data_source_storages_on_stored_at" ON "data_source_storages" ("stored_at") /*application='Widgetlab'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20251222133717') RETURNING "version" /*application='Widgetlab'*/[0m
+  [1m[36mTRANSACTION (0.6ms)[0m  [1m[35mCOMMIT /*application='Widgetlab'*/[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT pg_advisory_unlock(2291495787603786435) /*application='Widgetlab'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='Widgetlab'*/[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[35mSET search_path TO public /*application='Widgetlab'*/[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[35mSET search_path TO "$user", public /*application='Widgetlab'*/[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[35mSET search_path TO public /*application='Widgetlab'*/[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[35mSET search_path TO "$user", public /*application='Widgetlab'*/[0m
+Started GET "/" for 127.0.0.1 at 2025-12-22 15:04:57 +0100
+  [1m[36mActiveRecord::SchemaMigration Load (2.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='Widgetlab'*/[0m
+Processing by Rails::WelcomeController#index as HTML
+  Rendering /home/jannis/.rbenv/versions/3.4.7/lib/ruby/gems/3.4.0/gems/railties-8.1.1/lib/rails/templates/rails/welcome/index.html.erb
+  Rendered /home/jannis/.rbenv/versions/3.4.7/lib/ruby/gems/3.4.0/gems/railties-8.1.1/lib/rails/templates/rails/welcome/index.html.erb (Duration: 0.5ms | GC: 0.0ms)
+Completed 200 OK in 17ms (Views: 6.0ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+  [1m[36mUser Load (1.6ms)[0m  [1m[34mSELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT 1 /*application='Widgetlab'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN /*application='Widgetlab'*/[0m
+  [1m[36mUser Create (1.7ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "email", "first_name", "last_name", "sub", "updated_at") VALUES ('2025-12-22 17:55:54.074827', 'test@example.com', 'Test', 'User', NULL, '2025-12-22 17:55:54.074827') RETURNING "id" /*application='Widgetlab'*/[0m
+  [1m[36mTRANSACTION (0.6ms)[0m  [1m[35mCOMMIT /*application='Widgetlab'*/[0m
+  [1m[36mUser Load (1.5ms)[0m  [1m[34mSELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT 1 /*application='Widgetlab'*/[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN /*application='Widgetlab'*/[0m
+  ↳ app/services/data_sources/manager_service.rb:22:in 'DataSources::ManagerService#create_and_subscribe'
+  [1m[36mDataSource Create (2.6ms)[0m  [1m[32mINSERT INTO "data_sources" ("config", "created_at", "creator_id", "is_public", "name", "source_type", "updated_at") VALUES ('{"url":"https://jsonplaceholder.typicode.com/posts/1","method":"get","headers":{"Accept":"application/json"},"query_params":{},"timeout":30,"interval":60}', '2025-12-22 17:56:41.580124', 1, TRUE, 'Test JSON API - JSONPlaceholder', 0, '2025-12-22 17:56:41.580124') RETURNING "id" /*application='Widgetlab'*/[0m
+  ↳ app/services/data_sources/manager_service.rb:22:in 'DataSources::ManagerService#create_and_subscribe'
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[35mCOMMIT /*application='Widgetlab'*/[0m
+  ↳ app/services/data_sources/manager_service.rb:22:in 'DataSources::ManagerService#create_and_subscribe'
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN /*application='Widgetlab'*/[0m
+  ↳ app/services/data_sources/manager_service.rb:22:in 'DataSources::ManagerService#create_and_subscribe'
+  [1m[36mDataSource Create (1.4ms)[0m  [1m[32mINSERT INTO "data_sources" ("config", "created_at", "creator_id", "is_public", "name", "source_type", "updated_at") VALUES ('{"url":"https://httpbin.org/basic-auth/user/passwd","method":"get","headers":{},"query_params":{},"timeout":30,"interval":300,"auth":{"username":"user","password":"passwd"}}', '2025-12-22 17:56:41.586633', 1, FALSE, 'Test JSON API - mit Basic Auth', 0, '2025-12-22 17:56:41.586633') RETURNING "id" /*application='Widgetlab'*/[0m
+  ↳ app/services/data_sources/manager_service.rb:22:in 'DataSources::ManagerService#create_and_subscribe'
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[35mCOMMIT /*application='Widgetlab'*/[0m
+  ↳ app/services/data_sources/manager_service.rb:22:in 'DataSources::ManagerService#create_and_subscribe'
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN /*application='Widgetlab'*/[0m
+  ↳ app/services/data_sources/manager_service.rb:22:in 'DataSources::ManagerService#create_and_subscribe'
+  [1m[36mDataSource Create (1.9ms)[0m  [1m[32mINSERT INTO "data_sources" ("config", "created_at", "creator_id", "is_public", "name", "source_type", "updated_at") VALUES ('{"url":"https://jsonplaceholder.typicode.com/posts","method":"post","headers":{"Content-Type":"application/json"},"query_params":{},"body":"{\"title\":\"Test\",\"body\":\"Test body\",\"userId\":1}","timeout":30,"interval":600}', '2025-12-22 17:56:41.591346', 1, FALSE, 'Test JSON API - POST Request', 0, '2025-12-22 17:56:41.591346') RETURNING "id" /*application='Widgetlab'*/[0m
+  ↳ app/services/data_sources/manager_service.rb:22:in 'DataSources::ManagerService#create_and_subscribe'
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[35mCOMMIT /*application='Widgetlab'*/[0m
+  ↳ app/services/data_sources/manager_service.rb:22:in 'DataSources::ManagerService#create_and_subscribe'
+  [1m[36mDataSource Load (2.1ms)[0m  [1m[34mSELECT "data_sources".* FROM "data_sources" WHERE (name LIKE 'Test %') ORDER BY "data_sources"."created_at" ASC /*application='Widgetlab'*/[0m
+  [1m[36mDataSource Count (0.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "data_sources" WHERE "data_sources"."source_type" = 0 /*application='Widgetlab'*/[0m
+  [1m[36mDataSource Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "data_sources" WHERE "data_sources"."source_type" = 1 /*application='Widgetlab'*/[0m
+  [1m[36mDataSource Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "data_sources" /*application='Widgetlab'*/[0m
+  [1m[36mUser Load (1.6ms)[0m  [1m[34mSELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT 1 /*application='Widgetlab'*/[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN /*application='Widgetlab'*/[0m
+  ↳ app/services/data_sources/manager_service.rb:22:in 'DataSources::ManagerService#create_and_subscribe'
+  [1m[36mDataSource Create (2.1ms)[0m  [1m[32mINSERT INTO "data_sources" ("config", "created_at", "creator_id", "is_public", "name", "source_type", "updated_at") VALUES ('{"url":"https://jsonplaceholder.typicode.com/posts/1","method":"get","headers":{"Accept":"application/json"},"query_params":{},"timeout":30,"interval":60}', '2025-12-22 17:58:16.833102', 1, TRUE, 'Test JSON API - JSONPlaceholder', 0, '2025-12-22 17:58:16.833102') RETURNING "id" /*application='Widgetlab'*/[0m
+  ↳ app/services/data_sources/manager_service.rb:22:in 'DataSources::ManagerService#create_and_subscribe'
+  [1m[36mTRANSACTION (1.2ms)[0m  [1m[35mCOMMIT /*application='Widgetlab'*/[0m
+  ↳ app/services/data_sources/manager_service.rb:22:in 'DataSources::ManagerService#create_and_subscribe'
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN /*application='Widgetlab'*/[0m
+  ↳ app/services/data_sources/manager_service.rb:22:in 'DataSources::ManagerService#create_and_subscribe'
+  [1m[36mDataSource Create (2.1ms)[0m  [1m[32mINSERT INTO "data_sources" ("config", "created_at", "creator_id", "is_public", "name", "source_type", "updated_at") VALUES ('{"host":"test.mosquitto.org","port":1883,"topic":"test/widgetlab/+","clean_session":true,"keep_alive":15,"qos":0,"parse_json":true,"use_ssl":false}', '2025-12-22 17:58:16.841383', 1, FALSE, 'Test MQTT - Mosquitto Test Broker', 1, '2025-12-22 17:58:16.841383') RETURNING "id" /*application='Widgetlab'*/[0m
+  ↳ app/services/data_sources/manager_service.rb:22:in 'DataSources::ManagerService#create_and_subscribe'
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[35mCOMMIT /*application='Widgetlab'*/[0m
+  ↳ app/services/data_sources/manager_service.rb:22:in 'DataSources::ManagerService#create_and_subscribe'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN /*application='Widgetlab'*/[0m
+  ↳ app/services/data_sources/manager_service.rb:22:in 'DataSources::ManagerService#create_and_subscribe'
+  [1m[36mDataSource Create (1.4ms)[0m  [1m[32mINSERT INTO "data_sources" ("config", "created_at", "creator_id", "is_public", "name", "source_type", "updated_at") VALUES ('{"url":"https://httpbin.org/basic-auth/user/passwd","method":"get","headers":{},"query_params":{},"timeout":30,"interval":300,"auth":{"username":"user","password":"passwd"}}', '2025-12-22 17:58:16.846503', 1, FALSE, 'Test JSON API - mit Basic Auth', 0, '2025-12-22 17:58:16.846503') RETURNING "id" /*application='Widgetlab'*/[0m
+  ↳ app/services/data_sources/manager_service.rb:22:in 'DataSources::ManagerService#create_and_subscribe'
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[35mCOMMIT /*application='Widgetlab'*/[0m
+  ↳ app/services/data_sources/manager_service.rb:22:in 'DataSources::ManagerService#create_and_subscribe'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN /*application='Widgetlab'*/[0m
+  ↳ app/services/data_sources/manager_service.rb:22:in 'DataSources::ManagerService#create_and_subscribe'
+  [1m[36mDataSource Create (1.2ms)[0m  [1m[32mINSERT INTO "data_sources" ("config", "created_at", "creator_id", "is_public", "name", "source_type", "updated_at") VALUES ('{"url":"https://jsonplaceholder.typicode.com/posts","method":"post","headers":{"Content-Type":"application/json"},"query_params":{},"body":"{\"title\":\"Test\",\"body\":\"Test body\",\"userId\":1}","timeout":30,"interval":600}', '2025-12-22 17:58:16.850938', 1, FALSE, 'Test JSON API - POST Request', 0, '2025-12-22 17:58:16.850938') RETURNING "id" /*application='Widgetlab'*/[0m
+  ↳ app/services/data_sources/manager_service.rb:22:in 'DataSources::ManagerService#create_and_subscribe'
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mCOMMIT /*application='Widgetlab'*/[0m
+  ↳ app/services/data_sources/manager_service.rb:22:in 'DataSources::ManagerService#create_and_subscribe'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN /*application='Widgetlab'*/[0m
+  ↳ app/services/data_sources/manager_service.rb:22:in 'DataSources::ManagerService#create_and_subscribe'
+  [1m[36mDataSource Create (1.2ms)[0m  [1m[32mINSERT INTO "data_sources" ("config", "created_at", "creator_id", "is_public", "name", "source_type", "updated_at") VALUES ('{"host":"test.mosquitto.org","port":8883,"topic":"test/widgetlab/ssl","clean_session":true,"keep_alive":15,"qos":1,"parse_json":true,"use_ssl":false}', '2025-12-22 17:58:16.854577', 1, FALSE, 'Test MQTT - mit SSL Konfiguration', 1, '2025-12-22 17:58:16.854577') RETURNING "id" /*application='Widgetlab'*/[0m
+  ↳ app/services/data_sources/manager_service.rb:22:in 'DataSources::ManagerService#create_and_subscribe'
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[35mCOMMIT /*application='Widgetlab'*/[0m
+  ↳ app/services/data_sources/manager_service.rb:22:in 'DataSources::ManagerService#create_and_subscribe'
+  [1m[36mDataSource Load (2.5ms)[0m  [1m[34mSELECT "data_sources".* FROM "data_sources" WHERE (name LIKE 'Test %') ORDER BY "data_sources"."created_at" ASC /*application='Widgetlab'*/[0m
+  [1m[36mDataSource Count (0.9ms)[0m  [1m[34mSELECT COUNT(*) FROM "data_sources" WHERE "data_sources"."source_type" = 0 /*application='Widgetlab'*/[0m
+  [1m[36mDataSource Count (0.5ms)[0m  [1m[34mSELECT COUNT(*) FROM "data_sources" WHERE "data_sources"."source_type" = 1 /*application='Widgetlab'*/[0m
+  [1m[36mDataSource Count (0.5ms)[0m  [1m[34mSELECT COUNT(*) FROM "data_sources" /*application='Widgetlab'*/[0m
+  [1m[36mUser Load (1.5ms)[0m  [1m[34mSELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT 1 /*application='Widgetlab'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN /*application='Widgetlab'*/[0m
+  ↳ app/services/data_sources/manager_service.rb:22:in 'DataSources::ManagerService#create_and_subscribe'
+  [1m[36mDataSource Create (1.8ms)[0m  [1m[32mINSERT INTO "data_sources" ("config", "created_at", "creator_id", "is_public", "name", "source_type", "updated_at") VALUES ('{"url":"https://jsonplaceholder.typicode.com/posts/1","method":"get","headers":{},"query_params":{},"timeout":30,"interval":60}', '2025-12-22 17:59:12.555530', 1, TRUE, 'Test JSON API', 0, '2025-12-22 17:59:12.555530') RETURNING "id" /*application='Widgetlab'*/[0m
+  ↳ app/services/data_sources/manager_service.rb:22:in 'DataSources::ManagerService#create_and_subscribe'
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[35mCOMMIT /*application='Widgetlab'*/[0m
+  ↳ app/services/data_sources/manager_service.rb:22:in 'DataSources::ManagerService#create_and_subscribe'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN /*application='Widgetlab'*/[0m
+  ↳ app/services/data_sources/manager_service.rb:22:in 'DataSources::ManagerService#create_and_subscribe'
+  [1m[36mDataSource Create (1.6ms)[0m  [1m[32mINSERT INTO "data_sources" ("config", "created_at", "creator_id", "is_public", "name", "source_type", "updated_at") VALUES ('{"host":"test.mosquitto.org","port":1883,"topic":"test/widgetlab/sensor","clean_session":true,"keep_alive":15,"qos":0,"parse_json":true,"use_ssl":false}', '2025-12-22 17:59:12.560665', 1, FALSE, 'Test MQTT', 1, '2025-12-22 17:59:12.560665') RETURNING "id" /*application='Widgetlab'*/[0m
+  ↳ app/services/data_sources/manager_service.rb:22:in 'DataSources::ManagerService#create_and_subscribe'
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[35mCOMMIT /*application='Widgetlab'*/[0m
+  ↳ app/services/data_sources/manager_service.rb:22:in 'DataSources::ManagerService#create_and_subscribe'
+  [1m[36mDataSource Count (0.6ms)[0m  [1m[34mSELECT COUNT(*) FROM "data_sources" /*application='Widgetlab'*/[0m
+  [1m[36mDataSource Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "data_sources" WHERE "data_sources"."source_type" = 0 /*application='Widgetlab'*/[0m
+  [1m[36mDataSource Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "data_sources" WHERE "data_sources"."source_type" = 1 /*application='Widgetlab'*/[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT pg_try_advisory_lock(2291495787603786435) /*application='Widgetlab'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (1.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='Widgetlab'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Load (1.2ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = 'environment' ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1 /*application='Widgetlab'*/[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT pg_advisory_unlock(2291495787603786435) /*application='Widgetlab'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='Widgetlab'*/[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[35mSET search_path TO public /*application='Widgetlab'*/[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[35mSET search_path TO "$user", public /*application='Widgetlab'*/[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[35mSET search_path TO public /*application='Widgetlab'*/[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[35mSET search_path TO "$user", public /*application='Widgetlab'*/[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[35mSET search_path TO public /*application='Widgetlab'*/[0m
+  [1m[35m (71.6ms)[0m  [1m[35mCREATE DATABASE "widgetlab_development" ENCODING = 'unicode' /*application='Widgetlab'*/[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[35mCREATE EXTENSION IF NOT EXISTS "plpgsql" SCHEMA pg_catalog /*application='Widgetlab'*/[0m
+  [1m[35m (0.2ms)[0m  [1m[35mDROP TABLE IF EXISTS "dashboard_user_roles" CASCADE /*application='Widgetlab'*/[0m
+  [1m[35m (4.6ms)[0m  [1m[35mCREATE TABLE "dashboard_user_roles" ("id" bigserial primary key, "created_at" timestamp(6) NOT NULL, "dashboard_id" bigint NOT NULL, "role" integer, "updated_at" timestamp(6) NOT NULL, "user_id" bigint NOT NULL) /*application='Widgetlab'*/[0m
+  [1m[35m (1.4ms)[0m  [1m[35mCREATE INDEX "index_dashboard_user_roles_on_dashboard_id" ON "dashboard_user_roles" ("dashboard_id") /*application='Widgetlab'*/[0m
+  [1m[35m (1.5ms)[0m  [1m[35mCREATE INDEX "index_dashboard_user_roles_on_user_id" ON "dashboard_user_roles" ("user_id") /*application='Widgetlab'*/[0m
+  [1m[35m (0.2ms)[0m  [1m[35mDROP TABLE IF EXISTS "dashboard_widgets" CASCADE /*application='Widgetlab'*/[0m
+  [1m[35m (3.4ms)[0m  [1m[35mCREATE TABLE "dashboard_widgets" ("id" bigserial primary key, "color" character varying, "created_at" timestamp(6) NOT NULL, "dashboard_id" bigint NOT NULL, "height" integer, "position_x" integer, "position_y" integer, "updated_at" timestamp(6) NOT NULL, "widget_id" bigint NOT NULL, "width" integer) /*application='Widgetlab'*/[0m
+  [1m[35m (1.3ms)[0m  [1m[35mCREATE INDEX "index_dashboard_widgets_on_dashboard_id" ON "dashboard_widgets" ("dashboard_id") /*application='Widgetlab'*/[0m
+  [1m[35m (1.1ms)[0m  [1m[35mCREATE INDEX "index_dashboard_widgets_on_widget_id" ON "dashboard_widgets" ("widget_id") /*application='Widgetlab'*/[0m
+  [1m[35m (0.2ms)[0m  [1m[35mDROP TABLE IF EXISTS "dashboards" CASCADE /*application='Widgetlab'*/[0m
+  [1m[35m (2.9ms)[0m  [1m[35mCREATE TABLE "dashboards" ("id" bigserial primary key, "columns" integer, "created_at" timestamp(6) NOT NULL, "icon" character varying, "is_public" boolean, "name" character varying, "updated_at" timestamp(6) NOT NULL) /*application='Widgetlab'*/[0m
+  [1m[35m (0.2ms)[0m  [1m[35mDROP TABLE IF EXISTS "data_source_storages" CASCADE /*application='Widgetlab'*/[0m
+  [1m[35m (3.1ms)[0m  [1m[35mCREATE TABLE "data_source_storages" ("id" bigserial primary key, "created_at" timestamp(6) NOT NULL, "data_source_id" bigint NOT NULL, "stored_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL, "value" jsonb DEFAULT '{}' NOT NULL) /*application='Widgetlab'*/[0m
+  [1m[35m (1.7ms)[0m  [1m[35mCREATE INDEX "index_data_source_storages_on_data_source_id_and_stored_at" ON "data_source_storages" ("data_source_id", "stored_at") /*application='Widgetlab'*/[0m
+  [1m[35m (0.9ms)[0m  [1m[35mCREATE INDEX "index_data_source_storages_on_data_source_id" ON "data_source_storages" ("data_source_id") /*application='Widgetlab'*/[0m
+  [1m[35m (1.2ms)[0m  [1m[35mCREATE INDEX "index_data_source_storages_on_stored_at" ON "data_source_storages" ("stored_at") /*application='Widgetlab'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE IF EXISTS "data_source_whitelists" CASCADE /*application='Widgetlab'*/[0m
+  [1m[35m (26.0ms)[0m  [1m[35mCREATE TABLE "data_source_whitelists" ("id" bigserial primary key, "created_at" timestamp(6) NOT NULL, "data_source_id" bigint NOT NULL, "updated_at" timestamp(6) NOT NULL, "whitelistable_id" bigint NOT NULL, "whitelistable_type" character varying NOT NULL) /*application='Widgetlab'*/[0m
+  [1m[35m (1.2ms)[0m  [1m[35mCREATE INDEX "index_data_source_whitelists_on_data_source_id" ON "data_source_whitelists" ("data_source_id") /*application='Widgetlab'*/[0m
+  [1m[35m (1.6ms)[0m  [1m[35mCREATE INDEX "index_data_source_whitelists_on_whitelistable" ON "data_source_whitelists" ("whitelistable_type", "whitelistable_id") /*application='Widgetlab'*/[0m
+  [1m[35m (0.2ms)[0m  [1m[35mDROP TABLE IF EXISTS "data_sources" CASCADE /*application='Widgetlab'*/[0m
+  [1m[35m (3.3ms)[0m  [1m[35mCREATE TABLE "data_sources" ("id" bigserial primary key, "config" jsonb, "created_at" timestamp(6) NOT NULL, "creator_id" bigint NOT NULL, "is_public" boolean, "name" character varying, "source_type" integer, "updated_at" timestamp(6) NOT NULL) /*application='Widgetlab'*/[0m
+  [1m[35m (1.0ms)[0m  [1m[35mCREATE INDEX "index_data_sources_on_creator_id" ON "data_sources" ("creator_id") /*application='Widgetlab'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE IF EXISTS "user_group_roles" CASCADE /*application='Widgetlab'*/[0m
+  [1m[35m (2.4ms)[0m  [1m[35mCREATE TABLE "user_group_roles" ("id" bigserial primary key, "created_at" timestamp(6) NOT NULL, "role" integer, "updated_at" timestamp(6) NOT NULL, "user_group_id" bigint NOT NULL, "user_id" bigint NOT NULL) /*application='Widgetlab'*/[0m
+  [1m[35m (1.0ms)[0m  [1m[35mCREATE INDEX "index_user_group_roles_on_user_group_id" ON "user_group_roles" ("user_group_id") /*application='Widgetlab'*/[0m
+  [1m[35m (0.9ms)[0m  [1m[35mCREATE INDEX "index_user_group_roles_on_user_id" ON "user_group_roles" ("user_id") /*application='Widgetlab'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE IF EXISTS "user_groups" CASCADE /*application='Widgetlab'*/[0m
+  [1m[35m (3.0ms)[0m  [1m[35mCREATE TABLE "user_groups" ("id" bigserial primary key, "created_at" timestamp(6) NOT NULL, "name" character varying, "updated_at" timestamp(6) NOT NULL) /*application='Widgetlab'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE IF EXISTS "user_widget_roles" CASCADE /*application='Widgetlab'*/[0m
+  [1m[35m (2.4ms)[0m  [1m[35mCREATE TABLE "user_widget_roles" ("id" bigserial primary key, "created_at" timestamp(6) NOT NULL, "role" integer, "updated_at" timestamp(6) NOT NULL, "user_id" bigint NOT NULL, "widget_id" bigint NOT NULL) /*application='Widgetlab'*/[0m
+  [1m[35m (1.0ms)[0m  [1m[35mCREATE INDEX "index_user_widget_roles_on_user_id" ON "user_widget_roles" ("user_id") /*application='Widgetlab'*/[0m
+  [1m[35m (0.9ms)[0m  [1m[35mCREATE INDEX "index_user_widget_roles_on_widget_id" ON "user_widget_roles" ("widget_id") /*application='Widgetlab'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE IF EXISTS "users" CASCADE /*application='Widgetlab'*/[0m
+  [1m[35m (2.9ms)[0m  [1m[35mCREATE TABLE "users" ("id" bigserial primary key, "created_at" timestamp(6) NOT NULL, "email" character varying, "first_name" character varying, "last_name" character varying, "sub" character varying, "updated_at" timestamp(6) NOT NULL) /*application='Widgetlab'*/[0m
+  [1m[35m (1.0ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_users_on_email" ON "users" ("email") /*application='Widgetlab'*/[0m
+  [1m[35m (1.0ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_users_on_sub" ON "users" ("sub") /*application='Widgetlab'*/[0m
+  [1m[35m (0.2ms)[0m  [1m[35mDROP TABLE IF EXISTS "widget_data_source_transformers" CASCADE /*application='Widgetlab'*/[0m
+  [1m[35m (3.3ms)[0m  [1m[35mCREATE TABLE "widget_data_source_transformers" ("id" bigserial primary key, "config" jsonb, "created_at" timestamp(6) NOT NULL, "data_source_id" bigint NOT NULL, "updated_at" timestamp(6) NOT NULL, "widget_id" bigint NOT NULL) /*application='Widgetlab'*/[0m
+  [1m[35m (1.0ms)[0m  [1m[35mCREATE INDEX "index_widget_data_source_transformers_on_data_source_id" ON "widget_data_source_transformers" ("data_source_id") /*application='Widgetlab'*/[0m
+  [1m[35m (0.9ms)[0m  [1m[35mCREATE INDEX "index_widget_data_source_transformers_on_widget_id" ON "widget_data_source_transformers" ("widget_id") /*application='Widgetlab'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE IF EXISTS "widgets" CASCADE /*application='Widgetlab'*/[0m
+  [1m[35m (2.8ms)[0m  [1m[35mCREATE TABLE "widgets" ("id" bigserial primary key, "color" character varying, "created_at" timestamp(6) NOT NULL, "description" character varying, "is_public" boolean, "name" character varying, "type" integer, "updated_at" timestamp(6) NOT NULL) /*application='Widgetlab'*/[0m
+  [1m[35m (3.0ms)[0m  [1m[35mALTER TABLE "dashboard_user_roles" ADD CONSTRAINT "fk_rails_f0db296c6f"
+FOREIGN KEY ("dashboard_id")
+  REFERENCES "dashboards" ("id")
+ /*application='Widgetlab'*/[0m
+  [1m[35m (1.9ms)[0m  [1m[35mALTER TABLE "dashboard_user_roles" ADD CONSTRAINT "fk_rails_694b862e5b"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+ /*application='Widgetlab'*/[0m
+  [1m[35m (2.0ms)[0m  [1m[35mALTER TABLE "dashboard_widgets" ADD CONSTRAINT "fk_rails_834da0b127"
+FOREIGN KEY ("dashboard_id")
+  REFERENCES "dashboards" ("id")
+ /*application='Widgetlab'*/[0m
+  [1m[35m (1.6ms)[0m  [1m[35mALTER TABLE "dashboard_widgets" ADD CONSTRAINT "fk_rails_e3fc13fbac"
+FOREIGN KEY ("widget_id")
+  REFERENCES "widgets" ("id")
+ /*application='Widgetlab'*/[0m
+  [1m[35m (2.2ms)[0m  [1m[35mALTER TABLE "data_source_storages" ADD CONSTRAINT "fk_rails_cb38c82dd9"
+FOREIGN KEY ("data_source_id")
+  REFERENCES "data_sources" ("id")
+ /*application='Widgetlab'*/[0m
+  [1m[35m (1.9ms)[0m  [1m[35mALTER TABLE "data_source_whitelists" ADD CONSTRAINT "fk_rails_690e844bd9"
+FOREIGN KEY ("data_source_id")
+  REFERENCES "data_sources" ("id")
+ /*application='Widgetlab'*/[0m
+  [1m[35m (1.5ms)[0m  [1m[35mALTER TABLE "data_sources" ADD CONSTRAINT "fk_rails_a71137ae54"
+FOREIGN KEY ("creator_id")
+  REFERENCES "users" ("id")
+ /*application='Widgetlab'*/[0m
+  [1m[35m (2.0ms)[0m  [1m[35mALTER TABLE "user_group_roles" ADD CONSTRAINT "fk_rails_001bed7361"
+FOREIGN KEY ("user_group_id")
+  REFERENCES "user_groups" ("id")
+ /*application='Widgetlab'*/[0m
+  [1m[35m (1.5ms)[0m  [1m[35mALTER TABLE "user_group_roles" ADD CONSTRAINT "fk_rails_733a938649"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+ /*application='Widgetlab'*/[0m
+  [1m[35m (1.8ms)[0m  [1m[35mALTER TABLE "user_widget_roles" ADD CONSTRAINT "fk_rails_520779acc6"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+ /*application='Widgetlab'*/[0m
+  [1m[35m (1.7ms)[0m  [1m[35mALTER TABLE "user_widget_roles" ADD CONSTRAINT "fk_rails_ea925eb503"
+FOREIGN KEY ("widget_id")
+  REFERENCES "widgets" ("id")
+ /*application='Widgetlab'*/[0m
+  [1m[35m (1.6ms)[0m  [1m[35mALTER TABLE "widget_data_source_transformers" ADD CONSTRAINT "fk_rails_891e0a11d8"
+FOREIGN KEY ("data_source_id")
+  REFERENCES "data_sources" ("id")
+ /*application='Widgetlab'*/[0m
+  [1m[35m (1.7ms)[0m  [1m[35mALTER TABLE "widget_data_source_transformers" ADD CONSTRAINT "fk_rails_d7c8d64c29"
+FOREIGN KEY ("widget_id")
+  REFERENCES "widgets" ("id")
+ /*application='Widgetlab'*/[0m
+  [1m[35m (2.4ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" character varying NOT NULL PRIMARY KEY) /*application='Widgetlab'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (1.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='Widgetlab'*/[0m
+  [1m[35m (0.7ms)[0m  [1m[32mINSERT INTO "schema_migrations" (version) VALUES (20251222133717) /*application='Widgetlab'*/[0m
+  [1m[35m (0.5ms)[0m  [1m[32mINSERT INTO "schema_migrations" (version) VALUES
+(20251201150621),
+(20251201145706),
+(20251201144845),
+(20251201143920),
+(20251201143131),
+(20251201143052),
+(20251201140223),
+(20251201140128),
+(20251201135020),
+(20251201134340),
+(20251201134014); /*application='Widgetlab'*/[0m
+  [1m[35m (2.5ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" character varying NOT NULL PRIMARY KEY, "value" character varying, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL) /*application='Widgetlab'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Load (1.3ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = 'environment' ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1 /*application='Widgetlab'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Create (0.6ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ('environment', 'development', '2025-12-22 18:03:38.434919', '2025-12-22 18:03:38.434921') RETURNING "key" /*application='Widgetlab'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.2ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = 'environment' ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1 /*application='Widgetlab'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.2ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = 'schema_sha1' ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1 /*application='Widgetlab'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Create (0.5ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ('schema_sha1', '9e8b98934f77ed65d941c57c02ee73ce7382b6ad', '2025-12-22 18:03:38.438167', '2025-12-22 18:03:38.438169') RETURNING "key" /*application='Widgetlab'*/[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT pg_try_advisory_lock(2291495787603786435) /*application='Widgetlab'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='Widgetlab'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.2ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = 'environment' ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1 /*application='Widgetlab'*/[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT pg_advisory_unlock(2291495787603786435) /*application='Widgetlab'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='Widgetlab'*/[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[35mSET search_path TO public /*application='Widgetlab'*/[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[35mSET search_path TO "$user", public /*application='Widgetlab'*/[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[35mSET search_path TO public /*application='Widgetlab'*/[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[35mSET search_path TO "$user", public /*application='Widgetlab'*/[0m
+  [1m[36mUser Load (1.7ms)[0m  [1m[34mSELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT 1 /*application='Widgetlab'*/[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN /*application='Widgetlab'*/[0m
+  [1m[36mUser Create (2.0ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "email", "first_name", "last_name", "sub", "updated_at") VALUES ('2025-12-22 18:07:52.283893', 'test@example.com', 'Test', 'User', NULL, '2025-12-22 18:07:52.283893') RETURNING "id" /*application='Widgetlab'*/[0m
+  [1m[36mTRANSACTION (4.2ms)[0m  [1m[35mCOMMIT /*application='Widgetlab'*/[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN /*application='Widgetlab'*/[0m
+  ↳ app/services/data_sources/manager_service.rb:22:in 'DataSources::ManagerService#create_and_subscribe'
+  [1m[36mDataSource Create (2.5ms)[0m  [1m[32mINSERT INTO "data_sources" ("config", "created_at", "creator_id", "is_public", "name", "source_type", "updated_at") VALUES ('{"url":"https://jsonplaceholder.typicode.com/posts/1","method":"get","headers":{},"query_params":{},"timeout":30,"interval":60}', '2025-12-22 18:07:52.307065', 1, TRUE, 'JSONPlaceholder Test API (with Config)', 0, '2025-12-22 18:07:52.307065') RETURNING "id" /*application='Widgetlab'*/[0m
+  ↳ app/services/data_sources/manager_service.rb:22:in 'DataSources::ManagerService#create_and_subscribe'
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[35mCOMMIT /*application='Widgetlab'*/[0m
+  ↳ app/services/data_sources/manager_service.rb:22:in 'DataSources::ManagerService#create_and_subscribe'
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN /*application='Widgetlab'*/[0m
+  ↳ app/services/data_sources/manager_service.rb:22:in 'DataSources::ManagerService#create_and_subscribe'
+  [1m[36mDataSource Create (1.5ms)[0m  [1m[32mINSERT INTO "data_sources" ("config", "created_at", "creator_id", "is_public", "name", "source_type", "updated_at") VALUES ('{"url":"https://jsonplaceholder.typicode.com/posts/2","method":"get","interval":60}', '2025-12-22 18:07:52.313045', 1, TRUE, 'JSONPlaceholder Test API (with Hash)', 0, '2025-12-22 18:07:52.313045') RETURNING "id" /*application='Widgetlab'*/[0m
+  ↳ app/services/data_sources/manager_service.rb:22:in 'DataSources::ManagerService#create_and_subscribe'
+  [1m[36mTRANSACTION (0.6ms)[0m  [1m[35mCOMMIT /*application='Widgetlab'*/[0m
+  ↳ app/services/data_sources/manager_service.rb:22:in 'DataSources::ManagerService#create_and_subscribe'
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN /*application='Widgetlab'*/[0m
+  ↳ app/models/data_source.rb:29:in 'DataSource#store_value'
+  [1m[36mDataSourceStorage Create (2.4ms)[0m  [1m[32mINSERT INTO "data_source_storages" ("created_at", "data_source_id", "stored_at", "updated_at", "value") VALUES ('2025-12-22 18:07:52.459552', 1, '2025-12-22 18:07:52.445756', '2025-12-22 18:07:52.459552', '{"userId":1,"id":1,"title":"sunt aut facere repellat provident occaecati excepturi optio reprehenderit","body":"quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto"}') RETURNING "id" /*application='Widgetlab'*/[0m
+  ↳ app/models/data_source.rb:29:in 'DataSource#store_value'
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[35mCOMMIT /*application='Widgetlab'*/[0m
+  ↳ app/models/data_source.rb:29:in 'DataSource#store_value'
+Successfully stored JSON API data for data source 1
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN /*application='Widgetlab'*/[0m
+  ↳ app/services/data_sources/manager_service.rb:22:in 'DataSources::ManagerService#create_and_subscribe'
+  [1m[36mDataSource Create (1.2ms)[0m  [1m[32mINSERT INTO "data_sources" ("config", "created_at", "creator_id", "is_public", "name", "source_type", "updated_at") VALUES ('{"host":"test.mosquitto.org","port":1883,"topic":"test/widgetlab/sensor","clean_session":true,"keep_alive":15,"qos":0,"parse_json":true,"use_ssl":false}', '2025-12-22 18:07:52.465004', 1, FALSE, 'Test MQTT Sensor (with Config)', 1, '2025-12-22 18:07:52.465004') RETURNING "id" /*application='Widgetlab'*/[0m
+  ↳ app/services/data_sources/manager_service.rb:22:in 'DataSources::ManagerService#create_and_subscribe'
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[35mCOMMIT /*application='Widgetlab'*/[0m
+  ↳ app/services/data_sources/manager_service.rb:22:in 'DataSources::ManagerService#create_and_subscribe'
+  [1m[36mDataSourceStorage Load (1.5ms)[0m  [1m[34mSELECT "data_source_storages".* FROM "data_source_storages" WHERE "data_source_storages"."data_source_id" = 1 ORDER BY "data_source_storages"."stored_at" DESC LIMIT 1 /*application='Widgetlab'*/[0m
+  ↳ app/models/data_source.rb:39:in 'DataSource#latest_value'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN /*application='Widgetlab'*/[0m
+  ↳ app/models/data_source.rb:29:in 'DataSource#store_value'
+  [1m[36mDataSourceStorage Create (1.3ms)[0m  [1m[32mINSERT INTO "data_source_storages" ("created_at", "data_source_id", "stored_at", "updated_at", "value") VALUES ('2025-12-22 18:07:52.471701', 1, '2025-12-22 18:07:52.471239', '2025-12-22 18:07:52.471701', '{"temperature":22.5,"humidity":60,"timestamp":1766426872}') RETURNING "id" /*application='Widgetlab'*/[0m
+  ↳ app/models/data_source.rb:29:in 'DataSource#store_value'
+  [1m[36mTRANSACTION (0.6ms)[0m  [1m[35mCOMMIT /*application='Widgetlab'*/[0m
+  ↳ app/models/data_source.rb:29:in 'DataSource#store_value'
+  [1m[36mDataSourceStorage Count (0.5ms)[0m  [1m[34mSELECT COUNT(*) FROM (SELECT 1 AS one FROM "data_source_storages" WHERE "data_source_storages"."data_source_id" = 1 LIMIT 5) subquery_for_count /*application='Widgetlab'*/[0m
+  [1m[36mDataSourceStorage Load (0.3ms)[0m  [1m[34mSELECT "data_source_storages".* FROM "data_source_storages" WHERE "data_source_storages"."data_source_id" = 1 ORDER BY "data_source_storages"."stored_at" DESC LIMIT 5 /*application='Widgetlab'*/[0m
+  [1m[36mDataSource Count (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "data_sources" WHERE "data_sources"."source_type" = 0 /*application='Widgetlab'*/[0m
+  [1m[36mDataSource Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "data_sources" WHERE "data_sources"."source_type" = 1 /*application='Widgetlab'*/[0m
+  [1m[36mDataSourceStorage Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "data_source_storages" /*application='Widgetlab'*/[0m
