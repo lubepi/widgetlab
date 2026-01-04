@@ -153,3 +153,280 @@ FOREIGN KEY ("data_source_id")
   [1m[35mSQL (0.3ms)[0m  [1m[35mSET search_path TO public /*application='Widgetlab'*/[0m
   [1m[35mSQL (0.3ms)[0m  [1m[35mSET search_path TO "$user", public /*application='Widgetlab'*/[0m
   [1m[36mActiveRecord::SchemaMigration Load (1.4ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='Widgetlab'*/[0m
+  [1m[35mSQL (1.6ms)[0m  [1m[35mCREATE EXTENSION IF NOT EXISTS "plpgsql" SCHEMA pg_catalog /*application='Widgetlab'*/[0m
+  [1m[35m (1.2ms)[0m  [1m[35mDROP TABLE IF EXISTS "dashboard_user_roles" CASCADE /*application='Widgetlab'*/[0m
+  [1m[35m (44.6ms)[0m  [1m[35mCREATE TABLE "dashboard_user_roles" ("id" bigserial primary key, "created_at" timestamp(6) NOT NULL, "dashboard_id" bigint NOT NULL, "role" integer, "updated_at" timestamp(6) NOT NULL, "user_id" bigint NOT NULL) /*application='Widgetlab'*/[0m
+  [1m[35m (13.7ms)[0m  [1m[35mCREATE INDEX "index_dashboard_user_roles_on_dashboard_id" ON "dashboard_user_roles" ("dashboard_id") /*application='Widgetlab'*/[0m
+  [1m[35m (17.1ms)[0m  [1m[35mCREATE INDEX "index_dashboard_user_roles_on_user_id" ON "dashboard_user_roles" ("user_id") /*application='Widgetlab'*/[0m
+  [1m[35m (0.5ms)[0m  [1m[35mDROP TABLE IF EXISTS "dashboard_widgets" CASCADE /*application='Widgetlab'*/[0m
+  [1m[35m (32.2ms)[0m  [1m[35mCREATE TABLE "dashboard_widgets" ("id" bigserial primary key, "color" character varying, "created_at" timestamp(6) NOT NULL, "dashboard_id" bigint NOT NULL, "height" integer, "position_x" integer, "position_y" integer, "updated_at" timestamp(6) NOT NULL, "widget_id" bigint NOT NULL, "width" integer) /*application='Widgetlab'*/[0m
+  [1m[35m (20.1ms)[0m  [1m[35mCREATE INDEX "index_dashboard_widgets_on_dashboard_id" ON "dashboard_widgets" ("dashboard_id") /*application='Widgetlab'*/[0m
+  [1m[35m (12.7ms)[0m  [1m[35mCREATE INDEX "index_dashboard_widgets_on_widget_id" ON "dashboard_widgets" ("widget_id") /*application='Widgetlab'*/[0m
+  [1m[35m (0.5ms)[0m  [1m[35mDROP TABLE IF EXISTS "dashboards" CASCADE /*application='Widgetlab'*/[0m
+  [1m[35m (24.5ms)[0m  [1m[35mCREATE TABLE "dashboards" ("id" bigserial primary key, "columns" integer, "created_at" timestamp(6) NOT NULL, "icon" character varying, "is_public" boolean, "name" character varying, "updated_at" timestamp(6) NOT NULL) /*application='Widgetlab'*/[0m
+  [1m[35m (0.5ms)[0m  [1m[35mDROP TABLE IF EXISTS "data_source_whitelists" CASCADE /*application='Widgetlab'*/[0m
+  [1m[35m (30.9ms)[0m  [1m[35mCREATE TABLE "data_source_whitelists" ("id" bigserial primary key, "created_at" timestamp(6) NOT NULL, "data_source_id" bigint NOT NULL, "updated_at" timestamp(6) NOT NULL, "whitelistable_id" bigint NOT NULL, "whitelistable_type" character varying NOT NULL) /*application='Widgetlab'*/[0m
+  [1m[35m (31.5ms)[0m  [1m[35mCREATE INDEX "index_data_source_whitelists_on_data_source_id" ON "data_source_whitelists" ("data_source_id") /*application='Widgetlab'*/[0m
+  [1m[35m (14.5ms)[0m  [1m[35mCREATE INDEX "index_data_source_whitelists_on_whitelistable" ON "data_source_whitelists" ("whitelistable_type", "whitelistable_id") /*application='Widgetlab'*/[0m
+  [1m[35m (0.4ms)[0m  [1m[35mDROP TABLE IF EXISTS "data_sources" CASCADE /*application='Widgetlab'*/[0m
+  [1m[35m (27.6ms)[0m  [1m[35mCREATE TABLE "data_sources" ("id" bigserial primary key, "config" jsonb, "created_at" timestamp(6) NOT NULL, "creator_id" bigint NOT NULL, "is_public" boolean, "name" character varying, "source_type" integer, "updated_at" timestamp(6) NOT NULL) /*application='Widgetlab'*/[0m
+  [1m[35m (15.7ms)[0m  [1m[35mCREATE INDEX "index_data_sources_on_creator_id" ON "data_sources" ("creator_id") /*application='Widgetlab'*/[0m
+  [1m[35m (0.6ms)[0m  [1m[35mDROP TABLE IF EXISTS "user_group_roles" CASCADE /*application='Widgetlab'*/[0m
+  [1m[35m (23.0ms)[0m  [1m[35mCREATE TABLE "user_group_roles" ("id" bigserial primary key, "created_at" timestamp(6) NOT NULL, "role" integer, "updated_at" timestamp(6) NOT NULL, "user_group_id" bigint NOT NULL, "user_id" bigint NOT NULL) /*application='Widgetlab'*/[0m
+  [1m[35m (14.2ms)[0m  [1m[35mCREATE INDEX "index_user_group_roles_on_user_group_id" ON "user_group_roles" ("user_group_id") /*application='Widgetlab'*/[0m
+  [1m[35m (15.3ms)[0m  [1m[35mCREATE INDEX "index_user_group_roles_on_user_id" ON "user_group_roles" ("user_id") /*application='Widgetlab'*/[0m
+  [1m[35m (0.4ms)[0m  [1m[35mDROP TABLE IF EXISTS "user_groups" CASCADE /*application='Widgetlab'*/[0m
+  [1m[35m (36.8ms)[0m  [1m[35mCREATE TABLE "user_groups" ("id" bigserial primary key, "created_at" timestamp(6) NOT NULL, "name" character varying, "updated_at" timestamp(6) NOT NULL) /*application='Widgetlab'*/[0m
+  [1m[35m (0.5ms)[0m  [1m[35mDROP TABLE IF EXISTS "user_widget_roles" CASCADE /*application='Widgetlab'*/[0m
+  [1m[35m (15.2ms)[0m  [1m[35mCREATE TABLE "user_widget_roles" ("id" bigserial primary key, "created_at" timestamp(6) NOT NULL, "role" integer, "updated_at" timestamp(6) NOT NULL, "user_id" bigint NOT NULL, "widget_id" bigint NOT NULL) /*application='Widgetlab'*/[0m
+  [1m[35m (14.6ms)[0m  [1m[35mCREATE INDEX "index_user_widget_roles_on_user_id" ON "user_widget_roles" ("user_id") /*application='Widgetlab'*/[0m
+  [1m[35m (15.8ms)[0m  [1m[35mCREATE INDEX "index_user_widget_roles_on_widget_id" ON "user_widget_roles" ("widget_id") /*application='Widgetlab'*/[0m
+  [1m[35m (0.5ms)[0m  [1m[35mDROP TABLE IF EXISTS "users" CASCADE /*application='Widgetlab'*/[0m
+  [1m[35m (25.2ms)[0m  [1m[35mCREATE TABLE "users" ("id" bigserial primary key, "created_at" timestamp(6) NOT NULL, "email" character varying, "first_name" character varying, "last_name" character varying, "sub" character varying, "updated_at" timestamp(6) NOT NULL) /*application='Widgetlab'*/[0m
+  [1m[35m (14.9ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_users_on_email" ON "users" ("email") /*application='Widgetlab'*/[0m
+  [1m[35m (14.0ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_users_on_sub" ON "users" ("sub") /*application='Widgetlab'*/[0m
+  [1m[35m (0.5ms)[0m  [1m[35mDROP TABLE IF EXISTS "widget_data_source_transformers" CASCADE /*application='Widgetlab'*/[0m
+  [1m[35m (31.1ms)[0m  [1m[35mCREATE TABLE "widget_data_source_transformers" ("id" bigserial primary key, "config" jsonb, "created_at" timestamp(6) NOT NULL, "data_source_id" bigint NOT NULL, "updated_at" timestamp(6) NOT NULL, "widget_id" bigint NOT NULL) /*application='Widgetlab'*/[0m
+  [1m[35m (29.2ms)[0m  [1m[35mCREATE INDEX "index_widget_data_source_transformers_on_data_source_id" ON "widget_data_source_transformers" ("data_source_id") /*application='Widgetlab'*/[0m
+  [1m[35m (23.8ms)[0m  [1m[35mCREATE INDEX "index_widget_data_source_transformers_on_widget_id" ON "widget_data_source_transformers" ("widget_id") /*application='Widgetlab'*/[0m
+  [1m[35m (0.7ms)[0m  [1m[35mDROP TABLE IF EXISTS "widgets" CASCADE /*application='Widgetlab'*/[0m
+  [1m[35m (32.0ms)[0m  [1m[35mCREATE TABLE "widgets" ("id" bigserial primary key, "color" character varying, "created_at" timestamp(6) NOT NULL, "description" character varying, "is_public" boolean, "name" character varying, "type" integer, "updated_at" timestamp(6) NOT NULL) /*application='Widgetlab'*/[0m
+  [1m[35m (8.6ms)[0m  [1m[35mALTER TABLE "dashboard_user_roles" ADD CONSTRAINT "fk_rails_f0db296c6f"
+FOREIGN KEY ("dashboard_id")
+  REFERENCES "dashboards" ("id")
+ /*application='Widgetlab'*/[0m
+  [1m[35m (6.4ms)[0m  [1m[35mALTER TABLE "dashboard_user_roles" ADD CONSTRAINT "fk_rails_694b862e5b"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+ /*application='Widgetlab'*/[0m
+  [1m[35m (5.9ms)[0m  [1m[35mALTER TABLE "dashboard_widgets" ADD CONSTRAINT "fk_rails_834da0b127"
+FOREIGN KEY ("dashboard_id")
+  REFERENCES "dashboards" ("id")
+ /*application='Widgetlab'*/[0m
+  [1m[35m (6.1ms)[0m  [1m[35mALTER TABLE "dashboard_widgets" ADD CONSTRAINT "fk_rails_e3fc13fbac"
+FOREIGN KEY ("widget_id")
+  REFERENCES "widgets" ("id")
+ /*application='Widgetlab'*/[0m
+  [1m[35m (5.6ms)[0m  [1m[35mALTER TABLE "data_source_whitelists" ADD CONSTRAINT "fk_rails_690e844bd9"
+FOREIGN KEY ("data_source_id")
+  REFERENCES "data_sources" ("id")
+ /*application='Widgetlab'*/[0m
+  [1m[35m (5.9ms)[0m  [1m[35mALTER TABLE "data_sources" ADD CONSTRAINT "fk_rails_a71137ae54"
+FOREIGN KEY ("creator_id")
+  REFERENCES "users" ("id")
+ /*application='Widgetlab'*/[0m
+  [1m[35m (5.4ms)[0m  [1m[35mALTER TABLE "user_group_roles" ADD CONSTRAINT "fk_rails_001bed7361"
+FOREIGN KEY ("user_group_id")
+  REFERENCES "user_groups" ("id")
+ /*application='Widgetlab'*/[0m
+  [1m[35m (9.1ms)[0m  [1m[35mALTER TABLE "user_group_roles" ADD CONSTRAINT "fk_rails_733a938649"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+ /*application='Widgetlab'*/[0m
+  [1m[35m (5.6ms)[0m  [1m[35mALTER TABLE "user_widget_roles" ADD CONSTRAINT "fk_rails_520779acc6"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+ /*application='Widgetlab'*/[0m
+  [1m[35m (7.0ms)[0m  [1m[35mALTER TABLE "user_widget_roles" ADD CONSTRAINT "fk_rails_ea925eb503"
+FOREIGN KEY ("widget_id")
+  REFERENCES "widgets" ("id")
+ /*application='Widgetlab'*/[0m
+  [1m[35m (26.5ms)[0m  [1m[35mALTER TABLE "widget_data_source_transformers" ADD CONSTRAINT "fk_rails_891e0a11d8"
+FOREIGN KEY ("data_source_id")
+  REFERENCES "data_sources" ("id")
+ /*application='Widgetlab'*/[0m
+  [1m[35m (5.9ms)[0m  [1m[35mALTER TABLE "widget_data_source_transformers" ADD CONSTRAINT "fk_rails_d7c8d64c29"
+FOREIGN KEY ("widget_id")
+  REFERENCES "widgets" ("id")
+ /*application='Widgetlab'*/[0m
+  [1m[35m (24.4ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" character varying NOT NULL PRIMARY KEY) /*application='Widgetlab'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (1.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='Widgetlab'*/[0m
+  [1m[35m (4.0ms)[0m  [1m[32mINSERT INTO "schema_migrations" (version) VALUES (20251201150621) /*application='Widgetlab'*/[0m
+  [1m[35m (5.0ms)[0m  [1m[32mINSERT INTO "schema_migrations" (version) VALUES
+(20251201145706),
+(20251201144845),
+(20251201143920),
+(20251201143131),
+(20251201143052),
+(20251201140223),
+(20251201140128),
+(20251201135020),
+(20251201134340),
+(20251201134014); /*application='Widgetlab'*/[0m
+  [1m[35m (26.1ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" character varying NOT NULL PRIMARY KEY, "value" character varying, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL) /*application='Widgetlab'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Load (1.7ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = 'environment' ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1 /*application='Widgetlab'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Create (6.2ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ('environment', 'development', '2026-01-04 19:20:15.787022', '2026-01-04 19:20:15.787028') RETURNING "key" /*application='Widgetlab'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.7ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = 'environment' ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1 /*application='Widgetlab'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.6ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = 'schema_sha1' ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1 /*application='Widgetlab'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Create (5.1ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ('schema_sha1', 'bc20ecd4bf3af4be0093cb3b7edf36ce25fccea2', '2026-01-04 19:20:15.802441', '2026-01-04 19:20:15.802446') RETURNING "key" /*application='Widgetlab'*/[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[35mSET search_path TO public /*application='Widgetlab'*/[0m
+  [1m[35m (283.8ms)[0m  [1m[35mCREATE DATABASE "widgetlab_test" ENCODING = 'unicode' /*application='Widgetlab'*/[0m
+  [1m[35mSQL (0.6ms)[0m  [1m[35mCREATE EXTENSION IF NOT EXISTS "plpgsql" SCHEMA pg_catalog /*application='Widgetlab'*/[0m
+  [1m[35m (0.3ms)[0m  [1m[35mDROP TABLE IF EXISTS "dashboard_user_roles" CASCADE /*application='Widgetlab'*/[0m
+  [1m[35m (16.3ms)[0m  [1m[35mCREATE TABLE "dashboard_user_roles" ("id" bigserial primary key, "created_at" timestamp(6) NOT NULL, "dashboard_id" bigint NOT NULL, "role" integer, "updated_at" timestamp(6) NOT NULL, "user_id" bigint NOT NULL) /*application='Widgetlab'*/[0m
+  [1m[35m (17.5ms)[0m  [1m[35mCREATE INDEX "index_dashboard_user_roles_on_dashboard_id" ON "dashboard_user_roles" ("dashboard_id") /*application='Widgetlab'*/[0m
+  [1m[35m (13.0ms)[0m  [1m[35mCREATE INDEX "index_dashboard_user_roles_on_user_id" ON "dashboard_user_roles" ("user_id") /*application='Widgetlab'*/[0m
+  [1m[35m (0.4ms)[0m  [1m[35mDROP TABLE IF EXISTS "dashboard_widgets" CASCADE /*application='Widgetlab'*/[0m
+  [1m[35m (24.3ms)[0m  [1m[35mCREATE TABLE "dashboard_widgets" ("id" bigserial primary key, "color" character varying, "created_at" timestamp(6) NOT NULL, "dashboard_id" bigint NOT NULL, "height" integer, "position_x" integer, "position_y" integer, "updated_at" timestamp(6) NOT NULL, "widget_id" bigint NOT NULL, "width" integer) /*application='Widgetlab'*/[0m
+  [1m[35m (14.3ms)[0m  [1m[35mCREATE INDEX "index_dashboard_widgets_on_dashboard_id" ON "dashboard_widgets" ("dashboard_id") /*application='Widgetlab'*/[0m
+  [1m[35m (15.1ms)[0m  [1m[35mCREATE INDEX "index_dashboard_widgets_on_widget_id" ON "dashboard_widgets" ("widget_id") /*application='Widgetlab'*/[0m
+  [1m[35m (0.5ms)[0m  [1m[35mDROP TABLE IF EXISTS "dashboards" CASCADE /*application='Widgetlab'*/[0m
+  [1m[35m (25.9ms)[0m  [1m[35mCREATE TABLE "dashboards" ("id" bigserial primary key, "columns" integer, "created_at" timestamp(6) NOT NULL, "icon" character varying, "is_public" boolean, "name" character varying, "updated_at" timestamp(6) NOT NULL) /*application='Widgetlab'*/[0m
+  [1m[35m (0.5ms)[0m  [1m[35mDROP TABLE IF EXISTS "data_source_whitelists" CASCADE /*application='Widgetlab'*/[0m
+  [1m[35m (23.3ms)[0m  [1m[35mCREATE TABLE "data_source_whitelists" ("id" bigserial primary key, "created_at" timestamp(6) NOT NULL, "data_source_id" bigint NOT NULL, "updated_at" timestamp(6) NOT NULL, "whitelistable_id" bigint NOT NULL, "whitelistable_type" character varying NOT NULL) /*application='Widgetlab'*/[0m
+  [1m[35m (14.8ms)[0m  [1m[35mCREATE INDEX "index_data_source_whitelists_on_data_source_id" ON "data_source_whitelists" ("data_source_id") /*application='Widgetlab'*/[0m
+  [1m[35m (46.1ms)[0m  [1m[35mCREATE INDEX "index_data_source_whitelists_on_whitelistable" ON "data_source_whitelists" ("whitelistable_type", "whitelistable_id") /*application='Widgetlab'*/[0m
+  [1m[35m (0.4ms)[0m  [1m[35mDROP TABLE IF EXISTS "data_sources" CASCADE /*application='Widgetlab'*/[0m
+  [1m[35m (25.3ms)[0m  [1m[35mCREATE TABLE "data_sources" ("id" bigserial primary key, "config" jsonb, "created_at" timestamp(6) NOT NULL, "creator_id" bigint NOT NULL, "is_public" boolean, "name" character varying, "source_type" integer, "updated_at" timestamp(6) NOT NULL) /*application='Widgetlab'*/[0m
+  [1m[35m (18.1ms)[0m  [1m[35mCREATE INDEX "index_data_sources_on_creator_id" ON "data_sources" ("creator_id") /*application='Widgetlab'*/[0m
+  [1m[35m (0.6ms)[0m  [1m[35mDROP TABLE IF EXISTS "user_group_roles" CASCADE /*application='Widgetlab'*/[0m
+  [1m[35m (15.0ms)[0m  [1m[35mCREATE TABLE "user_group_roles" ("id" bigserial primary key, "created_at" timestamp(6) NOT NULL, "role" integer, "updated_at" timestamp(6) NOT NULL, "user_group_id" bigint NOT NULL, "user_id" bigint NOT NULL) /*application='Widgetlab'*/[0m
+  [1m[35m (15.1ms)[0m  [1m[35mCREATE INDEX "index_user_group_roles_on_user_group_id" ON "user_group_roles" ("user_group_id") /*application='Widgetlab'*/[0m
+  [1m[35m (16.7ms)[0m  [1m[35mCREATE INDEX "index_user_group_roles_on_user_id" ON "user_group_roles" ("user_id") /*application='Widgetlab'*/[0m
+  [1m[35m (0.4ms)[0m  [1m[35mDROP TABLE IF EXISTS "user_groups" CASCADE /*application='Widgetlab'*/[0m
+  [1m[35m (25.4ms)[0m  [1m[35mCREATE TABLE "user_groups" ("id" bigserial primary key, "created_at" timestamp(6) NOT NULL, "name" character varying, "updated_at" timestamp(6) NOT NULL) /*application='Widgetlab'*/[0m
+  [1m[35m (0.6ms)[0m  [1m[35mDROP TABLE IF EXISTS "user_widget_roles" CASCADE /*application='Widgetlab'*/[0m
+  [1m[35m (15.6ms)[0m  [1m[35mCREATE TABLE "user_widget_roles" ("id" bigserial primary key, "created_at" timestamp(6) NOT NULL, "role" integer, "updated_at" timestamp(6) NOT NULL, "user_id" bigint NOT NULL, "widget_id" bigint NOT NULL) /*application='Widgetlab'*/[0m
+  [1m[35m (16.2ms)[0m  [1m[35mCREATE INDEX "index_user_widget_roles_on_user_id" ON "user_widget_roles" ("user_id") /*application='Widgetlab'*/[0m
+  [1m[35m (21.1ms)[0m  [1m[35mCREATE INDEX "index_user_widget_roles_on_widget_id" ON "user_widget_roles" ("widget_id") /*application='Widgetlab'*/[0m
+  [1m[35m (0.5ms)[0m  [1m[35mDROP TABLE IF EXISTS "users" CASCADE /*application='Widgetlab'*/[0m
+  [1m[35m (27.4ms)[0m  [1m[35mCREATE TABLE "users" ("id" bigserial primary key, "created_at" timestamp(6) NOT NULL, "email" character varying, "first_name" character varying, "last_name" character varying, "sub" character varying, "updated_at" timestamp(6) NOT NULL) /*application='Widgetlab'*/[0m
+  [1m[35m (17.0ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_users_on_email" ON "users" ("email") /*application='Widgetlab'*/[0m
+  [1m[35m (13.9ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_users_on_sub" ON "users" ("sub") /*application='Widgetlab'*/[0m
+  [1m[35m (0.4ms)[0m  [1m[35mDROP TABLE IF EXISTS "widget_data_source_transformers" CASCADE /*application='Widgetlab'*/[0m
+  [1m[35m (25.7ms)[0m  [1m[35mCREATE TABLE "widget_data_source_transformers" ("id" bigserial primary key, "config" jsonb, "created_at" timestamp(6) NOT NULL, "data_source_id" bigint NOT NULL, "updated_at" timestamp(6) NOT NULL, "widget_id" bigint NOT NULL) /*application='Widgetlab'*/[0m
+  [1m[35m (20.0ms)[0m  [1m[35mCREATE INDEX "index_widget_data_source_transformers_on_data_source_id" ON "widget_data_source_transformers" ("data_source_id") /*application='Widgetlab'*/[0m
+  [1m[35m (17.6ms)[0m  [1m[35mCREATE INDEX "index_widget_data_source_transformers_on_widget_id" ON "widget_data_source_transformers" ("widget_id") /*application='Widgetlab'*/[0m
+  [1m[35m (0.7ms)[0m  [1m[35mDROP TABLE IF EXISTS "widgets" CASCADE /*application='Widgetlab'*/[0m
+  [1m[35m (30.8ms)[0m  [1m[35mCREATE TABLE "widgets" ("id" bigserial primary key, "color" character varying, "created_at" timestamp(6) NOT NULL, "description" character varying, "is_public" boolean, "name" character varying, "type" integer, "updated_at" timestamp(6) NOT NULL) /*application='Widgetlab'*/[0m
+  [1m[35m (6.5ms)[0m  [1m[35mALTER TABLE "dashboard_user_roles" ADD CONSTRAINT "fk_rails_f0db296c6f"
+FOREIGN KEY ("dashboard_id")
+  REFERENCES "dashboards" ("id")
+ /*application='Widgetlab'*/[0m
+  [1m[35m (5.8ms)[0m  [1m[35mALTER TABLE "dashboard_user_roles" ADD CONSTRAINT "fk_rails_694b862e5b"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+ /*application='Widgetlab'*/[0m
+  [1m[35m (6.7ms)[0m  [1m[35mALTER TABLE "dashboard_widgets" ADD CONSTRAINT "fk_rails_834da0b127"
+FOREIGN KEY ("dashboard_id")
+  REFERENCES "dashboards" ("id")
+ /*application='Widgetlab'*/[0m
+  [1m[35m (6.5ms)[0m  [1m[35mALTER TABLE "dashboard_widgets" ADD CONSTRAINT "fk_rails_e3fc13fbac"
+FOREIGN KEY ("widget_id")
+  REFERENCES "widgets" ("id")
+ /*application='Widgetlab'*/[0m
+  [1m[35m (6.9ms)[0m  [1m[35mALTER TABLE "data_source_whitelists" ADD CONSTRAINT "fk_rails_690e844bd9"
+FOREIGN KEY ("data_source_id")
+  REFERENCES "data_sources" ("id")
+ /*application='Widgetlab'*/[0m
+  [1m[35m (6.8ms)[0m  [1m[35mALTER TABLE "data_sources" ADD CONSTRAINT "fk_rails_a71137ae54"
+FOREIGN KEY ("creator_id")
+  REFERENCES "users" ("id")
+ /*application='Widgetlab'*/[0m
+  [1m[35m (6.7ms)[0m  [1m[35mALTER TABLE "user_group_roles" ADD CONSTRAINT "fk_rails_001bed7361"
+FOREIGN KEY ("user_group_id")
+  REFERENCES "user_groups" ("id")
+ /*application='Widgetlab'*/[0m
+  [1m[35m (4.9ms)[0m  [1m[35mALTER TABLE "user_group_roles" ADD CONSTRAINT "fk_rails_733a938649"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+ /*application='Widgetlab'*/[0m
+  [1m[35m (6.1ms)[0m  [1m[35mALTER TABLE "user_widget_roles" ADD CONSTRAINT "fk_rails_520779acc6"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+ /*application='Widgetlab'*/[0m
+  [1m[35m (6.3ms)[0m  [1m[35mALTER TABLE "user_widget_roles" ADD CONSTRAINT "fk_rails_ea925eb503"
+FOREIGN KEY ("widget_id")
+  REFERENCES "widgets" ("id")
+ /*application='Widgetlab'*/[0m
+  [1m[35m (4.5ms)[0m  [1m[35mALTER TABLE "widget_data_source_transformers" ADD CONSTRAINT "fk_rails_891e0a11d8"
+FOREIGN KEY ("data_source_id")
+  REFERENCES "data_sources" ("id")
+ /*application='Widgetlab'*/[0m
+  [1m[35m (6.2ms)[0m  [1m[35mALTER TABLE "widget_data_source_transformers" ADD CONSTRAINT "fk_rails_d7c8d64c29"
+FOREIGN KEY ("widget_id")
+  REFERENCES "widgets" ("id")
+ /*application='Widgetlab'*/[0m
+  [1m[35m (38.7ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" character varying NOT NULL PRIMARY KEY) /*application='Widgetlab'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.8ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='Widgetlab'*/[0m
+  [1m[35m (4.0ms)[0m  [1m[32mINSERT INTO "schema_migrations" (version) VALUES (20251201150621) /*application='Widgetlab'*/[0m
+  [1m[35m (5.1ms)[0m  [1m[32mINSERT INTO "schema_migrations" (version) VALUES
+(20251201145706),
+(20251201144845),
+(20251201143920),
+(20251201143131),
+(20251201143052),
+(20251201140223),
+(20251201140128),
+(20251201135020),
+(20251201134340),
+(20251201134014); /*application='Widgetlab'*/[0m
+  [1m[35m (28.8ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" character varying NOT NULL PRIMARY KEY, "value" character varying, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL) /*application='Widgetlab'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Load (1.2ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = 'environment' ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1 /*application='Widgetlab'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Create (4.9ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ('environment', 'development', '2026-01-04 19:20:17.019264', '2026-01-04 19:20:17.019269') RETURNING "key" /*application='Widgetlab'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.4ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = 'environment' ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1 /*application='Widgetlab'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Update (4.8ms)[0m  [1m[33mUPDATE "ar_internal_metadata" SET "value" = 'test', "updated_at" = '2026-01-04 19:20:17.029658' WHERE "ar_internal_metadata"."key" = 'environment' /*application='Widgetlab'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.5ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = 'schema_sha1' ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1 /*application='Widgetlab'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Create (4.6ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ('schema_sha1', 'bc20ecd4bf3af4be0093cb3b7edf36ce25fccea2', '2026-01-04 19:20:17.038201', '2026-01-04 19:20:17.038205') RETURNING "key" /*application='Widgetlab'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (1.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='Widgetlab'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.9ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='Widgetlab'*/[0m
+Started GET "/" for 172.19.0.1 at 2026-01-04 19:22:02 +0000
+  [1m[36mActiveRecord::SchemaMigration Load (1.8ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='Widgetlab'*/[0m
+Processing by Rails::WelcomeController#index as HTML
+  Rendering /usr/local/bundle/ruby/3.4.0/gems/railties-8.1.1/libtemplates/rails/welcome/index.html.erb
+  Rendered /usr/local/bundle/ruby/3.4.0/gems/railties-8.1.1/libtemplates/rails/welcome/index.html.erb (Duration: 1.0ms | GC: 0.0ms)
+Completed 200 OK in 68ms (Views: 14.9ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 3.1ms)
+
+
+Started GET "/dashboards" for 172.19.0.1 at 2026-01-04 19:23:23 +0000
+Processing by DashboardsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering dashboards/index.html.erb within layouts/application
+  [1m[36mDashboard Load (57.4ms)[0m  [1m[34mSELECT "dashboards".* FROM "dashboards" /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:9
+  Rendered dashboards/index.html.erb within layouts/application (Duration: 71.2ms | GC: 1.2ms)
+  Rendered layout layouts/application.html.erb (Duration: 137.9ms | GC: 19.4ms)
+Completed 200 OK in 291ms (Views: 72.4ms | ActiveRecord: 68.8ms (1 query, 0 cached) | GC: 27.0ms)
+
+
+Started GET "/dashboards/new" for 172.19.0.1 at 2026-01-04 19:23:33 +0000
+Processing by DashboardsController#new as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering dashboards/new.html.erb within layouts/application
+  Rendered dashboards/_form.html.erb (Duration: 156.0ms | GC: 114.2ms)
+  Rendered dashboards/new.html.erb within layouts/application (Duration: 162.9ms | GC: 117.3ms)
+  Rendered layout layouts/application.html.erb (Duration: 167.2ms | GC: 119.0ms)
+Completed 200 OK in 273ms (Views: 168.8ms | ActiveRecord: 41.3ms (0 queries, 0 cached) | GC: 166.9ms)
+
+
+Started GET "/dashboards/new" for 172.19.0.1 at 2026-01-04 19:23:41 +0000
+Processing by DashboardsController#new as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering dashboards/new.html.erb within layouts/application
+  Rendered dashboards/_form.html.erb (Duration: 13.6ms | GC: 10.1ms)
+  Rendered dashboards/new.html.erb within layouts/application (Duration: 17.8ms | GC: 13.6ms)
+  Rendered layout layouts/application.html.erb (Duration: 21.7ms | GC: 13.6ms)
+Completed 200 OK in 30ms (Views: 26.3ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 15.8ms)
+
+
+Started GET "/dashboards" for 172.19.0.1 at 2026-01-04 19:23:48 +0000
+Processing by DashboardsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering dashboards/index.html.erb within layouts/application
+  [1m[36mDashboard Load (0.9ms)[0m  [1m[34mSELECT "dashboards".* FROM "dashboards" /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:9
+  Rendered dashboards/index.html.erb within layouts/application (Duration: 4.6ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 7.0ms | GC: 0.0ms)
+Completed 200 OK in 15ms (Views: 7.3ms | ActiveRecord: 0.9ms (1 query, 0 cached) | GC: 5.4ms)
+
+
+Started GET "/dashboards/new" for 172.19.0.1 at 2026-01-04 19:24:01 +0000
+Processing by DashboardsController#new as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering dashboards/new.html.erb within layouts/application
+  Rendered dashboards/_form.html.erb (Duration: 6.1ms | GC: 2.7ms)
+  Rendered dashboards/new.html.erb within layouts/application (Duration: 6.8ms | GC: 2.7ms)
+  Rendered layout layouts/application.html.erb (Duration: 8.6ms | GC: 2.7ms)
+Completed 200 OK in 12ms (Views: 9.8ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 2.7ms)
+
+
