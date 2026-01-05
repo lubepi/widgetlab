@@ -1,10 +1,233 @@
-<p style="color: green"><%= notice %></p>
+<% content_for :title, @dashboard.name || "Dashboard" %>
 
-<%= render @dashboard %>
+<div data-controller="dashboard-grid slideover" 
+     data-dashboard-grid-dashboard-id-value="<%= @dashboard.id %>"
+     data-dashboard-grid-columns-value="<%= @dashboard.columns || 3 %>">
 
-<div>
-  <%= link_to "Edit this dashboard", edit_dashboard_path(@dashboard) %> |
-  <%= link_to "Back to dashboards", dashboards_path %>
+  <header class="main-header">
+    <div class="dashboard-title">
+      <div class="dashboard-icon" style="width: 40px; height: 40px; font-size: 1.25rem;">
+        <%= @dashboard.icon.present? ? @dashboard.icon : "📊" %>
+      </div>
+      <h1><%= @dashboard.name || "Unbenannt" %></h1>
+      <span class="badge <%= @dashboard.is_public ? 'badge-public' : 'badge-private' %>">
+        <%= @dashboard.is_public ? "Öffentlich" : "Privat" %>
+      </span>
+    </div>
+    <div class="dashboard-actions">
+      <!-- Layout anpassen Toggle Button -->
+      <button class="btn btn-secondary" data-action="click->dashboard-grid#toggleEditing">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M3 6a3 3 0 013-3h2.25a3 3 0 013 3v2.25a3 3 0 01-3 3H6a3 3 0 01-3-3V6zM3 15.75a3 3 0 013-3h2.25a3 3 0 013 3V18a3 3 0 01-3 3H6a3 3 0 01-3-3v-2.25zM12.75 6a3 3 0 013-3H18a3 3 0 013 3v2.25a3 3 0 01-3 3h-2.25a3 3 0 01-3-3V6zM12.75 15.75a3 3 0 013-3H18a3 3 0 013 3V18a3 3 0 01-3 3h-2.25a3 3 0 01-3-3v-2.25z" />
+        </svg>
+        <span class="edit-btn-text">Layout anpassen</span>
+      </button>
 
-  <%= button_to "Destroy this dashboard", @dashboard, method: :delete %>
+      <!-- Mitglieder Button -->
+      <button class="btn btn-secondary" data-action="click->slideover#open" data-slideover-panel="members">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+          <path fill-rule="evenodd" d="M8.25 6.75a3.75 3.75 0 117.5 0 3.75 3.75 0 01-7.5 0zM15.75 9.75a3 3 0 116 0 3 3 0 01-6 0zM2.25 9.75a3 3 0 116 0 3 3 0 01-6 0zM6.31 15.117A6.745 6.745 0 0112 12a6.745 6.745 0 016.709 7.498.75.75 0 01-.372.568A12.696 12.696 0 0112 21.75c-2.305 0-4.47-.612-6.337-1.684a.75.75 0 01-.372-.568 6.787 6.787 0 011.019-4.38z" clip-rule="evenodd" />
+        </svg>
+        <span class="badge" style="background: var(--primary-light); color: var(--primary-color); margin-left: 0.25rem;"><%= @dashboard.members.count %></span>
+      </button>
+
+      <!-- Einstellungen Dropdown -->
+      <div class="dropdown" data-controller="dropdown">
+        <button class="btn btn-secondary btn-icon" data-action="click->dropdown#toggle">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+            <path fill-rule="evenodd" d="M11.078 2.25c-.917 0-1.699.663-1.85 1.567L9.05 4.889c-.02.12-.115.26-.297.348a7.493 7.493 0 00-.986.57c-.166.115-.334.126-.45.083L6.3 5.508a1.875 1.875 0 00-2.282.819l-.922 1.597a1.875 1.875 0 00.432 2.385l.84.692c.095.078.17.229.154.43a7.598 7.598 0 000 1.139c.015.2-.059.352-.153.43l-.841.692a1.875 1.875 0 00-.432 2.385l.922 1.597a1.875 1.875 0 002.282.818l1.019-.382c.115-.043.283-.031.45.082.312.214.641.405.985.57.182.088.277.228.297.35l.178 1.071c.151.904.933 1.567 1.85 1.567h1.844c.916 0 1.699-.663 1.85-1.567l.178-1.072c.02-.12.114-.26.297-.349.344-.165.673-.356.985-.57.167-.114.335-.125.45-.082l1.02.382a1.875 1.875 0 002.28-.819l.923-1.597a1.875 1.875 0 00-.432-2.385l-.84-.692c-.095-.078-.17-.229-.154-.43a7.614 7.614 0 000-1.139c-.016-.2.059-.352.153-.43l.84-.692c.708-.582.891-1.59.433-2.385l-.922-1.597a1.875 1.875 0 00-2.282-.818l-1.02.382c-.114.043-.282.031-.449-.083a7.49 7.49 0 00-.985-.57c-.183-.087-.277-.227-.297-.348l-.179-1.072a1.875 1.875 0 00-1.85-1.567h-1.843zM12 15.75a3.75 3.75 0 100-7.5 3.75 3.75 0 000 7.5z" clip-rule="evenodd" />
+          </svg>
+        </button>
+        <div class="dropdown-menu" data-dropdown-target="menu">
+          <%= link_to edit_dashboard_path(@dashboard), class: "dropdown-item" do %>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M21.731 2.269a2.625 2.625 0 00-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 000-3.712zM19.513 8.199l-3.712-3.712-12.15 12.15a5.25 5.25 0 00-1.32 2.214l-.8 2.685a.75.75 0 00.933.933l2.685-.8a5.25 5.25 0 002.214-1.32L19.513 8.2z" />
+            </svg>
+            Name & Spalten ändern
+          <% end %>
+          <div class="dropdown-divider"></div>
+          <div class="dropdown-item" style="color: var(--text-secondary); font-size: 0.75rem; cursor: default;">
+            <span>Spalten: <%= @dashboard.columns || 3 %></span>
+          </div>
+          <div class="dropdown-item" style="color: var(--text-secondary); font-size: 0.75rem; cursor: default;">
+            <span>Erstellt: <%= @dashboard.created_at.strftime("%d.%m.%Y") %></span>
+          </div>
+          <div class="dropdown-divider"></div>
+          <%= button_to @dashboard, method: :delete, class: "dropdown-item", style: "color: var(--danger-color);", data: { turbo_confirm: "Dashboard wirklich löschen?" } do %>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+              <path fill-rule="evenodd" d="M16.5 4.478v.227a48.816 48.816 0 013.878.512.75.75 0 11-.256 1.478l-.209-.035-1.005 13.07a3 3 0 01-2.991 2.77H8.084a3 3 0 01-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 01-.256-1.478A48.567 48.567 0 017.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 013.369 0c1.603.051 2.815 1.387 2.815 2.951zm-6.136-1.452a51.196 51.196 0 013.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 00-6 0v-.113c0-.794.609-1.428 1.364-1.452zm-.355 5.945a.75.75 0 10-1.5.058l.347 9a.75.75 0 101.499-.058l-.346-9zm5.48.058a.75.75 0 10-1.498-.058l-.347 9a.75.75 0 001.5.058l.345-9z" clip-rule="evenodd" />
+            </svg>
+            Löschen
+          <% end %>
+        </div>
+      </div>
+
+      <%= link_to dashboards_path, class: "btn btn-secondary" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+          <path fill-rule="evenodd" d="M7.72 12.53a.75.75 0 010-1.06l7.5-7.5a.75.75 0 111.06 1.06L9.31 12l6.97 6.97a.75.75 0 11-1.06 1.06l-7.5-7.5z" clip-rule="evenodd" />
+        </svg>
+        Zurück
+      <% end %>
+    </div>
+  </header>
+
+  <div class="main-body">
+    <% if notice.present? %>
+      <div class="alert alert-success">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+          <path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clip-rule="evenodd" />
+        </svg>
+        <%= notice %>
+      </div>
+    <% end %>
+
+    <% if @dashboard.dashboard_widgets.empty? %>
+      <div class="empty-state">
+        <div class="empty-state-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+            <path fill-rule="evenodd" d="M3 6a3 3 0 013-3h2.25a3 3 0 013 3v2.25a3 3 0 01-3 3H6a3 3 0 01-3-3V6zm9.75 0a3 3 0 013-3H18a3 3 0 013 3v2.25a3 3 0 01-3 3h-2.25a3 3 0 01-3-3V6zM3 15.75a3 3 0 013-3h2.25a3 3 0 013 3V18a3 3 0 01-3 3H6a3 3 0 01-3-3v-2.25zm9.75 0a3 3 0 013-3H18a3 3 0 013 3V18a3 3 0 01-3 3h-2.25a3 3 0 01-3-3v-2.25z" clip-rule="evenodd" />
+          </svg>
+        </div>
+        <h3>Noch keine Widgets</h3>
+        <p>Klicke auf "Layout anpassen" um Widgets zu diesem Dashboard hinzuzufügen.</p>
+      </div>
+    <% end %>
+
+    <div class="widget-grid" 
+         data-dashboard-grid-target="grid"
+         data-action="dragover->dashboard-grid#dragOver drop->dashboard-grid#drop"
+         style="--columns: <%= @dashboard.columns || 3 %>;">
+      <% @dashboard.dashboard_widgets.includes(:widget).order(:position_y, :position_x).each do |dashboard_widget| %>
+        <div class="widget-card" 
+             data-dashboard-grid-target="widget"
+             data-widget-id="<%= dashboard_widget.id %>"
+             data-width="<%= dashboard_widget.width || 1 %>"
+             data-height="<%= dashboard_widget.height || 1 %>"
+             draggable="true"
+             data-action="dragstart->dashboard-grid#dragStart dragend->dashboard-grid#dragEnd"
+             style="grid-column: span <%= dashboard_widget.width || 1 %>; grid-row: span <%= dashboard_widget.height || 1 %>;">
+          
+          <% if dashboard_widget.color.present? %>
+            <div class="widget-color-bar" style="background-color: <%= dashboard_widget.color %>;"></div>
+          <% end %>
+          
+          <!-- Drag Handle (nur im Edit-Modus sichtbar) -->
+          <div class="drag-handle">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+              <path fill-rule="evenodd" d="M3 6.75A.75.75 0 013.75 6h16.5a.75.75 0 010 1.5H3.75A.75.75 0 013 6.75zM3 12a.75.75 0 01.75-.75h16.5a.75.75 0 010 1.5H3.75A.75.75 0 013 12zm0 5.25a.75.75 0 01.75-.75h16.5a.75.75 0 010 1.5H3.75a.75.75 0 01-.75-.75z" clip-rule="evenodd" />
+            </svg>
+          </div>
+
+          <!-- Resize Handles (nur im Edit-Modus sichtbar) -->
+          <div class="resize-handle resize-handle-e" data-direction="e" data-action="mousedown->dashboard-grid#startResize"></div>
+          <div class="resize-handle resize-handle-s" data-direction="s" data-action="mousedown->dashboard-grid#startResize"></div>
+          <div class="resize-handle resize-handle-se" data-direction="se" data-action="mousedown->dashboard-grid#startResize"></div>
+
+          <div class="widget-card-header">
+            <h4 class="widget-title"><%= dashboard_widget.widget.name %></h4>
+            <div class="widget-actions-view">
+              <button class="btn btn-icon btn-secondary btn-sm">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+                  <path fill-rule="evenodd" d="M10.5 6a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0zm0 6a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0zm0 6a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0z" clip-rule="evenodd" />
+                </svg>
+              </button>
+            </div>
+            <div class="widget-actions-edit">
+              <button class="btn btn-icon btn-danger btn-sm" data-action="click->dashboard-grid#removeWidget">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+                  <path fill-rule="evenodd" d="M5.47 5.47a.75.75 0 011.06 0L12 10.94l5.47-5.47a.75.75 0 111.06 1.06L13.06 12l5.47 5.47a.75.75 0 11-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 01-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 010-1.06z" clip-rule="evenodd" />
+                </svg>
+              </button>
+            </div>
+          </div>
+          <div class="widget-card-body">
+            <% case dashboard_widget.widget.type %>
+            <% when "line" %>
+              <svg xmlns="http://www.w3.org/2000/svg" width="100" height="60" viewBox="0 0 100 60" fill="none" stroke="var(--primary-color)" stroke-width="2">
+                <polyline points="0,50 20,35 40,45 60,20 80,30 100,10" />
+              </svg>
+            <% when "bar" %>
+              <svg xmlns="http://www.w3.org/2000/svg" width="100" height="60" viewBox="0 0 100 60" fill="var(--primary-color)">
+                <rect x="5" y="30" width="15" height="30" rx="2" />
+                <rect x="25" y="15" width="15" height="45" rx="2" />
+                <rect x="45" y="25" width="15" height="35" rx="2" />
+                <rect x="65" y="10" width="15" height="50" rx="2" />
+                <rect x="85" y="20" width="15" height="40" rx="2" />
+              </svg>
+            <% when "pie" %>
+              <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 60 60">
+                <circle cx="30" cy="30" r="25" fill="var(--primary-light)" />
+                <path d="M30,30 L30,5 A25,25 0 0,1 55,30 Z" fill="var(--primary-color)" />
+              </svg>
+            <% else %>
+              <div style="font-size: 2rem; font-weight: 700; color: var(--primary-color);">--</div>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+
+      <!-- Widget hinzufügen Placeholder (nur im Edit-Modus) -->
+      <div class="widget-placeholder" data-dashboard-grid-target="addPlaceholder">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+          <path fill-rule="evenodd" d="M12 3.75a.75.75 0 01.75.75v6.75h6.75a.75.75 0 010 1.5h-6.75v6.75a.75.75 0 01-1.5 0v-6.75H4.5a.75.75 0 010-1.5h6.75V4.5a.75.75 0 01.75-.75z" clip-rule="evenodd" />
+        </svg>
+        <span>Widget hinzufügen</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mitglieder Slideover Panel -->
+  <div class="slideover" data-slideover-target="panel" data-action="click->slideover#clickOutside">
+    <div class="slideover-backdrop"></div>
+    <div class="slideover-panel">
+      <div class="slideover-header">
+        <h2>Mitglieder</h2>
+        <button class="slideover-close" data-action="click->slideover#close">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24" height="24">
+            <path fill-rule="evenodd" d="M5.47 5.47a.75.75 0 011.06 0L12 10.94l5.47-5.47a.75.75 0 111.06 1.06L13.06 12l5.47 5.47a.75.75 0 11-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 01-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 010-1.06z" clip-rule="evenodd" />
+          </svg>
+        </button>
+      </div>
+      <div class="slideover-body">
+        <% if @dashboard.dashboard_user_roles.any? %>
+          <div class="members-list">
+            <% @dashboard.dashboard_user_roles.includes(:user).each do |role| %>
+              <div class="member-item">
+                <div class="member-info">
+                  <div class="member-avatar">
+                    <%= role.user.first_name&.first&.upcase || role.user.email&.first&.upcase || "?" %>
+                  </div>
+                  <div>
+                    <div class="member-name">
+                      <%= [role.user.first_name, role.user.last_name].compact.join(" ").presence || role.user.email %>
+                    </div>
+                    <div class="member-email"><%= role.user.email %></div>
+                  </div>
+                </div>
+                <span class="member-role"><%= role.role.capitalize %></span>
+              </div>
+            <% end %>
+          </div>
+        <% else %>
+          <div class="empty-state" style="padding: 2rem 0;">
+            <div class="empty-state-icon" style="width: 60px; height: 60px;">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="30" height="30">
+                <path fill-rule="evenodd" d="M8.25 6.75a3.75 3.75 0 117.5 0 3.75 3.75 0 01-7.5 0zM15.75 9.75a3 3 0 116 0 3 3 0 01-6 0zM2.25 9.75a3 3 0 116 0 3 3 0 01-6 0zM6.31 15.117A6.745 6.745 0 0112 12a6.745 6.745 0 016.709 7.498.75.75 0 01-.372.568A12.696 12.696 0 0112 21.75c-2.305 0-4.47-.612-6.337-1.684a.75.75 0 01-.372-.568 6.787 6.787 0 011.019-4.38z" clip-rule="evenodd" />
+              </svg>
+            </div>
+            <h3>Noch keine Mitglieder</h3>
+            <p>Lade Benutzer ein, um dieses Dashboard zu teilen.</p>
+          </div>
+        <% end %>
+      </div>
+      <div class="slideover-footer">
+        <button class="btn btn-primary" style="width: 100%;">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
+            <path d="M6.25 6.375a4.125 4.125 0 118.25 0 4.125 4.125 0 01-8.25 0zM3.25 19.125a7.125 7.125 0 0114.25 0v.003l-.001.119a.75.75 0 01-.363.63 13.067 13.067 0 01-6.761 1.873c-2.472 0-4.786-.684-6.76-1.873a.75.75 0 01-.364-.63l-.001-.122zM19.75 7.5a.75.75 0 00-1.5 0v2.25H16a.75.75 0 000 1.5h2.25v2.25a.75.75 0 001.5 0v-2.25H22a.75.75 0 000-1.5h-2.25V7.5z" />
+          </svg>
+          Mitglied einladen
+        </button>
+      </div>
+    </div>
+  </div>
 </div>

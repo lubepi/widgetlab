@@ -545,3 +545,1843 @@ Successfully stored JSON API data for data source 1
   [1m[36mDataSource Count (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "data_sources" WHERE "data_sources"."source_type" = 0 /*application='Widgetlab'*/[0m
   [1m[36mDataSource Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "data_sources" WHERE "data_sources"."source_type" = 1 /*application='Widgetlab'*/[0m
   [1m[36mDataSourceStorage Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "data_source_storages" /*application='Widgetlab'*/[0m
+  [1m[35mSQL (0.6ms)[0m  [1m[35mSET search_path TO public /*application='Widgetlab'*/[0m
+  [1m[35m (691.3ms)[0m  [1m[35mCREATE DATABASE "widgetlab_development" ENCODING = 'unicode' /*application='Widgetlab'*/[0m
+  [1m[35mSQL (0.8ms)[0m  [1m[35mSET search_path TO public /*application='Widgetlab'*/[0m
+  [1m[35m (299.5ms)[0m  [1m[35mCREATE DATABASE "widgetlab_test" ENCODING = 'unicode' /*application='Widgetlab'*/[0m
+  [1m[35mSQL (1.9ms)[0m  [1m[35mCREATE EXTENSION IF NOT EXISTS "plpgsql" SCHEMA pg_catalog /*application='Widgetlab'*/[0m
+  [1m[35m (1.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "dashboard_user_roles" CASCADE /*application='Widgetlab'*/[0m
+  [1m[35m (14.8ms)[0m  [1m[35mCREATE TABLE "dashboard_user_roles" ("id" bigserial primary key, "created_at" timestamp(6) NOT NULL, "dashboard_id" bigint NOT NULL, "role" integer, "updated_at" timestamp(6) NOT NULL, "user_id" bigint NOT NULL) /*application='Widgetlab'*/[0m
+  [1m[35m (7.4ms)[0m  [1m[35mCREATE INDEX "index_dashboard_user_roles_on_dashboard_id" ON "dashboard_user_roles" ("dashboard_id") /*application='Widgetlab'*/[0m
+  [1m[35m (6.9ms)[0m  [1m[35mCREATE INDEX "index_dashboard_user_roles_on_user_id" ON "dashboard_user_roles" ("user_id") /*application='Widgetlab'*/[0m
+  [1m[35m (0.9ms)[0m  [1m[35mDROP TABLE IF EXISTS "dashboard_widgets" CASCADE /*application='Widgetlab'*/[0m
+  [1m[35m (15.2ms)[0m  [1m[35mCREATE TABLE "dashboard_widgets" ("id" bigserial primary key, "color" character varying, "created_at" timestamp(6) NOT NULL, "dashboard_id" bigint NOT NULL, "height" integer, "position_x" integer, "position_y" integer, "updated_at" timestamp(6) NOT NULL, "widget_id" bigint NOT NULL, "width" integer) /*application='Widgetlab'*/[0m
+  [1m[35m (8.4ms)[0m  [1m[35mCREATE INDEX "index_dashboard_widgets_on_dashboard_id" ON "dashboard_widgets" ("dashboard_id") /*application='Widgetlab'*/[0m
+  [1m[35m (9.0ms)[0m  [1m[35mCREATE INDEX "index_dashboard_widgets_on_widget_id" ON "dashboard_widgets" ("widget_id") /*application='Widgetlab'*/[0m
+  [1m[35m (1.5ms)[0m  [1m[35mDROP TABLE IF EXISTS "dashboards" CASCADE /*application='Widgetlab'*/[0m
+  [1m[35m (25.3ms)[0m  [1m[35mCREATE TABLE "dashboards" ("id" bigserial primary key, "columns" integer, "created_at" timestamp(6) NOT NULL, "icon" character varying, "is_public" boolean, "name" character varying, "updated_at" timestamp(6) NOT NULL) /*application='Widgetlab'*/[0m
+  [1m[35m (1.3ms)[0m  [1m[35mDROP TABLE IF EXISTS "data_source_storages" CASCADE /*application='Widgetlab'*/[0m
+  [1m[35m (18.7ms)[0m  [1m[35mCREATE TABLE "data_source_storages" ("id" bigserial primary key, "created_at" timestamp(6) NOT NULL, "data_source_id" bigint NOT NULL, "stored_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL, "value" jsonb DEFAULT '{}' NOT NULL) /*application='Widgetlab'*/[0m
+  [1m[35m (10.0ms)[0m  [1m[35mCREATE INDEX "index_data_source_storages_on_data_source_id_and_stored_at" ON "data_source_storages" ("data_source_id", "stored_at") /*application='Widgetlab'*/[0m
+  [1m[35m (9.9ms)[0m  [1m[35mCREATE INDEX "index_data_source_storages_on_data_source_id" ON "data_source_storages" ("data_source_id") /*application='Widgetlab'*/[0m
+  [1m[35m (9.2ms)[0m  [1m[35mCREATE INDEX "index_data_source_storages_on_stored_at" ON "data_source_storages" ("stored_at") /*application='Widgetlab'*/[0m
+  [1m[35m (1.3ms)[0m  [1m[35mDROP TABLE IF EXISTS "data_source_whitelists" CASCADE /*application='Widgetlab'*/[0m
+  [1m[35m (17.2ms)[0m  [1m[35mCREATE TABLE "data_source_whitelists" ("id" bigserial primary key, "created_at" timestamp(6) NOT NULL, "data_source_id" bigint NOT NULL, "updated_at" timestamp(6) NOT NULL, "whitelistable_id" bigint NOT NULL, "whitelistable_type" character varying NOT NULL) /*application='Widgetlab'*/[0m
+  [1m[35m (13.8ms)[0m  [1m[35mCREATE INDEX "index_data_source_whitelists_on_data_source_id" ON "data_source_whitelists" ("data_source_id") /*application='Widgetlab'*/[0m
+  [1m[35m (8.6ms)[0m  [1m[35mCREATE INDEX "index_data_source_whitelists_on_whitelistable" ON "data_source_whitelists" ("whitelistable_type", "whitelistable_id") /*application='Widgetlab'*/[0m
+  [1m[35m (1.1ms)[0m  [1m[35mDROP TABLE IF EXISTS "data_sources" CASCADE /*application='Widgetlab'*/[0m
+  [1m[35m (15.9ms)[0m  [1m[35mCREATE TABLE "data_sources" ("id" bigserial primary key, "config" jsonb, "created_at" timestamp(6) NOT NULL, "creator_id" bigint NOT NULL, "is_public" boolean, "name" character varying, "source_type" integer, "updated_at" timestamp(6) NOT NULL) /*application='Widgetlab'*/[0m
+  [1m[35m (10.1ms)[0m  [1m[35mCREATE INDEX "index_data_sources_on_creator_id" ON "data_sources" ("creator_id") /*application='Widgetlab'*/[0m
+  [1m[35m (1.2ms)[0m  [1m[35mDROP TABLE IF EXISTS "user_group_roles" CASCADE /*application='Widgetlab'*/[0m
+  [1m[35m (14.4ms)[0m  [1m[35mCREATE TABLE "user_group_roles" ("id" bigserial primary key, "created_at" timestamp(6) NOT NULL, "role" integer, "updated_at" timestamp(6) NOT NULL, "user_group_id" bigint NOT NULL, "user_id" bigint NOT NULL) /*application='Widgetlab'*/[0m
+  [1m[35m (6.6ms)[0m  [1m[35mCREATE INDEX "index_user_group_roles_on_user_group_id" ON "user_group_roles" ("user_group_id") /*application='Widgetlab'*/[0m
+  [1m[35m (9.0ms)[0m  [1m[35mCREATE INDEX "index_user_group_roles_on_user_id" ON "user_group_roles" ("user_id") /*application='Widgetlab'*/[0m
+  [1m[35m (2.8ms)[0m  [1m[35mDROP TABLE IF EXISTS "user_groups" CASCADE /*application='Widgetlab'*/[0m
+  [1m[35m (19.7ms)[0m  [1m[35mCREATE TABLE "user_groups" ("id" bigserial primary key, "created_at" timestamp(6) NOT NULL, "name" character varying, "updated_at" timestamp(6) NOT NULL) /*application='Widgetlab'*/[0m
+  [1m[35m (1.5ms)[0m  [1m[35mDROP TABLE IF EXISTS "user_widget_roles" CASCADE /*application='Widgetlab'*/[0m
+  [1m[35m (12.6ms)[0m  [1m[35mCREATE TABLE "user_widget_roles" ("id" bigserial primary key, "created_at" timestamp(6) NOT NULL, "role" integer, "updated_at" timestamp(6) NOT NULL, "user_id" bigint NOT NULL, "widget_id" bigint NOT NULL) /*application='Widgetlab'*/[0m
+  [1m[35m (6.5ms)[0m  [1m[35mCREATE INDEX "index_user_widget_roles_on_user_id" ON "user_widget_roles" ("user_id") /*application='Widgetlab'*/[0m
+  [1m[35m (9.0ms)[0m  [1m[35mCREATE INDEX "index_user_widget_roles_on_widget_id" ON "user_widget_roles" ("widget_id") /*application='Widgetlab'*/[0m
+  [1m[35m (1.2ms)[0m  [1m[35mDROP TABLE IF EXISTS "users" CASCADE /*application='Widgetlab'*/[0m
+  [1m[35m (18.4ms)[0m  [1m[35mCREATE TABLE "users" ("id" bigserial primary key, "created_at" timestamp(6) NOT NULL, "email" character varying, "first_name" character varying, "last_name" character varying, "sub" character varying, "updated_at" timestamp(6) NOT NULL) /*application='Widgetlab'*/[0m
+  [1m[35m (9.5ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_users_on_email" ON "users" ("email") /*application='Widgetlab'*/[0m
+  [1m[35m (14.6ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_users_on_sub" ON "users" ("sub") /*application='Widgetlab'*/[0m
+  [1m[35m (1.5ms)[0m  [1m[35mDROP TABLE IF EXISTS "widget_data_source_transformers" CASCADE /*application='Widgetlab'*/[0m
+  [1m[35m (20.1ms)[0m  [1m[35mCREATE TABLE "widget_data_source_transformers" ("id" bigserial primary key, "config" jsonb, "created_at" timestamp(6) NOT NULL, "data_source_id" bigint NOT NULL, "updated_at" timestamp(6) NOT NULL, "widget_id" bigint NOT NULL) /*application='Widgetlab'*/[0m
+  [1m[35m (7.9ms)[0m  [1m[35mCREATE INDEX "index_widget_data_source_transformers_on_data_source_id" ON "widget_data_source_transformers" ("data_source_id") /*application='Widgetlab'*/[0m
+  [1m[35m (7.3ms)[0m  [1m[35mCREATE INDEX "index_widget_data_source_transformers_on_widget_id" ON "widget_data_source_transformers" ("widget_id") /*application='Widgetlab'*/[0m
+  [1m[35m (1.2ms)[0m  [1m[35mDROP TABLE IF EXISTS "widgets" CASCADE /*application='Widgetlab'*/[0m
+  [1m[35m (18.4ms)[0m  [1m[35mCREATE TABLE "widgets" ("id" bigserial primary key, "color" character varying, "created_at" timestamp(6) NOT NULL, "description" character varying, "is_public" boolean, "name" character varying, "type" integer, "updated_at" timestamp(6) NOT NULL) /*application='Widgetlab'*/[0m
+  [1m[35m (19.4ms)[0m  [1m[35mALTER TABLE "dashboard_user_roles" ADD CONSTRAINT "fk_rails_f0db296c6f"
+FOREIGN KEY ("dashboard_id")
+  REFERENCES "dashboards" ("id")
+ /*application='Widgetlab'*/[0m
+  [1m[35m (10.0ms)[0m  [1m[35mALTER TABLE "dashboard_user_roles" ADD CONSTRAINT "fk_rails_694b862e5b"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+ /*application='Widgetlab'*/[0m
+  [1m[35m (10.8ms)[0m  [1m[35mALTER TABLE "dashboard_widgets" ADD CONSTRAINT "fk_rails_834da0b127"
+FOREIGN KEY ("dashboard_id")
+  REFERENCES "dashboards" ("id")
+ /*application='Widgetlab'*/[0m
+  [1m[35m (9.2ms)[0m  [1m[35mALTER TABLE "dashboard_widgets" ADD CONSTRAINT "fk_rails_e3fc13fbac"
+FOREIGN KEY ("widget_id")
+  REFERENCES "widgets" ("id")
+ /*application='Widgetlab'*/[0m
+  [1m[35m (11.6ms)[0m  [1m[35mALTER TABLE "data_source_storages" ADD CONSTRAINT "fk_rails_cb38c82dd9"
+FOREIGN KEY ("data_source_id")
+  REFERENCES "data_sources" ("id")
+ /*application='Widgetlab'*/[0m
+  [1m[35m (8.8ms)[0m  [1m[35mALTER TABLE "data_source_whitelists" ADD CONSTRAINT "fk_rails_690e844bd9"
+FOREIGN KEY ("data_source_id")
+  REFERENCES "data_sources" ("id")
+ /*application='Widgetlab'*/[0m
+  [1m[35m (7.6ms)[0m  [1m[35mALTER TABLE "data_sources" ADD CONSTRAINT "fk_rails_a71137ae54"
+FOREIGN KEY ("creator_id")
+  REFERENCES "users" ("id")
+ /*application='Widgetlab'*/[0m
+  [1m[35m (11.3ms)[0m  [1m[35mALTER TABLE "user_group_roles" ADD CONSTRAINT "fk_rails_001bed7361"
+FOREIGN KEY ("user_group_id")
+  REFERENCES "user_groups" ("id")
+ /*application='Widgetlab'*/[0m
+  [1m[35m (10.6ms)[0m  [1m[35mALTER TABLE "user_group_roles" ADD CONSTRAINT "fk_rails_733a938649"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+ /*application='Widgetlab'*/[0m
+  [1m[35m (8.9ms)[0m  [1m[35mALTER TABLE "user_widget_roles" ADD CONSTRAINT "fk_rails_520779acc6"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+ /*application='Widgetlab'*/[0m
+  [1m[35m (10.5ms)[0m  [1m[35mALTER TABLE "user_widget_roles" ADD CONSTRAINT "fk_rails_ea925eb503"
+FOREIGN KEY ("widget_id")
+  REFERENCES "widgets" ("id")
+ /*application='Widgetlab'*/[0m
+  [1m[35m (9.1ms)[0m  [1m[35mALTER TABLE "widget_data_source_transformers" ADD CONSTRAINT "fk_rails_891e0a11d8"
+FOREIGN KEY ("data_source_id")
+  REFERENCES "data_sources" ("id")
+ /*application='Widgetlab'*/[0m
+  [1m[35m (7.8ms)[0m  [1m[35mALTER TABLE "widget_data_source_transformers" ADD CONSTRAINT "fk_rails_d7c8d64c29"
+FOREIGN KEY ("widget_id")
+  REFERENCES "widgets" ("id")
+ /*application='Widgetlab'*/[0m
+  [1m[35m (13.4ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" character varying NOT NULL PRIMARY KEY) /*application='Widgetlab'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (2.9ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='Widgetlab'*/[0m
+  [1m[35m (7.5ms)[0m  [1m[32mINSERT INTO "schema_migrations" (version) VALUES (20251222133717) /*application='Widgetlab'*/[0m
+  [1m[35m (5.6ms)[0m  [1m[32mINSERT INTO "schema_migrations" (version) VALUES
+(20251201150621),
+(20251201145706),
+(20251201144845),
+(20251201143920),
+(20251201143131),
+(20251201143052),
+(20251201140223),
+(20251201140128),
+(20251201135020),
+(20251201134340),
+(20251201134014); /*application='Widgetlab'*/[0m
+  [1m[35m (12.1ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" character varying NOT NULL PRIMARY KEY, "value" character varying, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL) /*application='Widgetlab'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Load (4.7ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = 'environment' ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1 /*application='Widgetlab'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Create (5.7ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ('environment', 'development', '2026-01-05 10:33:42.024996', '2026-01-05 10:33:42.025001') RETURNING "key" /*application='Widgetlab'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Load (1.7ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = 'environment' ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1 /*application='Widgetlab'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Load (1.2ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = 'schema_sha1' ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1 /*application='Widgetlab'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Create (5.5ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ('schema_sha1', '9e8b98934f77ed65d941c57c02ee73ce7382b6ad', '2026-01-05 10:33:42.042558', '2026-01-05 10:33:42.042563') RETURNING "key" /*application='Widgetlab'*/[0m
+  [1m[35mSQL (121.4ms)[0m  [1m[35mCREATE EXTENSION IF NOT EXISTS "plpgsql" SCHEMA pg_catalog /*application='Widgetlab'*/[0m
+  [1m[35m (3.6ms)[0m  [1m[35mDROP TABLE IF EXISTS "dashboard_user_roles" CASCADE /*application='Widgetlab'*/[0m
+  [1m[35m (22.4ms)[0m  [1m[35mCREATE TABLE "dashboard_user_roles" ("id" bigserial primary key, "created_at" timestamp(6) NOT NULL, "dashboard_id" bigint NOT NULL, "role" integer, "updated_at" timestamp(6) NOT NULL, "user_id" bigint NOT NULL) /*application='Widgetlab'*/[0m
+  [1m[35m (7.0ms)[0m  [1m[35mCREATE INDEX "index_dashboard_user_roles_on_dashboard_id" ON "dashboard_user_roles" ("dashboard_id") /*application='Widgetlab'*/[0m
+  [1m[35m (7.7ms)[0m  [1m[35mCREATE INDEX "index_dashboard_user_roles_on_user_id" ON "dashboard_user_roles" ("user_id") /*application='Widgetlab'*/[0m
+  [1m[35m (1.4ms)[0m  [1m[35mDROP TABLE IF EXISTS "dashboard_widgets" CASCADE /*application='Widgetlab'*/[0m
+  [1m[35m (12.7ms)[0m  [1m[35mCREATE TABLE "dashboard_widgets" ("id" bigserial primary key, "color" character varying, "created_at" timestamp(6) NOT NULL, "dashboard_id" bigint NOT NULL, "height" integer, "position_x" integer, "position_y" integer, "updated_at" timestamp(6) NOT NULL, "widget_id" bigint NOT NULL, "width" integer) /*application='Widgetlab'*/[0m
+  [1m[35m (7.0ms)[0m  [1m[35mCREATE INDEX "index_dashboard_widgets_on_dashboard_id" ON "dashboard_widgets" ("dashboard_id") /*application='Widgetlab'*/[0m
+  [1m[35m (6.9ms)[0m  [1m[35mCREATE INDEX "index_dashboard_widgets_on_widget_id" ON "dashboard_widgets" ("widget_id") /*application='Widgetlab'*/[0m
+  [1m[35m (1.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "dashboards" CASCADE /*application='Widgetlab'*/[0m
+  [1m[35m (11.6ms)[0m  [1m[35mCREATE TABLE "dashboards" ("id" bigserial primary key, "columns" integer, "created_at" timestamp(6) NOT NULL, "icon" character varying, "is_public" boolean, "name" character varying, "updated_at" timestamp(6) NOT NULL) /*application='Widgetlab'*/[0m
+  [1m[35m (1.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "data_source_storages" CASCADE /*application='Widgetlab'*/[0m
+  [1m[35m (17.3ms)[0m  [1m[35mCREATE TABLE "data_source_storages" ("id" bigserial primary key, "created_at" timestamp(6) NOT NULL, "data_source_id" bigint NOT NULL, "stored_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL, "value" jsonb DEFAULT '{}' NOT NULL) /*application='Widgetlab'*/[0m
+  [1m[35m (8.6ms)[0m  [1m[35mCREATE INDEX "index_data_source_storages_on_data_source_id_and_stored_at" ON "data_source_storages" ("data_source_id", "stored_at") /*application='Widgetlab'*/[0m
+  [1m[35m (7.3ms)[0m  [1m[35mCREATE INDEX "index_data_source_storages_on_data_source_id" ON "data_source_storages" ("data_source_id") /*application='Widgetlab'*/[0m
+  [1m[35m (5.7ms)[0m  [1m[35mCREATE INDEX "index_data_source_storages_on_stored_at" ON "data_source_storages" ("stored_at") /*application='Widgetlab'*/[0m
+  [1m[35m (0.9ms)[0m  [1m[35mDROP TABLE IF EXISTS "data_source_whitelists" CASCADE /*application='Widgetlab'*/[0m
+  [1m[35m (17.1ms)[0m  [1m[35mCREATE TABLE "data_source_whitelists" ("id" bigserial primary key, "created_at" timestamp(6) NOT NULL, "data_source_id" bigint NOT NULL, "updated_at" timestamp(6) NOT NULL, "whitelistable_id" bigint NOT NULL, "whitelistable_type" character varying NOT NULL) /*application='Widgetlab'*/[0m
+  [1m[35m (7.0ms)[0m  [1m[35mCREATE INDEX "index_data_source_whitelists_on_data_source_id" ON "data_source_whitelists" ("data_source_id") /*application='Widgetlab'*/[0m
+  [1m[35m (12.6ms)[0m  [1m[35mCREATE INDEX "index_data_source_whitelists_on_whitelistable" ON "data_source_whitelists" ("whitelistable_type", "whitelistable_id") /*application='Widgetlab'*/[0m
+  [1m[35m (1.2ms)[0m  [1m[35mDROP TABLE IF EXISTS "data_sources" CASCADE /*application='Widgetlab'*/[0m
+  [1m[35m (29.4ms)[0m  [1m[35mCREATE TABLE "data_sources" ("id" bigserial primary key, "config" jsonb, "created_at" timestamp(6) NOT NULL, "creator_id" bigint NOT NULL, "is_public" boolean, "name" character varying, "source_type" integer, "updated_at" timestamp(6) NOT NULL) /*application='Widgetlab'*/[0m
+  [1m[35m (9.3ms)[0m  [1m[35mCREATE INDEX "index_data_sources_on_creator_id" ON "data_sources" ("creator_id") /*application='Widgetlab'*/[0m
+  [1m[35m (1.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "user_group_roles" CASCADE /*application='Widgetlab'*/[0m
+  [1m[35m (15.5ms)[0m  [1m[35mCREATE TABLE "user_group_roles" ("id" bigserial primary key, "created_at" timestamp(6) NOT NULL, "role" integer, "updated_at" timestamp(6) NOT NULL, "user_group_id" bigint NOT NULL, "user_id" bigint NOT NULL) /*application='Widgetlab'*/[0m
+  [1m[35m (8.5ms)[0m  [1m[35mCREATE INDEX "index_user_group_roles_on_user_group_id" ON "user_group_roles" ("user_group_id") /*application='Widgetlab'*/[0m
+  [1m[35m (8.6ms)[0m  [1m[35mCREATE INDEX "index_user_group_roles_on_user_id" ON "user_group_roles" ("user_id") /*application='Widgetlab'*/[0m
+  [1m[35m (1.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "user_groups" CASCADE /*application='Widgetlab'*/[0m
+  [1m[35m (13.5ms)[0m  [1m[35mCREATE TABLE "user_groups" ("id" bigserial primary key, "created_at" timestamp(6) NOT NULL, "name" character varying, "updated_at" timestamp(6) NOT NULL) /*application='Widgetlab'*/[0m
+  [1m[35m (1.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "user_widget_roles" CASCADE /*application='Widgetlab'*/[0m
+  [1m[35m (10.3ms)[0m  [1m[35mCREATE TABLE "user_widget_roles" ("id" bigserial primary key, "created_at" timestamp(6) NOT NULL, "role" integer, "updated_at" timestamp(6) NOT NULL, "user_id" bigint NOT NULL, "widget_id" bigint NOT NULL) /*application='Widgetlab'*/[0m
+  [1m[35m (7.6ms)[0m  [1m[35mCREATE INDEX "index_user_widget_roles_on_user_id" ON "user_widget_roles" ("user_id") /*application='Widgetlab'*/[0m
+  [1m[35m (7.2ms)[0m  [1m[35mCREATE INDEX "index_user_widget_roles_on_widget_id" ON "user_widget_roles" ("widget_id") /*application='Widgetlab'*/[0m
+  [1m[35m (1.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "users" CASCADE /*application='Widgetlab'*/[0m
+  [1m[35m (11.8ms)[0m  [1m[35mCREATE TABLE "users" ("id" bigserial primary key, "created_at" timestamp(6) NOT NULL, "email" character varying, "first_name" character varying, "last_name" character varying, "sub" character varying, "updated_at" timestamp(6) NOT NULL) /*application='Widgetlab'*/[0m
+  [1m[35m (7.9ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_users_on_email" ON "users" ("email") /*application='Widgetlab'*/[0m
+  [1m[35m (6.3ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_users_on_sub" ON "users" ("sub") /*application='Widgetlab'*/[0m
+  [1m[35m (1.3ms)[0m  [1m[35mDROP TABLE IF EXISTS "widget_data_source_transformers" CASCADE /*application='Widgetlab'*/[0m
+  [1m[35m (13.1ms)[0m  [1m[35mCREATE TABLE "widget_data_source_transformers" ("id" bigserial primary key, "config" jsonb, "created_at" timestamp(6) NOT NULL, "data_source_id" bigint NOT NULL, "updated_at" timestamp(6) NOT NULL, "widget_id" bigint NOT NULL) /*application='Widgetlab'*/[0m
+  [1m[35m (8.5ms)[0m  [1m[35mCREATE INDEX "index_widget_data_source_transformers_on_data_source_id" ON "widget_data_source_transformers" ("data_source_id") /*application='Widgetlab'*/[0m
+  [1m[35m (7.1ms)[0m  [1m[35mCREATE INDEX "index_widget_data_source_transformers_on_widget_id" ON "widget_data_source_transformers" ("widget_id") /*application='Widgetlab'*/[0m
+  [1m[35m (1.2ms)[0m  [1m[35mDROP TABLE IF EXISTS "widgets" CASCADE /*application='Widgetlab'*/[0m
+  [1m[35m (13.0ms)[0m  [1m[35mCREATE TABLE "widgets" ("id" bigserial primary key, "color" character varying, "created_at" timestamp(6) NOT NULL, "description" character varying, "is_public" boolean, "name" character varying, "type" integer, "updated_at" timestamp(6) NOT NULL) /*application='Widgetlab'*/[0m
+  [1m[35m (10.4ms)[0m  [1m[35mALTER TABLE "dashboard_user_roles" ADD CONSTRAINT "fk_rails_f0db296c6f"
+FOREIGN KEY ("dashboard_id")
+  REFERENCES "dashboards" ("id")
+ /*application='Widgetlab'*/[0m
+  [1m[35m (14.5ms)[0m  [1m[35mALTER TABLE "dashboard_user_roles" ADD CONSTRAINT "fk_rails_694b862e5b"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+ /*application='Widgetlab'*/[0m
+  [1m[35m (9.9ms)[0m  [1m[35mALTER TABLE "dashboard_widgets" ADD CONSTRAINT "fk_rails_834da0b127"
+FOREIGN KEY ("dashboard_id")
+  REFERENCES "dashboards" ("id")
+ /*application='Widgetlab'*/[0m
+  [1m[35m (11.2ms)[0m  [1m[35mALTER TABLE "dashboard_widgets" ADD CONSTRAINT "fk_rails_e3fc13fbac"
+FOREIGN KEY ("widget_id")
+  REFERENCES "widgets" ("id")
+ /*application='Widgetlab'*/[0m
+  [1m[35m (13.6ms)[0m  [1m[35mALTER TABLE "data_source_storages" ADD CONSTRAINT "fk_rails_cb38c82dd9"
+FOREIGN KEY ("data_source_id")
+  REFERENCES "data_sources" ("id")
+ /*application='Widgetlab'*/[0m
+  [1m[35m (9.2ms)[0m  [1m[35mALTER TABLE "data_source_whitelists" ADD CONSTRAINT "fk_rails_690e844bd9"
+FOREIGN KEY ("data_source_id")
+  REFERENCES "data_sources" ("id")
+ /*application='Widgetlab'*/[0m
+  [1m[35m (6.9ms)[0m  [1m[35mALTER TABLE "data_sources" ADD CONSTRAINT "fk_rails_a71137ae54"
+FOREIGN KEY ("creator_id")
+  REFERENCES "users" ("id")
+ /*application='Widgetlab'*/[0m
+  [1m[35m (9.7ms)[0m  [1m[35mALTER TABLE "user_group_roles" ADD CONSTRAINT "fk_rails_001bed7361"
+FOREIGN KEY ("user_group_id")
+  REFERENCES "user_groups" ("id")
+ /*application='Widgetlab'*/[0m
+  [1m[35m (8.2ms)[0m  [1m[35mALTER TABLE "user_group_roles" ADD CONSTRAINT "fk_rails_733a938649"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+ /*application='Widgetlab'*/[0m
+  [1m[35m (13.2ms)[0m  [1m[35mALTER TABLE "user_widget_roles" ADD CONSTRAINT "fk_rails_520779acc6"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+ /*application='Widgetlab'*/[0m
+  [1m[35m (10.8ms)[0m  [1m[35mALTER TABLE "user_widget_roles" ADD CONSTRAINT "fk_rails_ea925eb503"
+FOREIGN KEY ("widget_id")
+  REFERENCES "widgets" ("id")
+ /*application='Widgetlab'*/[0m
+  [1m[35m (9.1ms)[0m  [1m[35mALTER TABLE "widget_data_source_transformers" ADD CONSTRAINT "fk_rails_891e0a11d8"
+FOREIGN KEY ("data_source_id")
+  REFERENCES "data_sources" ("id")
+ /*application='Widgetlab'*/[0m
+  [1m[35m (14.6ms)[0m  [1m[35mALTER TABLE "widget_data_source_transformers" ADD CONSTRAINT "fk_rails_d7c8d64c29"
+FOREIGN KEY ("widget_id")
+  REFERENCES "widgets" ("id")
+ /*application='Widgetlab'*/[0m
+  [1m[35m (9.7ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" character varying NOT NULL PRIMARY KEY) /*application='Widgetlab'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (2.9ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='Widgetlab'*/[0m
+  [1m[35m (4.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" (version) VALUES (20251222133717) /*application='Widgetlab'*/[0m
+  [1m[35m (5.8ms)[0m  [1m[32mINSERT INTO "schema_migrations" (version) VALUES
+(20251201150621),
+(20251201145706),
+(20251201144845),
+(20251201143920),
+(20251201143131),
+(20251201143052),
+(20251201140223),
+(20251201140128),
+(20251201135020),
+(20251201134340),
+(20251201134014); /*application='Widgetlab'*/[0m
+  [1m[35m (15.5ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" character varying NOT NULL PRIMARY KEY, "value" character varying, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL) /*application='Widgetlab'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Load (4.2ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = 'environment' ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1 /*application='Widgetlab'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Create (6.6ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ('environment', 'development', '2026-01-05 10:33:42.906257', '2026-01-05 10:33:42.906262') RETURNING "key" /*application='Widgetlab'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Load (1.0ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = 'environment' ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1 /*application='Widgetlab'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Update (5.0ms)[0m  [1m[33mUPDATE "ar_internal_metadata" SET "value" = 'test', "updated_at" = '2026-01-05 10:33:42.919507' WHERE "ar_internal_metadata"."key" = 'environment' /*application='Widgetlab'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Load (1.5ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = 'schema_sha1' ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1 /*application='Widgetlab'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Create (4.4ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ('schema_sha1', '9e8b98934f77ed65d941c57c02ee73ce7382b6ad', '2026-01-05 10:33:42.935462', '2026-01-05 10:33:42.935466') RETURNING "key" /*application='Widgetlab'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (4.8ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='Widgetlab'*/[0m
+Started GET "/" for 127.0.0.1 at 2026-01-05 11:36:09 +0100
+  [1m[36mActiveRecord::SchemaMigration Load (11.4ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='Widgetlab'*/[0m
+Processing by Rails::WelcomeController#index as HTML
+  Rendering /home/alex/.rbenv/versions/3.4.7/lib/ruby/gems/3.4.0/gems/railties-8.1.1/lib/rails/templates/rails/welcome/index.html.erb
+  Rendered /home/alex/.rbenv/versions/3.4.7/lib/ruby/gems/3.4.0/gems/railties-8.1.1/lib/rails/templates/rails/welcome/index.html.erb (Duration: 1.5ms | GC: 0.0ms)
+Completed 200 OK in 73ms (Views: 25.3ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/dashboards" for 127.0.0.1 at 2026-01-05 11:36:40 +0100
+Processing by DashboardsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering dashboards/index.html.erb within layouts/application
+  [1m[36mDashboard Load (85.9ms)[0m  [1m[34mSELECT "dashboards".* FROM "dashboards" /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:9
+  Rendered dashboards/index.html.erb within layouts/application (Duration: 93.7ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 138.5ms | GC: 0.0ms)
+Completed 200 OK in 353ms (Views: 27.4ms | ActiveRecord: 119.7ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/dashboards" for 127.0.0.1 at 2026-01-05 12:46:17 +0100
+Processing by DashboardsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering dashboards/index.html.erb within layouts/application
+  [1m[36mDashboard Exists? (5.1ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboards" LIMIT 1 /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:24
+  Rendered dashboards/index.html.erb within layouts/application (Duration: 1120.4ms | GC: 0.0ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 3.5ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 1260.9ms | GC: 0.0ms)
+Completed 200 OK in 1656ms (Views: 1086.9ms | ActiveRecord: 275.7ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/widgets" for 127.0.0.1 at 2026-01-05 12:47:40 +0100
+Processing by WidgetsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering widgets/index.html.erb within layouts/application
+Started GET "/user_groups" for 127.0.0.1 at 2026-01-05 12:47:42 +0100
+  [1m[36mWidget Load (14.3ms)[0m  [1m[34mSELECT "widgets".* FROM "widgets" /*action='index',application='Widgetlab',controller='widgets'*/[0m
+  ↳ app/views/widgets/index.html.erb:9
+Processing by UserGroupsController#index as HTML
+  Rendered widgets/index.html.erb within layouts/application (Duration: 1592.6ms | GC: 1554.4ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 0.6ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 1599.1ms | GC: 1554.4ms)
+Completed 200 OK in 1655ms (Views: 1592.4ms | ActiveRecord: 14.3ms (1 query, 0 cached) | GC: 1554.4ms)
+
+
+  Rendering layout layouts/application.html.erb
+  Rendering user_groups/index.html.erb within layouts/application
+  [1m[36mUserGroup Load (19.0ms)[0m  [1m[34mSELECT "user_groups".* FROM "user_groups" /*action='index',application='Widgetlab',controller='user_groups'*/[0m
+  ↳ app/views/user_groups/index.html.erb:9
+  Rendered user_groups/index.html.erb within layouts/application (Duration: 33.7ms | GC: 0.0ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 141.8ms | GC: 139.8ms)
+  Rendered layout layouts/application.html.erb (Duration: 188.6ms | GC: 139.8ms)
+Completed 200 OK in 285ms (Views: 175.8ms | ActiveRecord: 19.0ms (1 query, 0 cached) | GC: 189.6ms)
+
+
+Started GET "/data_sources" for 127.0.0.1 at 2026-01-05 12:47:42 +0100
+Processing by DataSourcesController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering data_sources/index.html.erb within layouts/application
+  [1m[36mDataSource Load (6.8ms)[0m  [1m[34mSELECT "data_sources".* FROM "data_sources" /*action='index',application='Widgetlab',controller='data_sources'*/[0m
+  ↳ app/views/data_sources/index.html.erb:9
+  Rendered data_sources/index.html.erb within layouts/application (Duration: 11.8ms | GC: 0.0ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 0.3ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 14.5ms | GC: 0.0ms)
+Completed 200 OK in 143ms (Views: 9.5ms | ActiveRecord: 6.7ms (1 query, 0 cached) | GC: 55.8ms)
+
+
+Started GET "/users" for 127.0.0.1 at 2026-01-05 12:47:44 +0100
+Processing by UsersController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering users/index.html.erb within layouts/application
+  [1m[36mUser Load (6.7ms)[0m  [1m[34mSELECT "users".* FROM "users" /*action='index',application='Widgetlab',controller='users'*/[0m
+  ↳ app/views/users/index.html.erb:9
+  Rendered users/index.html.erb within layouts/application (Duration: 14.0ms | GC: 0.0ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 0.5ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 18.7ms | GC: 0.0ms)
+Completed 200 OK in 65ms (Views: 14.9ms | ActiveRecord: 6.6ms (1 query, 0 cached) | GC: 16.7ms)
+
+
+Started GET "/data_sources" for 127.0.0.1 at 2026-01-05 12:47:44 +0100
+Processing by DataSourcesController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering data_sources/index.html.erb within layouts/application
+  [1m[36mDataSource Load (1.4ms)[0m  [1m[34mSELECT "data_sources".* FROM "data_sources" /*action='index',application='Widgetlab',controller='data_sources'*/[0m
+  ↳ app/views/data_sources/index.html.erb:9
+  Rendered data_sources/index.html.erb within layouts/application (Duration: 3.9ms | GC: 0.0ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 0.4ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 6.9ms | GC: 0.0ms)
+Completed 200 OK in 17ms (Views: 7.3ms | ActiveRecord: 1.4ms (1 query, 0 cached) | GC: 6.5ms)
+
+
+Started GET "/users" for 127.0.0.1 at 2026-01-05 12:47:45 +0100
+Processing by UsersController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering users/index.html.erb within layouts/application
+  [1m[36mUser Load (1.6ms)[0m  [1m[34mSELECT "users".* FROM "users" /*action='index',application='Widgetlab',controller='users'*/[0m
+  ↳ app/views/users/index.html.erb:9
+  Rendered users/index.html.erb within layouts/application (Duration: 4.7ms | GC: 0.0ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 1.1ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 44.1ms | GC: 34.3ms)
+Completed 200 OK in 47ms (Views: 44.1ms | ActiveRecord: 1.5ms (1 query, 0 cached) | GC: 34.3ms)
+
+
+Started GET "/user_groups" for 127.0.0.1 at 2026-01-05 12:47:46 +0100
+Processing by UserGroupsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering user_groups/index.html.erb within layouts/application
+  [1m[36mUserGroup Load (1.4ms)[0m  [1m[34mSELECT "user_groups".* FROM "user_groups" /*action='index',application='Widgetlab',controller='user_groups'*/[0m
+  ↳ app/views/user_groups/index.html.erb:9
+  Rendered user_groups/index.html.erb within layouts/application (Duration: 11.3ms | GC: 0.0ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 0.3ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 14.9ms | GC: 0.0ms)
+Completed 200 OK in 18ms (Views: 14.8ms | ActiveRecord: 1.4ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/users" for 127.0.0.1 at 2026-01-05 12:47:47 +0100
+Processing by UsersController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering users/index.html.erb within layouts/application
+  [1m[36mUser Load (2.0ms)[0m  [1m[34mSELECT "users".* FROM "users" /*action='index',application='Widgetlab',controller='users'*/[0m
+  ↳ app/views/users/index.html.erb:9
+  Rendered users/index.html.erb within layouts/application (Duration: 62.4ms | GC: 56.1ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 0.7ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 66.3ms | GC: 56.1ms)
+Completed 200 OK in 72ms (Views: 67.1ms | ActiveRecord: 2.0ms (1 query, 0 cached) | GC: 56.1ms)
+
+
+Started GET "/data_sources" for 127.0.0.1 at 2026-01-05 12:47:49 +0100
+Processing by DataSourcesController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering data_sources/index.html.erb within layouts/application
+  [1m[36mDataSource Load (1.4ms)[0m  [1m[34mSELECT "data_sources".* FROM "data_sources" /*action='index',application='Widgetlab',controller='data_sources'*/[0m
+  ↳ app/views/data_sources/index.html.erb:9
+  Rendered data_sources/index.html.erb within layouts/application (Duration: 6.9ms | GC: 0.0ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 0.2ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 12.8ms | GC: 0.0ms)
+Completed 200 OK in 17ms (Views: 13.6ms | ActiveRecord: 1.4ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/widgets" for 127.0.0.1 at 2026-01-05 12:47:51 +0100
+Started GET "/dashboards" for 127.0.0.1 at 2026-01-05 12:47:51 +0100
+Processing by WidgetsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering widgets/index.html.erb within layouts/application
+Processing by DashboardsController#index as HTML
+  [1m[36mWidget Load (3.0ms)[0m  [1m[34mSELECT "widgets".* FROM "widgets" /*action='index',application='Widgetlab',controller='widgets'*/[0m
+  ↳ app/views/widgets/index.html.erb:9
+  Rendered widgets/index.html.erb within layouts/application (Duration: 10.0ms | GC: 0.0ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 0.3ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 13.7ms | GC: 0.0ms)
+Completed 200 OK in 21ms (Views: 12.3ms | ActiveRecord: 3.0ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+  Rendering layout layouts/application.html.erb
+  Rendering dashboards/index.html.erb within layouts/application
+  [1m[36mDashboard Exists? (1.2ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboards" LIMIT 1 /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:24
+  Rendered dashboards/index.html.erb within layouts/application (Duration: 4.2ms | GC: 0.0ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 77.8ms | GC: 77.9ms)
+  Rendered layout layouts/application.html.erb (Duration: 95.0ms | GC: 77.9ms)
+Completed 200 OK in 108ms (Views: 97.1ms | ActiveRecord: 1.2ms (1 query, 0 cached) | GC: 77.9ms)
+
+
+Started GET "/dashboards/new" for 127.0.0.1 at 2026-01-05 12:47:54 +0100
+Processing by DashboardsController#new as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering dashboards/new.html.erb within layouts/application
+  Rendered dashboards/_form.html.erb (Duration: 63.0ms | GC: 0.0ms)
+  Rendered dashboards/new.html.erb within layouts/application (Duration: 88.1ms | GC: 20.8ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 0.7ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 92.5ms | GC: 20.8ms)
+Completed 200 OK in 161ms (Views: 94.6ms | ActiveRecord: 19.2ms (0 queries, 0 cached) | GC: 20.8ms)
+
+
+Started GET "/dashboards" for 127.0.0.1 at 2026-01-05 12:47:57 +0100
+Processing by DashboardsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering dashboards/index.html.erb within layouts/application
+  [1m[36mDashboard Exists? (1.7ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboards" LIMIT 1 /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:24
+  Rendered dashboards/index.html.erb within layouts/application (Duration: 7.5ms | GC: 0.0ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 1.8ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 16.9ms | GC: 0.0ms)
+Completed 200 OK in 21ms (Views: 16.6ms | ActiveRecord: 1.8ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/dashboards/new" for 127.0.0.1 at 2026-01-05 12:48:00 +0100
+Processing by DashboardsController#new as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering dashboards/new.html.erb within layouts/application
+  Rendered dashboards/_form.html.erb (Duration: 20.8ms | GC: 13.6ms)
+  Rendered dashboards/new.html.erb within layouts/application (Duration: 21.7ms | GC: 13.6ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 1.8ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 29.4ms | GC: 13.6ms)
+Completed 200 OK in 32ms (Views: 30.9ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 13.6ms)
+
+
+Started POST "/dashboards" for 127.0.0.1 at 2026-01-05 12:48:28 +0100
+Processing by DashboardsController#create as TURBO_STREAM
+  Parameters: {"authenticity_token" => "[FILTERED]", "dashboard" => {"name" => "Test Dashboard 1", "icon" => "📊", "columns" => "3", "is_public" => "0"}, "commit" => "Dashboard erstellen"}
+  [1m[36mTRANSACTION (2.0ms)[0m  [1m[35mBEGIN /*action='create',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/controllers/dashboards_controller.rb:27:in 'block in DashboardsController#create'
+  [1m[36mDashboard Create (96.6ms)[0m  [1m[32mINSERT INTO "dashboards" ("columns", "created_at", "icon", "is_public", "name", "updated_at") VALUES (3, '2026-01-05 11:48:28.507373', '📊', FALSE, 'Test Dashboard 1', '2026-01-05 11:48:28.507373') RETURNING "id" /*action='create',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/controllers/dashboards_controller.rb:27:in 'block in DashboardsController#create'
+  [1m[36mTRANSACTION (6.4ms)[0m  [1m[35mCOMMIT /*action='create',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/controllers/dashboards_controller.rb:27:in 'block in DashboardsController#create'
+Redirected to http://127.0.0.1:3000/dashboards/1
+↳ app/controllers/dashboards_controller.rb:28:in 'block (2 levels) in DashboardsController#create'
+Completed 302 Found in 311ms (ActiveRecord: 104.9ms (1 query, 0 cached) | GC: 188.7ms)
+
+
+Started GET "/dashboards/1" for 127.0.0.1 at 2026-01-05 12:48:28 +0100
+Processing by DashboardsController#show as TURBO_STREAM
+  Parameters: {"id" => "1"}
+  [1m[36mDashboard Load (3.0ms)[0m  [1m[34mSELECT "dashboards".* FROM "dashboards" WHERE "dashboards"."id" = 1 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/controllers/dashboards_controller.rb:63:in 'DashboardsController#set_dashboard'
+  Rendering layout layouts/application.html.erb
+  Rendering dashboards/show.html.erb within layouts/application
+  [1m[36mDashboardWidget Exists? (4.3ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 1 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:41
+  [1m[36mDashboardUserRole Exists? (5.2ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboard_user_roles" WHERE "dashboard_user_roles"."dashboard_id" = 1 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:108
+  Rendered dashboards/show.html.erb within layouts/application (Duration: 214.3ms | GC: 96.3ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 2.4ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 271.3ms | GC: 146.0ms)
+Completed 200 OK in 357ms (Views: 252.4ms | ActiveRecord: 28.0ms (3 queries, 0 cached) | GC: 203.3ms)
+
+
+Started GET "/dashboards/1/edit" for 127.0.0.1 at 2026-01-05 12:48:42 +0100
+Processing by DashboardsController#edit as HTML
+  Parameters: {"id" => "1"}
+  [1m[36mDashboard Load (1.8ms)[0m  [1m[34mSELECT "dashboards".* FROM "dashboards" WHERE "dashboards"."id" = 1 LIMIT 1 /*action='edit',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/controllers/dashboards_controller.rb:63:in 'DashboardsController#set_dashboard'
+  Rendering layout layouts/application.html.erb
+  Rendering dashboards/edit.html.erb within layouts/application
+  Rendered dashboards/_form.html.erb (Duration: 170.4ms | GC: 162.0ms)
+  Rendered dashboards/edit.html.erb within layouts/application (Duration: 172.2ms | GC: 162.0ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 0.3ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 194.4ms | GC: 180.2ms)
+Completed 200 OK in 220ms (Views: 196.1ms | ActiveRecord: 1.7ms (1 query, 0 cached) | GC: 193.4ms)
+
+
+Started GET "/dashboards" for 127.0.0.1 at 2026-01-05 12:48:42 +0100
+Processing by DashboardsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering dashboards/index.html.erb within layouts/application
+  [1m[36mDashboard Exists? (1.2ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboards" LIMIT 1 /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:24
+  [1m[36mDashboard Load (1.5ms)[0m  [1m[34mSELECT "dashboards".* FROM "dashboards" /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:26
+  [1m[36mDashboardWidget Count (9.6ms)[0m  [1m[34mSELECT COUNT(*) FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 1 /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:50
+  [1m[36mUser Count (6.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "users" INNER JOIN "dashboard_user_roles" ON "users"."id" = "dashboard_user_roles"."user_id" WHERE "dashboard_user_roles"."dashboard_id" = 1 /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:54
+  Rendered dashboards/index.html.erb within layouts/application (Duration: 247.4ms | GC: 82.8ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 0.6ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 255.3ms | GC: 85.6ms)
+Completed 200 OK in 275ms (Views: 241.0ms | ActiveRecord: 30.5ms (4 queries, 0 cached) | GC: 99.2ms)
+
+
+Started GET "/dashboards" for 127.0.0.1 at 2026-01-05 12:48:52 +0100
+Processing by DashboardsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering dashboards/index.html.erb within layouts/application
+  [1m[36mDashboard Exists? (1.4ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboards" LIMIT 1 /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:24
+  [1m[36mDashboard Load (1.4ms)[0m  [1m[34mSELECT "dashboards".* FROM "dashboards" /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:26
+  [1m[36mDashboardWidget Count (1.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 1 /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:50
+  [1m[36mUser Count (1.8ms)[0m  [1m[34mSELECT COUNT(*) FROM "users" INNER JOIN "dashboard_user_roles" ON "users"."id" = "dashboard_user_roles"."user_id" WHERE "dashboard_user_roles"."dashboard_id" = 1 /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:54
+  Rendered dashboards/index.html.erb within layouts/application (Duration: 23.4ms | GC: 0.0ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 0.4ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 29.2ms | GC: 1.7ms)
+Completed 200 OK in 33ms (Views: 25.0ms | ActiveRecord: 5.7ms (4 queries, 0 cached) | GC: 1.7ms)
+
+
+Started GET "/dashboards/new" for 127.0.0.1 at 2026-01-05 12:48:53 +0100
+Processing by DashboardsController#new as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering dashboards/new.html.erb within layouts/application
+  Rendered dashboards/_form.html.erb (Duration: 11.7ms | GC: 0.0ms)
+  Rendered dashboards/new.html.erb within layouts/application (Duration: 12.7ms | GC: 0.0ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 0.4ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 21.8ms | GC: 2.0ms)
+Completed 200 OK in 28ms (Views: 25.8ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 2.0ms)
+
+
+Started GET "/dashboards/1" for 127.0.0.1 at 2026-01-05 12:48:54 +0100
+Processing by DashboardsController#show as HTML
+  Parameters: {"id" => "1"}
+  [1m[36mDashboard Load (1.9ms)[0m  [1m[34mSELECT "dashboards".* FROM "dashboards" WHERE "dashboards"."id" = 1 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/controllers/dashboards_controller.rb:63:in 'DashboardsController#set_dashboard'
+  Rendering layout layouts/application.html.erb
+  Rendering dashboards/show.html.erb within layouts/application
+  [1m[36mDashboardWidget Exists? (1.2ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 1 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:41
+  [1m[36mDashboardUserRole Exists? (1.6ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboard_user_roles" WHERE "dashboard_user_roles"."dashboard_id" = 1 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:108
+  Rendered dashboards/show.html.erb within layouts/application (Duration: 14.6ms | GC: 0.0ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 0.5ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 19.0ms | GC: 0.9ms)
+Completed 200 OK in 29ms (Views: 18.6ms | ActiveRecord: 4.5ms (3 queries, 0 cached) | GC: 0.9ms)
+
+
+Started GET "/dashboards/1" for 127.0.0.1 at 2026-01-05 12:48:56 +0100
+Processing by DashboardsController#show as HTML
+  Parameters: {"id" => "1"}
+  [1m[36mDashboard Load (1.3ms)[0m  [1m[34mSELECT "dashboards".* FROM "dashboards" WHERE "dashboards"."id" = 1 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/controllers/dashboards_controller.rb:63:in 'DashboardsController#set_dashboard'
+  Rendering layout layouts/application.html.erb
+  Rendering dashboards/show.html.erb within layouts/application
+  [1m[36mDashboardWidget Exists? (1.9ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 1 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:41
+  [1m[36mDashboardUserRole Exists? (1.8ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboard_user_roles" WHERE "dashboard_user_roles"."dashboard_id" = 1 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:108
+  Rendered dashboards/show.html.erb within layouts/application (Duration: 18.4ms | GC: 0.0ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 0.8ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 27.2ms | GC: 0.0ms)
+Completed 200 OK in 38ms (Views: 28.2ms | ActiveRecord: 4.9ms (3 queries, 0 cached) | GC: 2.2ms)
+
+
+Started GET "/dashboards/1" for 127.0.0.1 at 2026-01-05 12:48:57 +0100
+Processing by DashboardsController#show as HTML
+  Parameters: {"id" => "1"}
+  [1m[36mDashboard Load (1.9ms)[0m  [1m[34mSELECT "dashboards".* FROM "dashboards" WHERE "dashboards"."id" = 1 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/controllers/dashboards_controller.rb:63:in 'DashboardsController#set_dashboard'
+  Rendering layout layouts/application.html.erb
+  Rendering dashboards/show.html.erb within layouts/application
+  [1m[36mDashboardWidget Exists? (2.9ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 1 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:41
+  [1m[36mDashboardUserRole Exists? (1.1ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboard_user_roles" WHERE "dashboard_user_roles"."dashboard_id" = 1 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:108
+  Rendered dashboards/show.html.erb within layouts/application (Duration: 22.9ms | GC: 0.0ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 0.3ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 28.0ms | GC: 0.0ms)
+Completed 200 OK in 42ms (Views: 26.2ms | ActiveRecord: 5.8ms (3 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/dashboards/1" for 127.0.0.1 at 2026-01-05 12:48:58 +0100
+Processing by DashboardsController#show as HTML
+  Parameters: {"id" => "1"}
+  [1m[36mDashboard Load (1.8ms)[0m  [1m[34mSELECT "dashboards".* FROM "dashboards" WHERE "dashboards"."id" = 1 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/controllers/dashboards_controller.rb:63:in 'DashboardsController#set_dashboard'
+  Rendering layout layouts/application.html.erb
+  Rendering dashboards/show.html.erb within layouts/application
+  [1m[36mDashboardWidget Exists? (1.8ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 1 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:41
+  [1m[36mDashboardUserRole Exists? (1.6ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboard_user_roles" WHERE "dashboard_user_roles"."dashboard_id" = 1 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:108
+  Rendered dashboards/show.html.erb within layouts/application (Duration: 19.8ms | GC: 0.0ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 1.9ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 30.5ms | GC: 0.0ms)
+Completed 200 OK in 42ms (Views: 30.0ms | ActiveRecord: 5.1ms (3 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/dashboards/new" for 127.0.0.1 at 2026-01-05 12:49:00 +0100
+Processing by DashboardsController#new as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering dashboards/new.html.erb within layouts/application
+  Rendered dashboards/_form.html.erb (Duration: 28.8ms | GC: 0.0ms)
+  Rendered dashboards/new.html.erb within layouts/application (Duration: 29.7ms | GC: 0.0ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 0.3ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 32.5ms | GC: 0.0ms)
+Completed 200 OK in 36ms (Views: 33.8ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.9ms)
+
+
+Started GET "/dashboards/1" for 127.0.0.1 at 2026-01-05 12:49:01 +0100
+Processing by DashboardsController#show as HTML
+  Parameters: {"id" => "1"}
+  [1m[36mDashboard Load (7.3ms)[0m  [1m[34mSELECT "dashboards".* FROM "dashboards" WHERE "dashboards"."id" = 1 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/controllers/dashboards_controller.rb:63:in 'DashboardsController#set_dashboard'
+  Rendering layout layouts/application.html.erb
+  Rendering dashboards/show.html.erb within layouts/application
+  [1m[36mDashboardWidget Exists? (1.6ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 1 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:41
+  [1m[36mDashboardUserRole Exists? (1.6ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboard_user_roles" WHERE "dashboard_user_roles"."dashboard_id" = 1 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:108
+  Rendered dashboards/show.html.erb within layouts/application (Duration: 20.9ms | GC: 0.0ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 0.5ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 27.1ms | GC: 0.9ms)
+Completed 200 OK in 46ms (Views: 26.9ms | ActiveRecord: 10.3ms (3 queries, 0 cached) | GC: 0.9ms)
+
+
+Started GET "/dashboards/1" for 127.0.0.1 at 2026-01-05 12:49:04 +0100
+Processing by DashboardsController#show as HTML
+  Parameters: {"id" => "1"}
+  [1m[36mDashboard Load (1.2ms)[0m  [1m[34mSELECT "dashboards".* FROM "dashboards" WHERE "dashboards"."id" = 1 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/controllers/dashboards_controller.rb:63:in 'DashboardsController#set_dashboard'
+  Rendering layout layouts/application.html.erb
+  Rendering dashboards/show.html.erb within layouts/application
+  [1m[36mDashboardWidget Exists? (1.6ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 1 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:41
+  [1m[36mDashboardUserRole Exists? (2.0ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboard_user_roles" WHERE "dashboard_user_roles"."dashboard_id" = 1 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:108
+  Rendered dashboards/show.html.erb within layouts/application (Duration: 18.9ms | GC: 0.0ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 0.4ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 23.8ms | GC: 0.0ms)
+Completed 200 OK in 39ms (Views: 23.3ms | ActiveRecord: 4.7ms (3 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/dashboards/1/edit" for 127.0.0.1 at 2026-01-05 12:49:23 +0100
+Processing by DashboardsController#edit as HTML
+  Parameters: {"id" => "1"}
+  [1m[36mDashboard Load (1.8ms)[0m  [1m[34mSELECT "dashboards".* FROM "dashboards" WHERE "dashboards"."id" = 1 LIMIT 1 /*action='edit',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/controllers/dashboards_controller.rb:63:in 'DashboardsController#set_dashboard'
+  Rendering layout layouts/application.html.erb
+  Rendering dashboards/edit.html.erb within layouts/application
+  Rendered dashboards/_form.html.erb (Duration: 3.5ms | GC: 0.0ms)
+  Rendered dashboards/edit.html.erb within layouts/application (Duration: 4.3ms | GC: 0.0ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 0.3ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 8.9ms | GC: 0.0ms)
+Completed 200 OK in 17ms (Views: 10.6ms | ActiveRecord: 1.8ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started PATCH "/dashboards/1" for 127.0.0.1 at 2026-01-05 12:49:28 +0100
+Processing by DashboardsController#update as TURBO_STREAM
+  Parameters: {"authenticity_token" => "[FILTERED]", "dashboard" => {"name" => "Test Dashboard 1", "icon" => "📊", "columns" => "4", "is_public" => "0"}, "commit" => "Speichern", "id" => "1"}
+  [1m[36mDashboard Load (1.6ms)[0m  [1m[34mSELECT "dashboards".* FROM "dashboards" WHERE "dashboards"."id" = 1 LIMIT 1 /*action='update',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/controllers/dashboards_controller.rb:63:in 'DashboardsController#set_dashboard'
+  [1m[36mTRANSACTION (1.4ms)[0m  [1m[35mBEGIN /*action='update',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/controllers/dashboards_controller.rb:40:in 'block in DashboardsController#update'
+  [1m[36mDashboard Update (16.2ms)[0m  [1m[33mUPDATE "dashboards" SET "columns" = 4, "updated_at" = '2026-01-05 11:49:28.888454' WHERE "dashboards"."id" = 1 /*action='update',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/controllers/dashboards_controller.rb:40:in 'block in DashboardsController#update'
+  [1m[36mTRANSACTION (7.7ms)[0m  [1m[35mCOMMIT /*action='update',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/controllers/dashboards_controller.rb:40:in 'block in DashboardsController#update'
+Redirected to http://127.0.0.1:3000/dashboards/1
+↳ app/controllers/dashboards_controller.rb:41:in 'block (2 levels) in DashboardsController#update'
+Completed 303 See Other in 42ms (ActiveRecord: 26.8ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/dashboards/1" for 127.0.0.1 at 2026-01-05 12:49:28 +0100
+Processing by DashboardsController#show as TURBO_STREAM
+  Parameters: {"id" => "1"}
+  [1m[36mDashboard Load (1.9ms)[0m  [1m[34mSELECT "dashboards".* FROM "dashboards" WHERE "dashboards"."id" = 1 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/controllers/dashboards_controller.rb:63:in 'DashboardsController#set_dashboard'
+  Rendering layout layouts/application.html.erb
+  Rendering dashboards/show.html.erb within layouts/application
+  [1m[36mDashboardWidget Exists? (1.2ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 1 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:41
+  [1m[36mDashboardUserRole Exists? (1.6ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboard_user_roles" WHERE "dashboard_user_roles"."dashboard_id" = 1 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:108
+  Rendered dashboards/show.html.erb within layouts/application (Duration: 28.8ms | GC: 7.4ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 0.2ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 31.8ms | GC: 7.4ms)
+Completed 200 OK in 42ms (Views: 30.6ms | ActiveRecord: 4.6ms (3 queries, 0 cached) | GC: 8.1ms)
+
+
+Started GET "/users" for 127.0.0.1 at 2026-01-05 12:49:39 +0100
+Processing by UsersController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering users/index.html.erb within layouts/application
+  [1m[36mUser Load (1.5ms)[0m  [1m[34mSELECT "users".* FROM "users" /*action='index',application='Widgetlab',controller='users'*/[0m
+  ↳ app/views/users/index.html.erb:9
+  Rendered users/index.html.erb within layouts/application (Duration: 7.8ms | GC: 0.0ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 0.4ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 14.5ms | GC: 0.0ms)
+Completed 200 OK in 18ms (Views: 14.8ms | ActiveRecord: 1.5ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/user_groups" for 127.0.0.1 at 2026-01-05 12:49:40 +0100
+Processing by UserGroupsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering user_groups/index.html.erb within layouts/application
+  [1m[36mUserGroup Load (1.1ms)[0m  [1m[34mSELECT "user_groups".* FROM "user_groups" /*action='index',application='Widgetlab',controller='user_groups'*/[0m
+  ↳ app/views/user_groups/index.html.erb:9
+  Rendered user_groups/index.html.erb within layouts/application (Duration: 4.0ms | GC: 0.0ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 0.5ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 7.7ms | GC: 0.0ms)
+Completed 200 OK in 11ms (Views: 8.1ms | ActiveRecord: 1.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/user_groups" for 127.0.0.1 at 2026-01-05 12:49:46 +0100
+Processing by UserGroupsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering user_groups/index.html.erb within layouts/application
+  [1m[36mUserGroup Load (2.2ms)[0m  [1m[34mSELECT "user_groups".* FROM "user_groups" /*action='index',application='Widgetlab',controller='user_groups'*/[0m
+  ↳ app/views/user_groups/index.html.erb:9
+  Rendered user_groups/index.html.erb within layouts/application (Duration: 7.6ms | GC: 0.0ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 0.3ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 13.1ms | GC: 0.0ms)
+Completed 200 OK in 17ms (Views: 12.5ms | ActiveRecord: 2.2ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/dashboards/1" for 127.0.0.1 at 2026-01-05 13:05:28 +0100
+  [1m[36mActiveRecord::SchemaMigration Load (10.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='Widgetlab'*/[0m
+Processing by DashboardsController#show as HTML
+  Parameters: {"id" => "1"}
+  [1m[36mDashboard Load (7.6ms)[0m  [1m[34mSELECT "dashboards".* FROM "dashboards" WHERE "dashboards"."id" = 1 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/controllers/dashboards_controller.rb:85:in 'DashboardsController#set_dashboard'
+  Rendering layout layouts/application.html.erb
+  Rendering dashboards/show.html.erb within layouts/application
+  [1m[36mUser Count (15.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "users" INNER JOIN "dashboard_user_roles" ON "users"."id" = "dashboard_user_roles"."user_id" WHERE "dashboard_user_roles"."dashboard_id" = 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:32
+  [1m[36mDashboardWidget Exists? (3.1ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 1 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:85
+  [1m[36mDashboardWidget Load (1.2ms)[0m  [1m[34mSELECT "dashboard_widgets".* FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 1 ORDER BY "dashboard_widgets"."position_y" ASC, "dashboard_widgets"."position_x" ASC /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:101
+  [1m[36mDashboardUserRole Exists? (1.4ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboard_user_roles" WHERE "dashboard_user_roles"."dashboard_id" = 1 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:193
+  Rendered dashboards/show.html.erb within layouts/application (Duration: 159.4ms | GC: 0.0ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 1.4ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 242.4ms | GC: 0.0ms)
+Completed 200 OK in 534ms (Views: 216.2ms | ActiveRecord: 217.6ms (5 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/dashboards" for 127.0.0.1 at 2026-01-05 13:05:49 +0100
+Processing by DashboardsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering dashboards/index.html.erb within layouts/application
+  [1m[36mDashboard Exists? (1.5ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboards" LIMIT 1 /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:24
+  [1m[36mDashboard Load (1.3ms)[0m  [1m[34mSELECT "dashboards".* FROM "dashboards" /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:26
+  [1m[36mDashboardWidget Count (2.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 1 /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:50
+  [1m[36mUser Count (1.9ms)[0m  [1m[34mSELECT COUNT(*) FROM "users" INNER JOIN "dashboard_user_roles" ON "users"."id" = "dashboard_user_roles"."user_id" WHERE "dashboard_user_roles"."dashboard_id" = 1 /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:54
+  Rendered dashboards/index.html.erb within layouts/application (Duration: 36.2ms | GC: 0.0ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 0.3ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 41.0ms | GC: 0.0ms)
+Completed 200 OK in 82ms (Views: 36.0ms | ActiveRecord: 6.9ms (4 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/dashboards/new" for 127.0.0.1 at 2026-01-05 13:05:52 +0100
+Processing by DashboardsController#new as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering dashboards/new.html.erb within layouts/application
+  Rendered dashboards/_form.html.erb (Duration: 267.6ms | GC: 0.0ms)
+  Rendered dashboards/new.html.erb within layouts/application (Duration: 269.7ms | GC: 0.0ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 0.2ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 273.1ms | GC: 0.0ms)
+Completed 200 OK in 302ms (Views: 275.1ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/dashboards" for 127.0.0.1 at 2026-01-05 13:05:56 +0100
+Processing by DashboardsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering dashboards/index.html.erb within layouts/application
+  [1m[36mDashboard Exists? (1.6ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboards" LIMIT 1 /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:24
+  [1m[36mDashboard Load (1.7ms)[0m  [1m[34mSELECT "dashboards".* FROM "dashboards" /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:26
+  [1m[36mDashboardWidget Count (1.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 1 /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:50
+  [1m[36mUser Count (1.8ms)[0m  [1m[34mSELECT COUNT(*) FROM "users" INNER JOIN "dashboard_user_roles" ON "users"."id" = "dashboard_user_roles"."user_id" WHERE "dashboard_user_roles"."dashboard_id" = 1 /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:54
+  Rendered dashboards/index.html.erb within layouts/application (Duration: 24.1ms | GC: 0.0ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 0.6ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 29.7ms | GC: 0.0ms)
+Completed 200 OK in 34ms (Views: 25.2ms | ActiveRecord: 6.3ms (4 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/dashboards/1" for 127.0.0.1 at 2026-01-05 13:05:57 +0100
+Processing by DashboardsController#show as HTML
+  Parameters: {"id" => "1"}
+  [1m[36mDashboard Load (1.4ms)[0m  [1m[34mSELECT "dashboards".* FROM "dashboards" WHERE "dashboards"."id" = 1 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/controllers/dashboards_controller.rb:85:in 'DashboardsController#set_dashboard'
+  Rendering layout layouts/application.html.erb
+  Rendering dashboards/show.html.erb within layouts/application
+  [1m[36mUser Count (1.5ms)[0m  [1m[34mSELECT COUNT(*) FROM "users" INNER JOIN "dashboard_user_roles" ON "users"."id" = "dashboard_user_roles"."user_id" WHERE "dashboard_user_roles"."dashboard_id" = 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:32
+  [1m[36mDashboardWidget Exists? (8.2ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 1 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:85
+  [1m[36mDashboardWidget Load (2.7ms)[0m  [1m[34mSELECT "dashboard_widgets".* FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 1 ORDER BY "dashboard_widgets"."position_y" ASC, "dashboard_widgets"."position_x" ASC /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:101
+  [1m[36mDashboardUserRole Exists? (2.4ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboard_user_roles" WHERE "dashboard_user_roles"."dashboard_id" = 1 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:193
+  Rendered dashboards/show.html.erb within layouts/application (Duration: 44.2ms | GC: 1.8ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 0.6ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 64.1ms | GC: 1.8ms)
+Completed 200 OK in 74ms (Views: 52.3ms | ActiveRecord: 16.1ms (5 queries, 0 cached) | GC: 1.8ms)
+
+
+Started GET "/dashboards" for 127.0.0.1 at 2026-01-05 13:05:58 +0100
+Processing by DashboardsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering dashboards/index.html.erb within layouts/application
+  [1m[36mDashboard Exists? (1.7ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboards" LIMIT 1 /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:24
+  [1m[36mDashboard Load (1.4ms)[0m  [1m[34mSELECT "dashboards".* FROM "dashboards" /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:26
+  [1m[36mDashboardWidget Count (1.7ms)[0m  [1m[34mSELECT COUNT(*) FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 1 /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:50
+  [1m[36mUser Count (1.6ms)[0m  [1m[34mSELECT COUNT(*) FROM "users" INNER JOIN "dashboard_user_roles" ON "users"."id" = "dashboard_user_roles"."user_id" WHERE "dashboard_user_roles"."dashboard_id" = 1 /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:54
+  Rendered dashboards/index.html.erb within layouts/application (Duration: 27.9ms | GC: 0.0ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 1.4ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 41.3ms | GC: 1.3ms)
+Completed 200 OK in 45ms (Views: 36.9ms | ActiveRecord: 6.4ms (4 queries, 0 cached) | GC: 1.3ms)
+
+
+Started GET "/dashboards/1/edit" for 127.0.0.1 at 2026-01-05 13:06:02 +0100
+Processing by DashboardsController#edit as HTML
+  Parameters: {"id" => "1"}
+  [1m[36mDashboard Load (2.7ms)[0m  [1m[34mSELECT "dashboards".* FROM "dashboards" WHERE "dashboards"."id" = 1 LIMIT 1 /*action='edit',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/controllers/dashboards_controller.rb:85:in 'DashboardsController#set_dashboard'
+  Rendering layout layouts/application.html.erb
+  Rendering dashboards/edit.html.erb within layouts/application
+  Rendered dashboards/_form.html.erb (Duration: 13.1ms | GC: 1.4ms)
+  Rendered dashboards/edit.html.erb within layouts/application (Duration: 23.1ms | GC: 1.4ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 0.5ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 29.4ms | GC: 1.4ms)
+Completed 200 OK in 45ms (Views: 31.8ms | ActiveRecord: 2.6ms (1 query, 0 cached) | GC: 1.4ms)
+
+
+Started GET "/dashboards" for 127.0.0.1 at 2026-01-05 13:06:04 +0100
+Processing by DashboardsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering dashboards/index.html.erb within layouts/application
+  [1m[36mDashboard Exists? (2.0ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboards" LIMIT 1 /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:24
+  [1m[36mDashboard Load (1.7ms)[0m  [1m[34mSELECT "dashboards".* FROM "dashboards" /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:26
+  [1m[36mDashboardWidget Count (2.8ms)[0m  [1m[34mSELECT COUNT(*) FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 1 /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:50
+  [1m[36mUser Count (2.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "users" INNER JOIN "dashboard_user_roles" ON "users"."id" = "dashboard_user_roles"."user_id" WHERE "dashboard_user_roles"."dashboard_id" = 1 /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:54
+  Rendered dashboards/index.html.erb within layouts/application (Duration: 34.5ms | GC: 1.2ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 0.6ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 45.4ms | GC: 1.2ms)
+Completed 200 OK in 54ms (Views: 40.0ms | ActiveRecord: 8.8ms (4 queries, 0 cached) | GC: 1.2ms)
+
+
+Started GET "/dashboards/1" for 127.0.0.1 at 2026-01-05 13:06:05 +0100
+Processing by DashboardsController#show as HTML
+  Parameters: {"id" => "1"}
+  [1m[36mDashboard Load (2.0ms)[0m  [1m[34mSELECT "dashboards".* FROM "dashboards" WHERE "dashboards"."id" = 1 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/controllers/dashboards_controller.rb:85:in 'DashboardsController#set_dashboard'
+  Rendering layout layouts/application.html.erb
+  Rendering dashboards/show.html.erb within layouts/application
+  [1m[36mUser Count (1.7ms)[0m  [1m[34mSELECT COUNT(*) FROM "users" INNER JOIN "dashboard_user_roles" ON "users"."id" = "dashboard_user_roles"."user_id" WHERE "dashboard_user_roles"."dashboard_id" = 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:32
+  [1m[36mDashboardWidget Exists? (1.4ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 1 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:85
+  [1m[36mDashboardWidget Load (1.8ms)[0m  [1m[34mSELECT "dashboard_widgets".* FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 1 ORDER BY "dashboard_widgets"."position_y" ASC, "dashboard_widgets"."position_x" ASC /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:101
+  [1m[36mDashboardUserRole Exists? (2.0ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboard_user_roles" WHERE "dashboard_user_roles"."dashboard_id" = 1 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:193
+  Rendered dashboards/show.html.erb within layouts/application (Duration: 32.2ms | GC: 0.7ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 0.4ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 36.2ms | GC: 0.7ms)
+Completed 200 OK in 49ms (Views: 30.9ms | ActiveRecord: 8.9ms (5 queries, 0 cached) | GC: 0.7ms)
+
+
+Started GET "/widgets" for 127.0.0.1 at 2026-01-05 13:06:06 +0100
+Processing by WidgetsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering widgets/index.html.erb within layouts/application
+  [1m[36mWidget Load (4.8ms)[0m  [1m[34mSELECT "widgets".* FROM "widgets" /*action='index',application='Widgetlab',controller='widgets'*/[0m
+  ↳ app/views/widgets/index.html.erb:9
+  Rendered widgets/index.html.erb within layouts/application (Duration: 10.4ms | GC: 0.0ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 0.4ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 15.5ms | GC: 0.0ms)
+Completed 200 OK in 29ms (Views: 12.4ms | ActiveRecord: 4.7ms (1 query, 0 cached) | GC: 0.5ms)
+
+
+Started GET "/dashboards/1" for 127.0.0.1 at 2026-01-05 13:06:07 +0100
+Processing by DashboardsController#show as HTML
+  Parameters: {"id" => "1"}
+  [1m[36mDashboard Load (2.2ms)[0m  [1m[34mSELECT "dashboards".* FROM "dashboards" WHERE "dashboards"."id" = 1 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/controllers/dashboards_controller.rb:85:in 'DashboardsController#set_dashboard'
+  Rendering layout layouts/application.html.erb
+  Rendering dashboards/show.html.erb within layouts/application
+  [1m[36mUser Count (1.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "users" INNER JOIN "dashboard_user_roles" ON "users"."id" = "dashboard_user_roles"."user_id" WHERE "dashboard_user_roles"."dashboard_id" = 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:32
+  [1m[36mDashboardWidget Exists? (1.7ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 1 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:85
+  [1m[36mDashboardWidget Load (1.2ms)[0m  [1m[34mSELECT "dashboard_widgets".* FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 1 ORDER BY "dashboard_widgets"."position_y" ASC, "dashboard_widgets"."position_x" ASC /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:101
+  [1m[36mDashboardUserRole Exists? (1.7ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboard_user_roles" WHERE "dashboard_user_roles"."dashboard_id" = 1 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:193
+  Rendered dashboards/show.html.erb within layouts/application (Duration: 26.4ms | GC: 0.8ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 0.6ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 31.4ms | GC: 0.8ms)
+Completed 200 OK in 41ms (Views: 26.9ms | ActiveRecord: 8.0ms (5 queries, 0 cached) | GC: 1.6ms)
+
+
+Started GET "/dashboards" for 127.0.0.1 at 2026-01-05 13:06:08 +0100
+Processing by DashboardsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering dashboards/index.html.erb within layouts/application
+  [1m[36mDashboard Exists? (1.1ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboards" LIMIT 1 /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:24
+  [1m[36mDashboard Load (1.3ms)[0m  [1m[34mSELECT "dashboards".* FROM "dashboards" /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:26
+  [1m[36mDashboardWidget Count (1.7ms)[0m  [1m[34mSELECT COUNT(*) FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 1 /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:50
+  [1m[36mUser Count (4.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "users" INNER JOIN "dashboard_user_roles" ON "users"."id" = "dashboard_user_roles"."user_id" WHERE "dashboard_user_roles"."dashboard_id" = 1 /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:54
+  Rendered dashboards/index.html.erb within layouts/application (Duration: 55.1ms | GC: 31.4ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 10.1ms | GC: 9.8ms)
+  Rendered layout layouts/application.html.erb (Duration: 71.4ms | GC: 42.8ms)
+Completed 200 OK in 81ms (Views: 64.5ms | ActiveRecord: 8.4ms (4 queries, 0 cached) | GC: 49.0ms)
+
+
+Started GET "/dashboards" for 127.0.0.1 at 2026-01-05 13:06:09 +0100
+Processing by DashboardsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering dashboards/index.html.erb within layouts/application
+  [1m[36mDashboard Exists? (1.3ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboards" LIMIT 1 /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:24
+  [1m[36mDashboard Load (1.6ms)[0m  [1m[34mSELECT "dashboards".* FROM "dashboards" /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:26
+  [1m[36mDashboardWidget Count (1.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 1 /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:50
+  [1m[36mUser Count (2.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "users" INNER JOIN "dashboard_user_roles" ON "users"."id" = "dashboard_user_roles"."user_id" WHERE "dashboard_user_roles"."dashboard_id" = 1 /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:54
+  Rendered dashboards/index.html.erb within layouts/application (Duration: 36.8ms | GC: 11.1ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 0.4ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 47.3ms | GC: 16.0ms)
+Completed 200 OK in 54ms (Views: 42.6ms | ActiveRecord: 6.2ms (4 queries, 0 cached) | GC: 18.9ms)
+
+
+Started GET "/users" for 127.0.0.1 at 2026-01-05 13:06:14 +0100
+Processing by UsersController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering users/index.html.erb within layouts/application
+  [1m[36mUser Load (1.7ms)[0m  [1m[34mSELECT "users".* FROM "users" /*action='index',application='Widgetlab',controller='users'*/[0m
+  ↳ app/views/users/index.html.erb:9
+  Rendered users/index.html.erb within layouts/application (Duration: 17.8ms | GC: 8.8ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 0.5ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 25.2ms | GC: 10.3ms)
+Completed 200 OK in 34ms (Views: 29.6ms | ActiveRecord: 1.7ms (1 query, 0 cached) | GC: 14.5ms)
+
+
+Started GET "/user_groups" for 127.0.0.1 at 2026-01-05 13:06:14 +0100
+Processing by UserGroupsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering user_groups/index.html.erb within layouts/application
+  [1m[36mUserGroup Load (4.9ms)[0m  [1m[34mSELECT "user_groups".* FROM "user_groups" /*action='index',application='Widgetlab',controller='user_groups'*/[0m
+  ↳ app/views/user_groups/index.html.erb:9
+  Rendered user_groups/index.html.erb within layouts/application (Duration: 18.9ms | GC: 9.3ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 0.3ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 23.7ms | GC: 10.5ms)
+Completed 200 OK in 66ms (Views: 22.6ms | ActiveRecord: 4.9ms (1 query, 0 cached) | GC: 40.7ms)
+
+
+Started GET "/users" for 127.0.0.1 at 2026-01-05 13:06:15 +0100
+Processing by UsersController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering users/index.html.erb within layouts/application
+  [1m[36mUser Load (1.0ms)[0m  [1m[34mSELECT "users".* FROM "users" /*action='index',application='Widgetlab',controller='users'*/[0m
+  ↳ app/views/users/index.html.erb:9
+  Rendered users/index.html.erb within layouts/application (Duration: 22.3ms | GC: 16.5ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 0.4ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 25.2ms | GC: 16.5ms)
+Completed 200 OK in 29ms (Views: 25.3ms | ActiveRecord: 1.1ms (1 query, 0 cached) | GC: 17.6ms)
+
+
+Started GET "/data_sources" for 127.0.0.1 at 2026-01-05 13:06:15 +0100
+Processing by DataSourcesController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering data_sources/index.html.erb within layouts/application
+  [1m[36mDataSource Load (4.1ms)[0m  [1m[34mSELECT "data_sources".* FROM "data_sources" /*action='index',application='Widgetlab',controller='data_sources'*/[0m
+  ↳ app/views/data_sources/index.html.erb:9
+  Rendered data_sources/index.html.erb within layouts/application (Duration: 7.3ms | GC: 0.0ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 0.5ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 10.6ms | GC: 0.0ms)
+Completed 200 OK in 24ms (Views: 8.5ms | ActiveRecord: 4.1ms (1 query, 0 cached) | GC: 2.3ms)
+
+
+Started GET "/widgets" for 127.0.0.1 at 2026-01-05 13:06:16 +0100
+Processing by WidgetsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering widgets/index.html.erb within layouts/application
+  [1m[36mWidget Load (1.6ms)[0m  [1m[34mSELECT "widgets".* FROM "widgets" /*action='index',application='Widgetlab',controller='widgets'*/[0m
+  ↳ app/views/widgets/index.html.erb:9
+  Rendered widgets/index.html.erb within layouts/application (Duration: 5.2ms | GC: 0.0ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 0.2ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 8.2ms | GC: 0.0ms)
+Completed 200 OK in 11ms (Views: 7.7ms | ActiveRecord: 1.6ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/dashboards" for 127.0.0.1 at 2026-01-05 13:06:17 +0100
+Processing by DashboardsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering dashboards/index.html.erb within layouts/application
+  [1m[36mDashboard Exists? (1.4ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboards" LIMIT 1 /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:24
+  [1m[36mDashboard Load (1.4ms)[0m  [1m[34mSELECT "dashboards".* FROM "dashboards" /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:26
+  [1m[36mDashboardWidget Count (1.5ms)[0m  [1m[34mSELECT COUNT(*) FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 1 /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:50
+  [1m[36mUser Count (1.9ms)[0m  [1m[34mSELECT COUNT(*) FROM "users" INNER JOIN "dashboard_user_roles" ON "users"."id" = "dashboard_user_roles"."user_id" WHERE "dashboard_user_roles"."dashboard_id" = 1 /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:54
+  Rendered dashboards/index.html.erb within layouts/application (Duration: 21.9ms | GC: 0.0ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 0.3ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 25.2ms | GC: 0.0ms)
+Completed 200 OK in 28ms (Views: 20.0ms | ActiveRecord: 6.1ms (4 queries, 0 cached) | GC: 0.7ms)
+
+
+Started GET "/dashboards/new" for 127.0.0.1 at 2026-01-05 13:06:18 +0100
+Processing by DashboardsController#new as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering dashboards/new.html.erb within layouts/application
+  Rendered dashboards/_form.html.erb (Duration: 3.3ms | GC: 0.0ms)
+  Rendered dashboards/new.html.erb within layouts/application (Duration: 3.8ms | GC: 0.0ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 0.3ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 7.8ms | GC: 0.0ms)
+Completed 200 OK in 11ms (Views: 9.1ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.7ms)
+
+
+Started GET "/dashboards" for 127.0.0.1 at 2026-01-05 13:06:22 +0100
+Processing by DashboardsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering dashboards/index.html.erb within layouts/application
+  [1m[36mDashboard Exists? (1.8ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboards" LIMIT 1 /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:24
+  [1m[36mDashboard Load (2.3ms)[0m  [1m[34mSELECT "dashboards".* FROM "dashboards" /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:26
+  [1m[36mDashboardWidget Count (2.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 1 /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:50
+  [1m[36mUser Count (2.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "users" INNER JOIN "dashboard_user_roles" ON "users"."id" = "dashboard_user_roles"."user_id" WHERE "dashboard_user_roles"."dashboard_id" = 1 /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:54
+  Rendered dashboards/index.html.erb within layouts/application (Duration: 31.1ms | GC: 0.0ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 0.2ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 33.8ms | GC: 0.0ms)
+Completed 200 OK in 36ms (Views: 27.0ms | ActiveRecord: 8.0ms (4 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/dashboards/1" for 127.0.0.1 at 2026-01-05 13:06:23 +0100
+Processing by DashboardsController#show as HTML
+  Parameters: {"id" => "1"}
+  [1m[36mDashboard Load (2.1ms)[0m  [1m[34mSELECT "dashboards".* FROM "dashboards" WHERE "dashboards"."id" = 1 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/controllers/dashboards_controller.rb:85:in 'DashboardsController#set_dashboard'
+  Rendering layout layouts/application.html.erb
+  Rendering dashboards/show.html.erb within layouts/application
+  [1m[36mUser Count (2.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "users" INNER JOIN "dashboard_user_roles" ON "users"."id" = "dashboard_user_roles"."user_id" WHERE "dashboard_user_roles"."dashboard_id" = 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:32
+  [1m[36mDashboardWidget Exists? (1.6ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 1 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:85
+  [1m[36mDashboardWidget Load (2.1ms)[0m  [1m[34mSELECT "dashboard_widgets".* FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 1 ORDER BY "dashboard_widgets"."position_y" ASC, "dashboard_widgets"."position_x" ASC /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:101
+  [1m[36mDashboardUserRole Exists? (1.4ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboard_user_roles" WHERE "dashboard_user_roles"."dashboard_id" = 1 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:193
+  Rendered dashboards/show.html.erb within layouts/application (Duration: 38.1ms | GC: 0.0ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 0.6ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 43.5ms | GC: 0.0ms)
+Completed 200 OK in 59ms (Views: 41.7ms | ActiveRecord: 9.2ms (5 queries, 0 cached) | GC: 0.3ms)
+
+
+Started GET "/dashboards/new" for 127.0.0.1 at 2026-01-05 13:06:24 +0100
+Processing by DashboardsController#new as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering dashboards/new.html.erb within layouts/application
+  Rendered dashboards/_form.html.erb (Duration: 6.9ms | GC: 0.0ms)
+  Rendered dashboards/new.html.erb within layouts/application (Duration: 7.5ms | GC: 0.0ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 0.3ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 10.0ms | GC: 0.0ms)
+Completed 200 OK in 13ms (Views: 11.3ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/dashboards" for 127.0.0.1 at 2026-01-05 13:06:34 +0100
+Processing by DashboardsController#create as TURBO_STREAM
+  Parameters: {"authenticity_token" => "[FILTERED]", "dashboard" => {"name" => "Aktien", "icon" => "📈", "columns" => "3", "is_public" => "1"}, "commit" => "Dashboard erstellen"}
+  [1m[36mTRANSACTION (1.7ms)[0m  [1m[35mBEGIN /*action='create',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/controllers/dashboards_controller.rb:27:in 'block in DashboardsController#create'
+  [1m[36mDashboard Create (20.8ms)[0m  [1m[32mINSERT INTO "dashboards" ("columns", "created_at", "icon", "is_public", "name", "updated_at") VALUES (3, '2026-01-05 12:06:34.339034', '📈', TRUE, 'Aktien', '2026-01-05 12:06:34.339034') RETURNING "id" /*action='create',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/controllers/dashboards_controller.rb:27:in 'block in DashboardsController#create'
+  [1m[36mTRANSACTION (13.1ms)[0m  [1m[35mCOMMIT /*action='create',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/controllers/dashboards_controller.rb:27:in 'block in DashboardsController#create'
+Redirected to http://127.0.0.1:3000/dashboards/2
+↳ app/controllers/dashboards_controller.rb:28:in 'block (2 levels) in DashboardsController#create'
+Completed 302 Found in 47ms (ActiveRecord: 35.6ms (1 query, 0 cached) | GC: 0.3ms)
+
+
+Started GET "/dashboards/2" for 127.0.0.1 at 2026-01-05 13:06:34 +0100
+Processing by DashboardsController#show as TURBO_STREAM
+  Parameters: {"id" => "2"}
+  [1m[36mDashboard Load (2.9ms)[0m  [1m[34mSELECT "dashboards".* FROM "dashboards" WHERE "dashboards"."id" = 2 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/controllers/dashboards_controller.rb:85:in 'DashboardsController#set_dashboard'
+  Rendering layout layouts/application.html.erb
+  Rendering dashboards/show.html.erb within layouts/application
+  [1m[36mUser Count (2.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "users" INNER JOIN "dashboard_user_roles" ON "users"."id" = "dashboard_user_roles"."user_id" WHERE "dashboard_user_roles"."dashboard_id" = 2 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:32
+  [1m[36mDashboardWidget Exists? (1.3ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 2 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:85
+  [1m[36mDashboardWidget Load (1.5ms)[0m  [1m[34mSELECT "dashboard_widgets".* FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 2 ORDER BY "dashboard_widgets"."position_y" ASC, "dashboard_widgets"."position_x" ASC /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:101
+  [1m[36mDashboardUserRole Exists? (1.7ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboard_user_roles" WHERE "dashboard_user_roles"."dashboard_id" = 2 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:193
+  Rendered dashboards/show.html.erb within layouts/application (Duration: 25.5ms | GC: 1.7ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 0.3ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 29.5ms | GC: 1.7ms)
+Completed 200 OK in 38ms (Views: 23.0ms | ActiveRecord: 11.0ms (5 queries, 0 cached) | GC: 1.7ms)
+
+
+Started GET "/dashboards" for 127.0.0.1 at 2026-01-05 13:06:41 +0100
+Processing by DashboardsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering dashboards/index.html.erb within layouts/application
+  [1m[36mDashboard Exists? (1.7ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboards" LIMIT 1 /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:24
+  [1m[36mDashboard Load (1.7ms)[0m  [1m[34mSELECT "dashboards".* FROM "dashboards" /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:26
+  [1m[36mDashboardWidget Count (1.7ms)[0m  [1m[34mSELECT COUNT(*) FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 1 /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:50
+  [1m[36mUser Count (2.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "users" INNER JOIN "dashboard_user_roles" ON "users"."id" = "dashboard_user_roles"."user_id" WHERE "dashboard_user_roles"."dashboard_id" = 1 /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:54
+  [1m[36mDashboardWidget Count (5.5ms)[0m  [1m[34mSELECT COUNT(*) FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 2 /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:50
+  [1m[36mUser Count (3.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "users" INNER JOIN "dashboard_user_roles" ON "users"."id" = "dashboard_user_roles"."user_id" WHERE "dashboard_user_roles"."dashboard_id" = 2 /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:54
+  Rendered dashboards/index.html.erb within layouts/application (Duration: 58.7ms | GC: 0.0ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 0.5ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 63.6ms | GC: 0.0ms)
+Completed 200 OK in 70ms (Views: 50.5ms | ActiveRecord: 15.6ms (6 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/dashboards/1" for 127.0.0.1 at 2026-01-05 13:06:42 +0100
+Processing by DashboardsController#show as HTML
+  Parameters: {"id" => "1"}
+  [1m[36mDashboard Load (1.8ms)[0m  [1m[34mSELECT "dashboards".* FROM "dashboards" WHERE "dashboards"."id" = 1 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/controllers/dashboards_controller.rb:85:in 'DashboardsController#set_dashboard'
+  Rendering layout layouts/application.html.erb
+  Rendering dashboards/show.html.erb within layouts/application
+  [1m[36mUser Count (2.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "users" INNER JOIN "dashboard_user_roles" ON "users"."id" = "dashboard_user_roles"."user_id" WHERE "dashboard_user_roles"."dashboard_id" = 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:32
+  [1m[36mDashboardWidget Exists? (1.6ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 1 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:85
+  [1m[36mDashboardWidget Load (2.2ms)[0m  [1m[34mSELECT "dashboard_widgets".* FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 1 ORDER BY "dashboard_widgets"."position_y" ASC, "dashboard_widgets"."position_x" ASC /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:101
+  [1m[36mDashboardUserRole Exists? (1.9ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboard_user_roles" WHERE "dashboard_user_roles"."dashboard_id" = 1 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:193
+  Rendered dashboards/show.html.erb within layouts/application (Duration: 52.1ms | GC: 0.0ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 0.5ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 62.9ms | GC: 0.0ms)
+Completed 200 OK in 82ms (Views: 57.4ms | ActiveRecord: 9.5ms (5 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/dashboards/2" for 127.0.0.1 at 2026-01-05 13:06:43 +0100
+Processing by DashboardsController#show as HTML
+  Parameters: {"id" => "2"}
+  [1m[36mDashboard Load (1.3ms)[0m  [1m[34mSELECT "dashboards".* FROM "dashboards" WHERE "dashboards"."id" = 2 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/controllers/dashboards_controller.rb:85:in 'DashboardsController#set_dashboard'
+  Rendering layout layouts/application.html.erb
+  Rendering dashboards/show.html.erb within layouts/application
+  [1m[36mUser Count (2.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "users" INNER JOIN "dashboard_user_roles" ON "users"."id" = "dashboard_user_roles"."user_id" WHERE "dashboard_user_roles"."dashboard_id" = 2 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:32
+  [1m[36mDashboardWidget Exists? (1.8ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 2 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:85
+  [1m[36mDashboardWidget Load (2.3ms)[0m  [1m[34mSELECT "dashboard_widgets".* FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 2 ORDER BY "dashboard_widgets"."position_y" ASC, "dashboard_widgets"."position_x" ASC /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:101
+  [1m[36mDashboardUserRole Exists? (1.8ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboard_user_roles" WHERE "dashboard_user_roles"."dashboard_id" = 2 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:193
+  Rendered dashboards/show.html.erb within layouts/application (Duration: 34.3ms | GC: 0.0ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 0.9ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 48.3ms | GC: 0.0ms)
+Completed 200 OK in 56ms (Views: 43.1ms | ActiveRecord: 9.0ms (5 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/dashboards/1" for 127.0.0.1 at 2026-01-05 13:06:46 +0100
+Processing by DashboardsController#show as HTML
+  Parameters: {"id" => "1"}
+  [1m[36mDashboard Load (1.2ms)[0m  [1m[34mSELECT "dashboards".* FROM "dashboards" WHERE "dashboards"."id" = 1 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/controllers/dashboards_controller.rb:85:in 'DashboardsController#set_dashboard'
+  Rendering layout layouts/application.html.erb
+  Rendering dashboards/show.html.erb within layouts/application
+  [1m[36mUser Count (2.9ms)[0m  [1m[34mSELECT COUNT(*) FROM "users" INNER JOIN "dashboard_user_roles" ON "users"."id" = "dashboard_user_roles"."user_id" WHERE "dashboard_user_roles"."dashboard_id" = 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:32
+  [1m[36mDashboardWidget Exists? (1.8ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 1 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:85
+  [1m[36mDashboardWidget Load (2.1ms)[0m  [1m[34mSELECT "dashboard_widgets".* FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 1 ORDER BY "dashboard_widgets"."position_y" ASC, "dashboard_widgets"."position_x" ASC /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:101
+  [1m[36mDashboardUserRole Exists? (1.5ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboard_user_roles" WHERE "dashboard_user_roles"."dashboard_id" = 1 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:193
+  Rendered dashboards/show.html.erb within layouts/application (Duration: 38.2ms | GC: 0.0ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 0.5ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 54.9ms | GC: 8.9ms)
+Completed 200 OK in 63ms (Views: 48.8ms | ActiveRecord: 9.2ms (5 queries, 0 cached) | GC: 8.9ms)
+
+
+Started GET "/dashboards/2" for 127.0.0.1 at 2026-01-05 13:06:46 +0100
+Processing by DashboardsController#show as HTML
+  Parameters: {"id" => "2"}
+  [1m[36mDashboard Load (3.5ms)[0m  [1m[34mSELECT "dashboards".* FROM "dashboards" WHERE "dashboards"."id" = 2 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/controllers/dashboards_controller.rb:85:in 'DashboardsController#set_dashboard'
+  Rendering layout layouts/application.html.erb
+  Rendering dashboards/show.html.erb within layouts/application
+  [1m[36mUser Count (2.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "users" INNER JOIN "dashboard_user_roles" ON "users"."id" = "dashboard_user_roles"."user_id" WHERE "dashboard_user_roles"."dashboard_id" = 2 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:32
+  [1m[36mDashboardWidget Exists? (1.7ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 2 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:85
+  [1m[36mDashboardWidget Load (2.2ms)[0m  [1m[34mSELECT "dashboard_widgets".* FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 2 ORDER BY "dashboard_widgets"."position_y" ASC, "dashboard_widgets"."position_x" ASC /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:101
+  [1m[36mDashboardUserRole Exists? (1.6ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboard_user_roles" WHERE "dashboard_user_roles"."dashboard_id" = 2 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:193
+  Rendered dashboards/show.html.erb within layouts/application (Duration: 50.5ms | GC: 1.7ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 0.5ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 63.3ms | GC: 1.7ms)
+Completed 200 OK in 77ms (Views: 57.6ms | ActiveRecord: 10.9ms (5 queries, 0 cached) | GC: 1.7ms)
+
+
+Started GET "/dashboards/1" for 127.0.0.1 at 2026-01-05 13:06:47 +0100
+Processing by DashboardsController#show as HTML
+  Parameters: {"id" => "1"}
+  [1m[36mDashboard Load (2.1ms)[0m  [1m[34mSELECT "dashboards".* FROM "dashboards" WHERE "dashboards"."id" = 1 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/controllers/dashboards_controller.rb:85:in 'DashboardsController#set_dashboard'
+  Rendering layout layouts/application.html.erb
+  Rendering dashboards/show.html.erb within layouts/application
+  [1m[36mUser Count (2.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "users" INNER JOIN "dashboard_user_roles" ON "users"."id" = "dashboard_user_roles"."user_id" WHERE "dashboard_user_roles"."dashboard_id" = 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:32
+  [1m[36mDashboardWidget Exists? (1.6ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 1 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:85
+  [1m[36mDashboardWidget Load (7.8ms)[0m  [1m[34mSELECT "dashboard_widgets".* FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 1 ORDER BY "dashboard_widgets"."position_y" ASC, "dashboard_widgets"."position_x" ASC /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:101
+  [1m[36mDashboardUserRole Exists? (1.4ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboard_user_roles" WHERE "dashboard_user_roles"."dashboard_id" = 1 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:193
+  Rendered dashboards/show.html.erb within layouts/application (Duration: 40.1ms | GC: 1.6ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 0.5ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 45.6ms | GC: 1.6ms)
+Completed 200 OK in 54ms (Views: 34.4ms | ActiveRecord: 14.9ms (5 queries, 0 cached) | GC: 1.6ms)
+
+
+Started GET "/dashboards/2" for 127.0.0.1 at 2026-01-05 13:06:47 +0100
+Processing by DashboardsController#show as HTML
+  Parameters: {"id" => "2"}
+  [1m[36mDashboard Load (1.5ms)[0m  [1m[34mSELECT "dashboards".* FROM "dashboards" WHERE "dashboards"."id" = 2 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/controllers/dashboards_controller.rb:85:in 'DashboardsController#set_dashboard'
+  Rendering layout layouts/application.html.erb
+  Rendering dashboards/show.html.erb within layouts/application
+  [1m[36mUser Count (3.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "users" INNER JOIN "dashboard_user_roles" ON "users"."id" = "dashboard_user_roles"."user_id" WHERE "dashboard_user_roles"."dashboard_id" = 2 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:32
+  [1m[36mDashboardWidget Exists? (1.6ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 2 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:85
+  [1m[36mDashboardWidget Load (1.8ms)[0m  [1m[34mSELECT "dashboard_widgets".* FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 2 ORDER BY "dashboard_widgets"."position_y" ASC, "dashboard_widgets"."position_x" ASC /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:101
+  [1m[36mDashboardUserRole Exists? (2.0ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboard_user_roles" WHERE "dashboard_user_roles"."dashboard_id" = 2 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:193
+  Rendered dashboards/show.html.erb within layouts/application (Duration: 47.5ms | GC: 0.0ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 0.4ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 52.4ms | GC: 0.0ms)
+Completed 200 OK in 61ms (Views: 46.4ms | ActiveRecord: 10.1ms (5 queries, 0 cached) | GC: 1.0ms)
+
+
+Started GET "/dashboards" for 127.0.0.1 at 2026-01-05 13:06:50 +0100
+Processing by DashboardsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering dashboards/index.html.erb within layouts/application
+  [1m[36mDashboard Exists? (2.1ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboards" LIMIT 1 /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:24
+  [1m[36mDashboard Load (1.8ms)[0m  [1m[34mSELECT "dashboards".* FROM "dashboards" /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:26
+  [1m[36mDashboardWidget Count (1.9ms)[0m  [1m[34mSELECT COUNT(*) FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 1 /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:50
+  [1m[36mUser Count (2.6ms)[0m  [1m[34mSELECT COUNT(*) FROM "users" INNER JOIN "dashboard_user_roles" ON "users"."id" = "dashboard_user_roles"."user_id" WHERE "dashboard_user_roles"."dashboard_id" = 1 /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:54
+  [1m[36mDashboardWidget Count (1.9ms)[0m  [1m[34mSELECT COUNT(*) FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 2 /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:50
+  [1m[36mUser Count (1.9ms)[0m  [1m[34mSELECT COUNT(*) FROM "users" INNER JOIN "dashboard_user_roles" ON "users"."id" = "dashboard_user_roles"."user_id" WHERE "dashboard_user_roles"."dashboard_id" = 2 /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:54
+  Rendered dashboards/index.html.erb within layouts/application (Duration: 56.7ms | GC: 0.0ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 0.8ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 64.1ms | GC: 0.7ms)
+Completed 200 OK in 70ms (Views: 55.2ms | ActiveRecord: 11.9ms (6 queries, 0 cached) | GC: 1.5ms)
+
+
+Started GET "/dashboards/2/edit" for 127.0.0.1 at 2026-01-05 13:06:54 +0100
+Processing by DashboardsController#edit as HTML
+  Parameters: {"id" => "2"}
+  [1m[36mDashboard Load (1.2ms)[0m  [1m[34mSELECT "dashboards".* FROM "dashboards" WHERE "dashboards"."id" = 2 LIMIT 1 /*action='edit',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/controllers/dashboards_controller.rb:85:in 'DashboardsController#set_dashboard'
+  Rendering layout layouts/application.html.erb
+  Rendering dashboards/edit.html.erb within layouts/application
+  Rendered dashboards/_form.html.erb (Duration: 9.8ms | GC: 0.0ms)
+  Rendered dashboards/edit.html.erb within layouts/application (Duration: 10.9ms | GC: 0.0ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 0.3ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 15.1ms | GC: 0.0ms)
+Completed 200 OK in 21ms (Views: 16.2ms | ActiveRecord: 1.2ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/dashboards" for 127.0.0.1 at 2026-01-05 13:06:57 +0100
+Processing by DashboardsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering dashboards/index.html.erb within layouts/application
+  [1m[36mDashboard Exists? (2.1ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboards" LIMIT 1 /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:24
+  [1m[36mDashboard Load (1.6ms)[0m  [1m[34mSELECT "dashboards".* FROM "dashboards" /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:26
+  [1m[36mDashboardWidget Count (1.6ms)[0m  [1m[34mSELECT COUNT(*) FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 1 /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:50
+  [1m[36mUser Count (4.9ms)[0m  [1m[34mSELECT COUNT(*) FROM "users" INNER JOIN "dashboard_user_roles" ON "users"."id" = "dashboard_user_roles"."user_id" WHERE "dashboard_user_roles"."dashboard_id" = 1 /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:54
+  [1m[36mDashboardWidget Count (1.6ms)[0m  [1m[34mSELECT COUNT(*) FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 2 /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:50
+  [1m[36mUser Count (1.8ms)[0m  [1m[34mSELECT COUNT(*) FROM "users" INNER JOIN "dashboard_user_roles" ON "users"."id" = "dashboard_user_roles"."user_id" WHERE "dashboard_user_roles"."dashboard_id" = 2 /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:54
+  Rendered dashboards/index.html.erb within layouts/application (Duration: 58.9ms | GC: 0.0ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 0.8ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 67.1ms | GC: 1.2ms)
+Completed 200 OK in 71ms (Views: 54.3ms | ActiveRecord: 14.5ms (6 queries, 0 cached) | GC: 1.2ms)
+
+
+Started GET "/dashboards" for 127.0.0.1 at 2026-01-05 13:06:59 +0100
+Processing by DashboardsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering dashboards/index.html.erb within layouts/application
+  [1m[36mDashboard Exists? (1.5ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboards" LIMIT 1 /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:24
+  [1m[36mDashboard Load (1.7ms)[0m  [1m[34mSELECT "dashboards".* FROM "dashboards" /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:26
+  [1m[36mDashboardWidget Count (2.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 1 /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:50
+  [1m[36mUser Count (7.7ms)[0m  [1m[34mSELECT COUNT(*) FROM "users" INNER JOIN "dashboard_user_roles" ON "users"."id" = "dashboard_user_roles"."user_id" WHERE "dashboard_user_roles"."dashboard_id" = 1 /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:54
+  [1m[36mDashboardWidget Count (1.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 2 /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:50
+  [1m[36mUser Count (2.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "users" INNER JOIN "dashboard_user_roles" ON "users"."id" = "dashboard_user_roles"."user_id" WHERE "dashboard_user_roles"."dashboard_id" = 2 /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:54
+  Rendered dashboards/index.html.erb within layouts/application (Duration: 44.2ms | GC: 0.0ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 0.4ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 49.7ms | GC: 0.0ms)
+Completed 200 OK in 53ms (Views: 35.2ms | ActiveRecord: 16.2ms (6 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/dashboards" for 127.0.0.1 at 2026-01-05 13:07:02 +0100
+Processing by DashboardsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering dashboards/index.html.erb within layouts/application
+  [1m[36mDashboard Exists? (1.5ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboards" LIMIT 1 /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:24
+  [1m[36mDashboard Load (3.4ms)[0m  [1m[34mSELECT "dashboards".* FROM "dashboards" /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:26
+  [1m[36mDashboardWidget Count (1.8ms)[0m  [1m[34mSELECT COUNT(*) FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 1 /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:50
+  [1m[36mUser Count (2.7ms)[0m  [1m[34mSELECT COUNT(*) FROM "users" INNER JOIN "dashboard_user_roles" ON "users"."id" = "dashboard_user_roles"."user_id" WHERE "dashboard_user_roles"."dashboard_id" = 1 /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:54
+  [1m[36mDashboardWidget Count (2.9ms)[0m  [1m[34mSELECT COUNT(*) FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 2 /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:50
+  [1m[36mUser Count (2.6ms)[0m  [1m[34mSELECT COUNT(*) FROM "users" INNER JOIN "dashboard_user_roles" ON "users"."id" = "dashboard_user_roles"."user_id" WHERE "dashboard_user_roles"."dashboard_id" = 2 /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:54
+  Rendered dashboards/index.html.erb within layouts/application (Duration: 51.1ms | GC: 0.0ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 0.4ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 64.7ms | GC: 0.0ms)
+Completed 200 OK in 67ms (Views: 51.3ms | ActiveRecord: 14.6ms (6 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/dashboards/2" for 127.0.0.1 at 2026-01-05 13:07:03 +0100
+Processing by DashboardsController#show as HTML
+  Parameters: {"id" => "2"}
+  [1m[36mDashboard Load (2.1ms)[0m  [1m[34mSELECT "dashboards".* FROM "dashboards" WHERE "dashboards"."id" = 2 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/controllers/dashboards_controller.rb:85:in 'DashboardsController#set_dashboard'
+  Rendering layout layouts/application.html.erb
+  Rendering dashboards/show.html.erb within layouts/application
+  [1m[36mUser Count (2.6ms)[0m  [1m[34mSELECT COUNT(*) FROM "users" INNER JOIN "dashboard_user_roles" ON "users"."id" = "dashboard_user_roles"."user_id" WHERE "dashboard_user_roles"."dashboard_id" = 2 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:32
+  [1m[36mDashboardWidget Exists? (2.0ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 2 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:85
+  [1m[36mDashboardWidget Load (3.8ms)[0m  [1m[34mSELECT "dashboard_widgets".* FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 2 ORDER BY "dashboard_widgets"."position_y" ASC, "dashboard_widgets"."position_x" ASC /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:101
+  [1m[36mDashboardUserRole Exists? (2.2ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboard_user_roles" WHERE "dashboard_user_roles"."dashboard_id" = 2 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:193
+  Rendered dashboards/show.html.erb within layouts/application (Duration: 32.2ms | GC: 0.0ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 0.2ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 35.3ms | GC: 0.0ms)
+Completed 200 OK in 49ms (Views: 26.7ms | ActiveRecord: 12.5ms (5 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/dashboards/1" for 127.0.0.1 at 2026-01-05 13:07:04 +0100
+Processing by DashboardsController#show as HTML
+  Parameters: {"id" => "1"}
+  [1m[36mDashboard Load (1.8ms)[0m  [1m[34mSELECT "dashboards".* FROM "dashboards" WHERE "dashboards"."id" = 1 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/controllers/dashboards_controller.rb:85:in 'DashboardsController#set_dashboard'
+  Rendering layout layouts/application.html.erb
+  Rendering dashboards/show.html.erb within layouts/application
+  [1m[36mUser Count (2.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "users" INNER JOIN "dashboard_user_roles" ON "users"."id" = "dashboard_user_roles"."user_id" WHERE "dashboard_user_roles"."dashboard_id" = 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:32
+  [1m[36mDashboardWidget Exists? (1.5ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 1 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:85
+  [1m[36mDashboardWidget Load (1.1ms)[0m  [1m[34mSELECT "dashboard_widgets".* FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 1 ORDER BY "dashboard_widgets"."position_y" ASC, "dashboard_widgets"."position_x" ASC /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:101
+  [1m[36mDashboardUserRole Exists? (2.5ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboard_user_roles" WHERE "dashboard_user_roles"."dashboard_id" = 1 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:193
+  Rendered dashboards/show.html.erb within layouts/application (Duration: 70.0ms | GC: 39.6ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 0.3ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 74.2ms | GC: 39.6ms)
+Completed 200 OK in 85ms (Views: 69.9ms | ActiveRecord: 9.0ms (5 queries, 0 cached) | GC: 39.6ms)
+
+
+Started GET "/dashboards/2" for 127.0.0.1 at 2026-01-05 13:07:05 +0100
+Processing by DashboardsController#show as HTML
+  Parameters: {"id" => "2"}
+  [1m[36mDashboard Load (1.5ms)[0m  [1m[34mSELECT "dashboards".* FROM "dashboards" WHERE "dashboards"."id" = 2 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/controllers/dashboards_controller.rb:85:in 'DashboardsController#set_dashboard'
+  Rendering layout layouts/application.html.erb
+  Rendering dashboards/show.html.erb within layouts/application
+  [1m[36mUser Count (2.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "users" INNER JOIN "dashboard_user_roles" ON "users"."id" = "dashboard_user_roles"."user_id" WHERE "dashboard_user_roles"."dashboard_id" = 2 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:32
+  [1m[36mDashboardWidget Exists? (3.8ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 2 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:85
+  [1m[36mDashboardWidget Load (1.4ms)[0m  [1m[34mSELECT "dashboard_widgets".* FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 2 ORDER BY "dashboard_widgets"."position_y" ASC, "dashboard_widgets"."position_x" ASC /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:101
+  [1m[36mDashboardUserRole Exists? (1.1ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboard_user_roles" WHERE "dashboard_user_roles"."dashboard_id" = 2 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:193
+  Rendered dashboards/show.html.erb within layouts/application (Duration: 30.0ms | GC: 1.5ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 0.3ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 41.0ms | GC: 1.5ms)
+Completed 200 OK in 51ms (Views: 35.6ms | ActiveRecord: 9.8ms (5 queries, 0 cached) | GC: 1.5ms)
+
+
+Started GET "/dashboards/new" for 127.0.0.1 at 2026-01-05 13:07:06 +0100
+Processing by DashboardsController#new as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering dashboards/new.html.erb within layouts/application
+  Rendered dashboards/_form.html.erb (Duration: 3.6ms | GC: 0.0ms)
+  Rendered dashboards/new.html.erb within layouts/application (Duration: 5.2ms | GC: 0.0ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 0.2ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 9.8ms | GC: 0.0ms)
+Completed 200 OK in 14ms (Views: 11.0ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 1.3ms)
+
+
+Started GET "/dashboards/2" for 127.0.0.1 at 2026-01-05 13:07:06 +0100
+Processing by DashboardsController#show as HTML
+  Parameters: {"id" => "2"}
+  [1m[36mDashboard Load (1.1ms)[0m  [1m[34mSELECT "dashboards".* FROM "dashboards" WHERE "dashboards"."id" = 2 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/controllers/dashboards_controller.rb:85:in 'DashboardsController#set_dashboard'
+  Rendering layout layouts/application.html.erb
+  Rendering dashboards/show.html.erb within layouts/application
+  [1m[36mUser Count (1.7ms)[0m  [1m[34mSELECT COUNT(*) FROM "users" INNER JOIN "dashboard_user_roles" ON "users"."id" = "dashboard_user_roles"."user_id" WHERE "dashboard_user_roles"."dashboard_id" = 2 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:32
+  [1m[36mDashboardWidget Exists? (1.8ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 2 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:85
+  [1m[36mDashboardWidget Load (2.2ms)[0m  [1m[34mSELECT "dashboard_widgets".* FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 2 ORDER BY "dashboard_widgets"."position_y" ASC, "dashboard_widgets"."position_x" ASC /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:101
+  [1m[36mDashboardUserRole Exists? (1.4ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboard_user_roles" WHERE "dashboard_user_roles"."dashboard_id" = 2 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:193
+  Rendered dashboards/show.html.erb within layouts/application (Duration: 25.0ms | GC: 0.0ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 0.6ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 32.4ms | GC: 1.6ms)
+Completed 200 OK in 43ms (Views: 27.9ms | ActiveRecord: 8.0ms (5 queries, 0 cached) | GC: 1.6ms)
+
+
+Started GET "/dashboards/1" for 127.0.0.1 at 2026-01-05 13:07:06 +0100
+Processing by DashboardsController#show as HTML
+  Parameters: {"id" => "1"}
+  [1m[36mDashboard Load (2.1ms)[0m  [1m[34mSELECT "dashboards".* FROM "dashboards" WHERE "dashboards"."id" = 1 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/controllers/dashboards_controller.rb:85:in 'DashboardsController#set_dashboard'
+  Rendering layout layouts/application.html.erb
+  Rendering dashboards/show.html.erb within layouts/application
+  [1m[36mUser Count (1.9ms)[0m  [1m[34mSELECT COUNT(*) FROM "users" INNER JOIN "dashboard_user_roles" ON "users"."id" = "dashboard_user_roles"."user_id" WHERE "dashboard_user_roles"."dashboard_id" = 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:32
+  [1m[36mDashboardWidget Exists? (1.6ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 1 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:85
+  [1m[36mDashboardWidget Load (1.5ms)[0m  [1m[34mSELECT "dashboard_widgets".* FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 1 ORDER BY "dashboard_widgets"."position_y" ASC, "dashboard_widgets"."position_x" ASC /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:101
+  [1m[36mDashboardUserRole Exists? (2.1ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboard_user_roles" WHERE "dashboard_user_roles"."dashboard_id" = 1 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:193
+  Rendered dashboards/show.html.erb within layouts/application (Duration: 38.0ms | GC: 0.0ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 0.5ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 43.2ms | GC: 0.0ms)
+Completed 200 OK in 55ms (Views: 38.6ms | ActiveRecord: 9.1ms (5 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/dashboards/2" for 127.0.0.1 at 2026-01-05 13:07:09 +0100
+Processing by DashboardsController#show as HTML
+  Parameters: {"id" => "2"}
+  [1m[36mDashboard Load (4.3ms)[0m  [1m[34mSELECT "dashboards".* FROM "dashboards" WHERE "dashboards"."id" = 2 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/controllers/dashboards_controller.rb:85:in 'DashboardsController#set_dashboard'
+  Rendering layout layouts/application.html.erb
+  Rendering dashboards/show.html.erb within layouts/application
+  [1m[36mUser Count (2.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "users" INNER JOIN "dashboard_user_roles" ON "users"."id" = "dashboard_user_roles"."user_id" WHERE "dashboard_user_roles"."dashboard_id" = 2 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:32
+  [1m[36mDashboardWidget Exists? (1.9ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 2 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:85
+  [1m[36mDashboardWidget Load (2.7ms)[0m  [1m[34mSELECT "dashboard_widgets".* FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 2 ORDER BY "dashboard_widgets"."position_y" ASC, "dashboard_widgets"."position_x" ASC /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:101
+  [1m[36mDashboardUserRole Exists? (1.4ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboard_user_roles" WHERE "dashboard_user_roles"."dashboard_id" = 2 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:193
+  Rendered dashboards/show.html.erb within layouts/application (Duration: 37.4ms | GC: 0.6ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 0.4ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 42.8ms | GC: 0.6ms)
+Completed 200 OK in 56ms (Views: 36.8ms | ActiveRecord: 12.4ms (5 queries, 0 cached) | GC: 0.6ms)
+
+
+Started GET "/dashboards/2" for 127.0.0.1 at 2026-01-05 13:07:10 +0100
+Processing by DashboardsController#show as HTML
+  Parameters: {"id" => "2"}
+  [1m[36mDashboard Load (1.3ms)[0m  [1m[34mSELECT "dashboards".* FROM "dashboards" WHERE "dashboards"."id" = 2 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/controllers/dashboards_controller.rb:85:in 'DashboardsController#set_dashboard'
+  Rendering layout layouts/application.html.erb
+  Rendering dashboards/show.html.erb within layouts/application
+  [1m[36mUser Count (1.7ms)[0m  [1m[34mSELECT COUNT(*) FROM "users" INNER JOIN "dashboard_user_roles" ON "users"."id" = "dashboard_user_roles"."user_id" WHERE "dashboard_user_roles"."dashboard_id" = 2 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:32
+  [1m[36mDashboardWidget Exists? (1.2ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 2 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:85
+  [1m[36mDashboardWidget Load (1.8ms)[0m  [1m[34mSELECT "dashboard_widgets".* FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 2 ORDER BY "dashboard_widgets"."position_y" ASC, "dashboard_widgets"."position_x" ASC /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:101
+  [1m[36mDashboardUserRole Exists? (1.3ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboard_user_roles" WHERE "dashboard_user_roles"."dashboard_id" = 2 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:193
+  Rendered dashboards/show.html.erb within layouts/application (Duration: 20.0ms | GC: 0.0ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 0.3ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 24.5ms | GC: 0.5ms)
+Completed 200 OK in 34ms (Views: 19.9ms | ActiveRecord: 7.2ms (5 queries, 0 cached) | GC: 0.5ms)
+
+
+Started GET "/dashboards/1" for 127.0.0.1 at 2026-01-05 13:07:10 +0100
+Processing by DashboardsController#show as HTML
+  Parameters: {"id" => "1"}
+  [1m[36mDashboard Load (1.4ms)[0m  [1m[34mSELECT "dashboards".* FROM "dashboards" WHERE "dashboards"."id" = 1 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/controllers/dashboards_controller.rb:85:in 'DashboardsController#set_dashboard'
+  Rendering layout layouts/application.html.erb
+  Rendering dashboards/show.html.erb within layouts/application
+  [1m[36mUser Count (1.5ms)[0m  [1m[34mSELECT COUNT(*) FROM "users" INNER JOIN "dashboard_user_roles" ON "users"."id" = "dashboard_user_roles"."user_id" WHERE "dashboard_user_roles"."dashboard_id" = 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:32
+  [1m[36mDashboardWidget Exists? (1.8ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 1 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:85
+  [1m[36mDashboardWidget Load (1.3ms)[0m  [1m[34mSELECT "dashboard_widgets".* FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 1 ORDER BY "dashboard_widgets"."position_y" ASC, "dashboard_widgets"."position_x" ASC /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:101
+  [1m[36mDashboardUserRole Exists? (3.3ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboard_user_roles" WHERE "dashboard_user_roles"."dashboard_id" = 1 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:193
+  Rendered dashboards/show.html.erb within layouts/application (Duration: 31.2ms | GC: 0.2ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 0.5ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 37.4ms | GC: 2.2ms)
+Completed 200 OK in 48ms (Views: 31.7ms | ActiveRecord: 9.2ms (5 queries, 0 cached) | GC: 2.2ms)
+
+
+Started GET "/dashboards" for 127.0.0.1 at 2026-01-05 13:07:11 +0100
+Processing by DashboardsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering dashboards/index.html.erb within layouts/application
+  [1m[36mDashboard Exists? (1.1ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboards" LIMIT 1 /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:24
+  [1m[36mDashboard Load (1.6ms)[0m  [1m[34mSELECT "dashboards".* FROM "dashboards" /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:26
+  [1m[36mDashboardWidget Count (1.7ms)[0m  [1m[34mSELECT COUNT(*) FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 1 /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:50
+  [1m[36mUser Count (2.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "users" INNER JOIN "dashboard_user_roles" ON "users"."id" = "dashboard_user_roles"."user_id" WHERE "dashboard_user_roles"."dashboard_id" = 1 /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:54
+  [1m[36mDashboardWidget Count (1.7ms)[0m  [1m[34mSELECT COUNT(*) FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 2 /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:50
+  [1m[36mUser Count (1.7ms)[0m  [1m[34mSELECT COUNT(*) FROM "users" INNER JOIN "dashboard_user_roles" ON "users"."id" = "dashboard_user_roles"."user_id" WHERE "dashboard_user_roles"."dashboard_id" = 2 /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:54
+  Rendered dashboards/index.html.erb within layouts/application (Duration: 35.6ms | GC: 0.0ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 0.4ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 39.9ms | GC: 0.0ms)
+Completed 200 OK in 42ms (Views: 31.6ms | ActiveRecord: 9.6ms (6 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/widgets" for 127.0.0.1 at 2026-01-05 13:07:12 +0100
+Processing by WidgetsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering widgets/index.html.erb within layouts/application
+  [1m[36mWidget Load (1.5ms)[0m  [1m[34mSELECT "widgets".* FROM "widgets" /*action='index',application='Widgetlab',controller='widgets'*/[0m
+  ↳ app/views/widgets/index.html.erb:9
+  Rendered widgets/index.html.erb within layouts/application (Duration: 6.2ms | GC: 0.0ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 0.3ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 8.9ms | GC: 0.0ms)
+Completed 200 OK in 11ms (Views: 8.4ms | ActiveRecord: 1.5ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/dashboards/1" for 127.0.0.1 at 2026-01-05 13:10:42 +0100
+Started GET "/dashboards/2" for 127.0.0.1 at 2026-01-05 13:10:44 +0100
+Processing by DashboardsController#show as HTML
+  Parameters: {"id" => "1"}
+  [1m[36mDashboard Load (3.4ms)[0m  [1m[34mSELECT "dashboards".* FROM "dashboards" WHERE "dashboards"."id" = 1 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/controllers/dashboards_controller.rb:85:in 'DashboardsController#set_dashboard'
+  Rendering layout layouts/application.html.erb
+  Rendering dashboards/show.html.erb within layouts/application
+  [1m[36mUser Count (3.5ms)[0m  [1m[34mSELECT COUNT(*) FROM "users" INNER JOIN "dashboard_user_roles" ON "users"."id" = "dashboard_user_roles"."user_id" WHERE "dashboard_user_roles"."dashboard_id" = 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:32
+  [1m[36mDashboardWidget Exists? (2.4ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 1 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:86
+  [1m[36mDashboardWidget Load (1.5ms)[0m  [1m[34mSELECT "dashboard_widgets".* FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 1 ORDER BY "dashboard_widgets"."position_y" ASC, "dashboard_widgets"."position_x" ASC /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:102
+  [1m[36mDashboardUserRole Exists? (1.5ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboard_user_roles" WHERE "dashboard_user_roles"."dashboard_id" = 1 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:194
+  Rendered dashboards/show.html.erb within layouts/application (Duration: 131.7ms | GC: 2.6ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 3.2ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 173.2ms | GC: 2.9ms)
+Completed 200 OK in 334ms (Views: 152.7ms | ActiveRecord: 81.6ms (5 queries, 0 cached) | GC: 8.2ms)
+
+
+Started GET "/dashboards/2" for 127.0.0.1 at 2026-01-05 13:10:44 +0100
+Started GET "/dashboards/1" for 127.0.0.1 at 2026-01-05 13:10:44 +0100
+Processing by DashboardsController#show as HTML
+  Parameters: {"id" => "2"}
+  [1m[36mDashboard Load (2.2ms)[0m  [1m[34mSELECT "dashboards".* FROM "dashboards" WHERE "dashboards"."id" = 2 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/controllers/dashboards_controller.rb:85:in 'DashboardsController#set_dashboard'
+Processing by DashboardsController#show as HTML
+  Parameters: {"id" => "2"}
+  Rendering layout layouts/application.html.erb
+  Rendering dashboards/show.html.erb within layouts/application
+Processing by DashboardsController#show as HTML
+  Parameters: {"id" => "1"}
+  [1m[36mUser Count (2.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "users" INNER JOIN "dashboard_user_roles" ON "users"."id" = "dashboard_user_roles"."user_id" WHERE "dashboard_user_roles"."dashboard_id" = 2 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:32
+  [1m[36mDashboardWidget Exists? (1.6ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 2 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:86
+  [1m[36mDashboardWidget Load (1.3ms)[0m  [1m[34mSELECT "dashboard_widgets".* FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 2 ORDER BY "dashboard_widgets"."position_y" ASC, "dashboard_widgets"."position_x" ASC /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:102
+  [1m[36mDashboardUserRole Exists? (3.0ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboard_user_roles" WHERE "dashboard_user_roles"."dashboard_id" = 2 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:194
+  Rendered dashboards/show.html.erb within layouts/application (Duration: 129.4ms | GC: 6.6ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 6.4ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 161.4ms | GC: 7.1ms)
+Completed 200 OK in 287ms (Views: 160.3ms | ActiveRecord: 64.9ms (5 queries, 0 cached) | GC: 31.8ms)
+
+
+  [1m[36mDashboard Load (158.0ms)[0m  [1m[34mSELECT "dashboards".* FROM "dashboards" WHERE "dashboards"."id" = 1 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  [1m[36mDashboard Load (171.9ms)[0m  [1m[34mSELECT "dashboards".* FROM "dashboards" WHERE "dashboards"."id" = 2 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/controllers/dashboards_controller.rb:85:in 'DashboardsController#set_dashboard'
+  ↳ app/controllers/dashboards_controller.rb:85:in 'DashboardsController#set_dashboard'
+  Rendering layout layouts/application.html.erb
+  Rendering layout layouts/application.html.erb
+  Rendering dashboards/show.html.erb within layouts/application
+  Rendering dashboards/show.html.erb within layouts/application
+  [1m[36mUser Count (8.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "users" INNER JOIN "dashboard_user_roles" ON "users"."id" = "dashboard_user_roles"."user_id" WHERE "dashboard_user_roles"."dashboard_id" = 2 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  [1m[36mUser Count (11.8ms)[0m  [1m[34mSELECT COUNT(*) FROM "users" INNER JOIN "dashboard_user_roles" ON "users"."id" = "dashboard_user_roles"."user_id" WHERE "dashboard_user_roles"."dashboard_id" = 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:32
+  ↳ app/views/dashboards/show.html.erb:32
+  [1m[36mDashboardWidget Exists? (5.9ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 2 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:86
+  [1m[36mDashboardWidget Exists? (4.5ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 1 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:86
+  [1m[36mDashboardWidget Load (3.9ms)[0m  [1m[34mSELECT "dashboard_widgets".* FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 2 ORDER BY "dashboard_widgets"."position_y" ASC, "dashboard_widgets"."position_x" ASC /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:102
+  [1m[36mDashboardWidget Load (9.1ms)[0m  [1m[34mSELECT "dashboard_widgets".* FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 1 ORDER BY "dashboard_widgets"."position_y" ASC, "dashboard_widgets"."position_x" ASC /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  [1m[36mDashboardUserRole Exists? (2.3ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboard_user_roles" WHERE "dashboard_user_roles"."dashboard_id" = 2 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:102
+  ↳ app/views/dashboards/show.html.erb:194
+  Rendered dashboards/show.html.erb within layouts/application (Duration: 51.9ms | GC: 0.6ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 0.7ms | GC: 0.0ms)
+  [1m[36mDashboardUserRole Exists? (5.1ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboard_user_roles" WHERE "dashboard_user_roles"."dashboard_id" = 1 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  Rendered layout layouts/application.html.erb (Duration: 59.8ms | GC: 1.2ms)
+  ↳ app/views/dashboards/show.html.erb:194
+Completed 200 OK in 281ms (Views: 41.2ms | ActiveRecord: 260.8ms (5 queries, 0 cached) | GC: 8.9ms)
+
+
+  Rendered dashboards/show.html.erb within layouts/application (Duration: 64.4ms | GC: 1.2ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 0.4ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 74.2ms | GC: 1.2ms)
+Completed 200 OK in 263ms (Views: 47.3ms | ActiveRecord: 259.7ms (5 queries, 0 cached) | GC: 7.3ms)
+
+
+Started GET "/dashboards/1/edit" for 127.0.0.1 at 2026-01-05 13:10:48 +0100
+Processing by DashboardsController#edit as HTML
+  Parameters: {"id" => "1"}
+  [1m[36mDashboard Load (2.4ms)[0m  [1m[34mSELECT "dashboards".* FROM "dashboards" WHERE "dashboards"."id" = 1 LIMIT 1 /*action='edit',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/controllers/dashboards_controller.rb:85:in 'DashboardsController#set_dashboard'
+  Rendering layout layouts/application.html.erb
+  Rendering dashboards/edit.html.erb within layouts/application
+  Rendered dashboards/_form.html.erb (Duration: 28.0ms | GC: 0.0ms)
+  Rendered dashboards/edit.html.erb within layouts/application (Duration: 31.9ms | GC: 0.5ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 0.4ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 40.2ms | GC: 0.5ms)
+Completed 200 OK in 54ms (Views: 43.7ms | ActiveRecord: 2.4ms (1 query, 0 cached) | GC: 0.5ms)
+
+
+Started GET "/dashboards/1/edit" for 127.0.0.1 at 2026-01-05 13:10:49 +0100
+Processing by DashboardsController#edit as HTML
+  Parameters: {"id" => "1"}
+  [1m[36mDashboard Load (1.6ms)[0m  [1m[34mSELECT "dashboards".* FROM "dashboards" WHERE "dashboards"."id" = 1 LIMIT 1 /*action='edit',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/controllers/dashboards_controller.rb:85:in 'DashboardsController#set_dashboard'
+  Rendering layout layouts/application.html.erb
+  Rendering dashboards/edit.html.erb within layouts/application
+  Rendered dashboards/_form.html.erb (Duration: 6.2ms | GC: 0.0ms)
+  Rendered dashboards/edit.html.erb within layouts/application (Duration: 7.9ms | GC: 0.0ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 1.3ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 19.8ms | GC: 0.8ms)
+Completed 200 OK in 31ms (Views: 23.7ms | ActiveRecord: 1.6ms (1 query, 0 cached) | GC: 0.8ms)
+
+
+Started GET "/dashboards/1/edit" for 127.0.0.1 at 2026-01-05 13:10:50 +0100
+Processing by DashboardsController#edit as HTML
+  Parameters: {"id" => "1"}
+  [1m[36mDashboard Load (1.8ms)[0m  [1m[34mSELECT "dashboards".* FROM "dashboards" WHERE "dashboards"."id" = 1 LIMIT 1 /*action='edit',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/controllers/dashboards_controller.rb:85:in 'DashboardsController#set_dashboard'
+  Rendering layout layouts/application.html.erb
+  Rendering dashboards/edit.html.erb within layouts/application
+  Rendered dashboards/_form.html.erb (Duration: 14.4ms | GC: 9.7ms)
+  Rendered dashboards/edit.html.erb within layouts/application (Duration: 15.7ms | GC: 9.7ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 0.5ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 59.8ms | GC: 48.3ms)
+Completed 200 OK in 69ms (Views: 61.6ms | ActiveRecord: 1.8ms (1 query, 0 cached) | GC: 48.9ms)
+
+
+Started GET "/dashboards/1" for 127.0.0.1 at 2026-01-05 13:10:53 +0100
+Processing by DashboardsController#show as HTML
+  Parameters: {"id" => "1"}
+  [1m[36mDashboard Load (1.5ms)[0m  [1m[34mSELECT "dashboards".* FROM "dashboards" WHERE "dashboards"."id" = 1 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/controllers/dashboards_controller.rb:85:in 'DashboardsController#set_dashboard'
+  Rendering layout layouts/application.html.erb
+  Rendering dashboards/show.html.erb within layouts/application
+  [1m[36mUser Count (1.8ms)[0m  [1m[34mSELECT COUNT(*) FROM "users" INNER JOIN "dashboard_user_roles" ON "users"."id" = "dashboard_user_roles"."user_id" WHERE "dashboard_user_roles"."dashboard_id" = 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:32
+  [1m[36mDashboardWidget Exists? (1.3ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 1 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:86
+  [1m[36mDashboardWidget Load (1.5ms)[0m  [1m[34mSELECT "dashboard_widgets".* FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 1 ORDER BY "dashboard_widgets"."position_y" ASC, "dashboard_widgets"."position_x" ASC /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:102
+  [1m[36mDashboardUserRole Exists? (2.3ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboard_user_roles" WHERE "dashboard_user_roles"."dashboard_id" = 1 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:194
+  Rendered dashboards/show.html.erb within layouts/application (Duration: 102.7ms | GC: 66.4ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 0.5ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 114.1ms | GC: 72.7ms)
+Completed 200 OK in 154ms (Views: 108.6ms | ActiveRecord: 8.3ms (5 queries, 0 cached) | GC: 103.0ms)
+
+
+Started GET "/dashboards/1" for 127.0.0.1 at 2026-01-05 13:10:59 +0100
+Processing by DashboardsController#show as HTML
+  Parameters: {"id" => "1"}
+  [1m[36mDashboard Load (2.1ms)[0m  [1m[34mSELECT "dashboards".* FROM "dashboards" WHERE "dashboards"."id" = 1 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/controllers/dashboards_controller.rb:85:in 'DashboardsController#set_dashboard'
+  Rendering layout layouts/application.html.erb
+  Rendering dashboards/show.html.erb within layouts/application
+  [1m[36mUser Count (2.8ms)[0m  [1m[34mSELECT COUNT(*) FROM "users" INNER JOIN "dashboard_user_roles" ON "users"."id" = "dashboard_user_roles"."user_id" WHERE "dashboard_user_roles"."dashboard_id" = 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:32
+  [1m[36mDashboardWidget Exists? (1.7ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 1 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:86
+  [1m[36mDashboardWidget Load (2.2ms)[0m  [1m[34mSELECT "dashboard_widgets".* FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 1 ORDER BY "dashboard_widgets"."position_y" ASC, "dashboard_widgets"."position_x" ASC /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:102
+  [1m[36mDashboardUserRole Exists? (1.4ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboard_user_roles" WHERE "dashboard_user_roles"."dashboard_id" = 1 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:194
+  Rendered dashboards/show.html.erb within layouts/application (Duration: 86.5ms | GC: 49.7ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 0.6ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 111.3ms | GC: 68.0ms)
+Completed 200 OK in 173ms (Views: 108.7ms | ActiveRecord: 9.8ms (5 queries, 0 cached) | GC: 116.3ms)
+
+
+Started GET "/favicon.ico" for 127.0.0.1 at 2026-01-05 13:11:06 +0100
+  
+ActionController::RoutingError (No route matches [GET] "/favicon.ico"):
+  
+Started GET "/dashboards/1" for 127.0.0.1 at 2026-01-05 13:11:07 +0100
+Processing by DashboardsController#show as HTML
+  Parameters: {"id" => "1"}
+  [1m[36mDashboard Load (3.1ms)[0m  [1m[34mSELECT "dashboards".* FROM "dashboards" WHERE "dashboards"."id" = 1 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/controllers/dashboards_controller.rb:85:in 'DashboardsController#set_dashboard'
+  Rendering layout layouts/application.html.erb
+  Rendering dashboards/show.html.erb within layouts/application
+  [1m[36mUser Count (2.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "users" INNER JOIN "dashboard_user_roles" ON "users"."id" = "dashboard_user_roles"."user_id" WHERE "dashboard_user_roles"."dashboard_id" = 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:32
+  [1m[36mDashboardWidget Exists? (1.4ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 1 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:86
+  [1m[36mDashboardWidget Load (4.3ms)[0m  [1m[34mSELECT "dashboard_widgets".* FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 1 ORDER BY "dashboard_widgets"."position_y" ASC, "dashboard_widgets"."position_x" ASC /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:102
+  [1m[36mDashboardUserRole Exists? (1.4ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboard_user_roles" WHERE "dashboard_user_roles"."dashboard_id" = 1 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:194
+  Rendered dashboards/show.html.erb within layouts/application (Duration: 32.4ms | GC: 0.0ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 0.4ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 43.4ms | GC: 0.0ms)
+Completed 200 OK in 61ms (Views: 41.8ms | ActiveRecord: 12.4ms (5 queries, 0 cached) | GC: 2.7ms)
+
+
+Started GET "/dashboards" for 127.0.0.1 at 2026-01-05 13:13:27 +0100
+Processing by DashboardsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering dashboards/index.html.erb within layouts/application
+  [1m[36mDashboard Exists? (1.2ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboards" LIMIT 1 /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:24
+  [1m[36mDashboard Load (1.1ms)[0m  [1m[34mSELECT "dashboards".* FROM "dashboards" /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:26
+  [1m[36mDashboardWidget Count (1.8ms)[0m  [1m[34mSELECT COUNT(*) FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 1 /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:50
+  [1m[36mUser Count (1.7ms)[0m  [1m[34mSELECT COUNT(*) FROM "users" INNER JOIN "dashboard_user_roles" ON "users"."id" = "dashboard_user_roles"."user_id" WHERE "dashboard_user_roles"."dashboard_id" = 1 /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:54
+  [1m[36mDashboardWidget Count (1.6ms)[0m  [1m[34mSELECT COUNT(*) FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 2 /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:50
+  [1m[36mUser Count (2.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "users" INNER JOIN "dashboard_user_roles" ON "users"."id" = "dashboard_user_roles"."user_id" WHERE "dashboard_user_roles"."dashboard_id" = 2 /*action='index',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/index.html.erb:54
+  Rendered dashboards/index.html.erb within layouts/application (Duration: 135.8ms | GC: 0.0ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 4.6ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 165.5ms | GC: 0.0ms)
+Completed 200 OK in 186ms (Views: 92.6ms | ActiveRecord: 78.4ms (6 queries, 0 cached) | GC: 0.4ms)
+
+
+Started GET "/dashboards/1" for 127.0.0.1 at 2026-01-05 13:13:27 +0100
+Processing by DashboardsController#show as HTML
+  Parameters: {"id" => "1"}
+  [1m[36mDashboard Load (1.6ms)[0m  [1m[34mSELECT "dashboards".* FROM "dashboards" WHERE "dashboards"."id" = 1 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/controllers/dashboards_controller.rb:85:in 'DashboardsController#set_dashboard'
+  Rendering layout layouts/application.html.erb
+  Rendering dashboards/show.html.erb within layouts/application
+  [1m[36mUser Count (1.9ms)[0m  [1m[34mSELECT COUNT(*) FROM "users" INNER JOIN "dashboard_user_roles" ON "users"."id" = "dashboard_user_roles"."user_id" WHERE "dashboard_user_roles"."dashboard_id" = 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:32
+  [1m[36mDashboardWidget Exists? (1.5ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 1 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:85
+  [1m[36mDashboardWidget Load (2.6ms)[0m  [1m[34mSELECT "dashboard_widgets".* FROM "dashboard_widgets" WHERE "dashboard_widgets"."dashboard_id" = 1 ORDER BY "dashboard_widgets"."position_y" ASC, "dashboard_widgets"."position_x" ASC /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:101
+  [1m[36mDashboardUserRole Exists? (1.2ms)[0m  [1m[34mSELECT 1 AS one FROM "dashboard_user_roles" WHERE "dashboard_user_roles"."dashboard_id" = 1 LIMIT 1 /*action='show',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/views/dashboards/show.html.erb:193
+  Rendered dashboards/show.html.erb within layouts/application (Duration: 45.3ms | GC: 0.0ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 0.5ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 50.4ms | GC: 0.0ms)
+Completed 200 OK in 64ms (Views: 43.3ms | ActiveRecord: 10.4ms (5 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/dashboards/1/edit" for 127.0.0.1 at 2026-01-05 13:13:48 +0100
+Processing by DashboardsController#edit as HTML
+  Parameters: {"id" => "1"}
+  [1m[36mDashboard Load (1.5ms)[0m  [1m[34mSELECT "dashboards".* FROM "dashboards" WHERE "dashboards"."id" = 1 LIMIT 1 /*action='edit',application='Widgetlab',controller='dashboards'*/[0m
+  ↳ app/controllers/dashboards_controller.rb:85:in 'DashboardsController#set_dashboard'
+  Rendering layout layouts/application.html.erb
+  Rendering dashboards/edit.html.erb within layouts/application
+  Rendered dashboards/_form.html.erb (Duration: 20.7ms | GC: 14.0ms)
+  Rendered dashboards/edit.html.erb within layouts/application (Duration: 22.3ms | GC: 14.0ms)
+  Rendered layouts/_sidebar.html.erb (Duration: 0.3ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 25.3ms | GC: 14.0ms)
+Completed 200 OK in 32ms (Views: 26.7ms | ActiveRecord: 1.5ms (1 query, 0 cached) | GC: 14.0ms)
+
+

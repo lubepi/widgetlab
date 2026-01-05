@@ -1,16 +1,86 @@
-<p style="color: green"><%= notice %></p>
-
 <% content_for :title, "Dashboards" %>
 
-<h1>Dashboards</h1>
+<header class="main-header">
+  <h1>Dashboards</h1>
+  <%= link_to new_dashboard_path, class: "btn btn-primary" do %>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+      <path fill-rule="evenodd" d="M12 3.75a.75.75 0 01.75.75v6.75h6.75a.75.75 0 010 1.5h-6.75v6.75a.75.75 0 01-1.5 0v-6.75H4.5a.75.75 0 010-1.5h6.75V4.5a.75.75 0 01.75-.75z" clip-rule="evenodd" />
+    </svg>
+    Neues Dashboard
+  <% end %>
+</header>
 
-<div id="dashboards">
-  <% @dashboards.each do |dashboard| %>
-    <%= render dashboard %>
-    <p>
-      <%= link_to "Show this dashboard", dashboard %>
-    </p>
+<div class="main-body">
+  <% if notice.present? %>
+    <div class="alert alert-success">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+        <path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clip-rule="evenodd" />
+      </svg>
+      <%= notice %>
+    </div>
+  <% end %>
+
+  <% if @dashboards.any? %>
+    <div class="dashboards-grid" id="dashboards">
+      <% @dashboards.each do |dashboard| %>
+        <%= link_to dashboard, class: "dashboard-card" do %>
+          <div class="dashboard-card-header">
+            <div class="dashboard-icon">
+              <%= dashboard.icon.present? ? dashboard.icon : "📊" %>
+            </div>
+            <div class="dashboard-info">
+              <h3 class="dashboard-name"><%= dashboard.name || "Unbenannt" %></h3>
+              <div class="dashboard-meta">
+                <span class="dashboard-meta-item">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M3 6a3 3 0 013-3h2.25a3 3 0 013 3v2.25a3 3 0 01-3 3H6a3 3 0 01-3-3V6z" />
+                    <path d="M3 15.75a3 3 0 013-3h2.25a3 3 0 013 3V18a3 3 0 01-3 3H6a3 3 0 01-3-3v-2.25z" />
+                    <path d="M12.75 6a3 3 0 013-3H18a3 3 0 013 3v2.25a3 3 0 01-3 3h-2.25a3 3 0 01-3-3V6z" />
+                    <path d="M12.75 15.75a3 3 0 013-3H18a3 3 0 013 3V18a3 3 0 01-3 3h-2.25a3 3 0 01-3-3v-2.25z" />
+                  </svg>
+                  <%= dashboard.columns || 3 %> Spalten
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="dashboard-card-body">
+            <div class="dashboard-stats">
+              <div class="dashboard-stat">
+                <div class="dashboard-stat-value"><%= dashboard.dashboard_widgets.count %></div>
+                <div class="dashboard-stat-label">Widgets</div>
+              </div>
+              <div class="dashboard-stat">
+                <div class="dashboard-stat-value"><%= dashboard.members.count %></div>
+                <div class="dashboard-stat-label">Mitglieder</div>
+              </div>
+            </div>
+          </div>
+          <div class="dashboard-card-footer">
+            <span class="badge <%= dashboard.is_public ? 'badge-public' : 'badge-private' %>">
+              <%= dashboard.is_public ? "Öffentlich" : "Privat" %>
+            </span>
+            <span style="font-size: 0.8125rem; color: var(--text-secondary);">
+              Erstellt <%= time_ago_in_words(dashboard.created_at) %>
+            </span>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="empty-state">
+      <div class="empty-state-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M2.25 7.125C2.25 6.504 2.754 6 3.375 6h6c.621 0 1.125.504 1.125 1.125v3.75c0 .621-.504 1.125-1.125 1.125h-6a1.125 1.125 0 01-1.125-1.125v-3.75zM14.25 8.625c0-.621.504-1.125 1.125-1.125h5.25c.621 0 1.125.504 1.125 1.125v8.25c0 .621-.504 1.125-1.125 1.125h-5.25a1.125 1.125 0 01-1.125-1.125v-8.25zM3.75 16.125c0-.621.504-1.125 1.125-1.125h5.25c.621 0 1.125.504 1.125 1.125v2.25c0 .621-.504 1.125-1.125 1.125h-5.25a1.125 1.125 0 01-1.125-1.125v-2.25z" />
+        </svg>
+      </div>
+      <h3>Noch keine Dashboards vorhanden</h3>
+      <p>Erstelle dein erstes Dashboard, um Widgets zu organisieren und Daten zu visualisieren.</p>
+      <%= link_to new_dashboard_path, class: "btn btn-primary" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+          <path fill-rule="evenodd" d="M12 3.75a.75.75 0 01.75.75v6.75h6.75a.75.75 0 010 1.5h-6.75v6.75a.75.75 0 01-1.5 0v-6.75H4.5a.75.75 0 010-1.5h6.75V4.5a.75.75 0 01.75-.75z" clip-rule="evenodd" />
+        </svg>
+        Erstes Dashboard erstellen
+      <% end %>
+    </div>
   <% end %>
 </div>
-
-<%= link_to "New dashboard", new_dashboard_path %>

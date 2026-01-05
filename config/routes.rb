@@ -2,13 +2,15 @@ Rails.application.routes.draw do
   resources :data_source_whitelists
   resources :widget_data_source_transformers
   resources :data_sources
-  resources :dashboard_widgets
   resources :user_widget_roles
   resources :widgets
   resources :user_group_roles
   resources :user_groups
   resources :dashboard_user_roles
-  resources :dashboards
+  resources :dashboards do
+    resources :dashboard_widgets, only: %i[create update destroy], as: :widgets
+    patch :update_widget_positions, on: :member
+  end
   resources :users
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
@@ -21,5 +23,5 @@ Rails.application.routes.draw do
   # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
 
   # Defines the root path route ("/")
-  # root "posts#index"
+  root "dashboards#index"
 end

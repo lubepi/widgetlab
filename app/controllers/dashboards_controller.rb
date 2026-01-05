@@ -1,5 +1,5 @@
 class DashboardsController < ApplicationController
-  before_action :set_dashboard, only: %i[ show edit update destroy ]
+  before_action :set_dashboard, only: %i[ show edit update destroy update_widget_positions ]
 
   # GET /dashboards or /dashboards.json
   def index
@@ -54,6 +54,28 @@ class DashboardsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to dashboards_path, notice: "Dashboard was successfully destroyed.", status: :see_other }
       format.json { head :no_content }
+    end
+  end
+
+  # PATCH /dashboards/1/update_widget_positions
+  def update_widget_positions
+    positions = params[:positions] || []
+    
+    positions.each do |pos|
+      widget = @dashboard.dashboard_widgets.find_by(id: pos[:id])
+      if widget
+        widget.update(
+          position_x: pos[:position].to_i,
+          position_y: pos[:position].to_i,
+          width: pos[:width].to_i,
+          height: pos[:height].to_i
+        )
+      end
+    end
+
+    respond_to do |format|
+      format.json { head :ok }
+      format.html { redirect_to @dashboard }
     end
   end
 

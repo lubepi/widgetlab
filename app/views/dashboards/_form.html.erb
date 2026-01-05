@@ -1,8 +1,12 @@
-<%= form_with(model: dashboard) do |form| %>
+<%= form_with(model: dashboard, class: "form-container") do |form| %>
   <% if dashboard.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(dashboard.errors.count, "error") %> prohibited this dashboard from being saved:</h2>
-
+    <div class="form-error">
+      <h3>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="20" height="20" style="display: inline; vertical-align: middle; margin-right: 0.5rem;">
+          <path fill-rule="evenodd" d="M9.401 3.003c1.155-2 4.043-2 5.197 0l7.355 12.748c1.154 2-.29 4.5-2.599 4.5H4.645c-2.309 0-3.752-2.5-2.598-4.5L9.4 3.003zM12 8.25a.75.75 0 01.75.75v3.75a.75.75 0 01-1.5 0V9a.75.75 0 01.75-.75zm0 8.25a.75.75 0 100-1.5.75.75 0 000 1.5z" clip-rule="evenodd" />
+        </svg>
+        <%= pluralize(dashboard.errors.count, "Fehler") %> verhindert das Speichern:
+      </h3>
       <ul>
         <% dashboard.errors.each do |error| %>
           <li><%= error.full_message %></li>
@@ -11,27 +15,64 @@
     </div>
   <% end %>
 
-  <div>
-    <%= form.label :name, style: "display: block" %>
-    <%= form.text_field :name %>
+  <div class="card">
+    <div class="card-header">
+      <h3 style="margin: 0; font-size: 1rem; font-weight: 600;">Grundeinstellungen</h3>
+    </div>
+    <div class="card-body">
+      <div class="form-group">
+        <%= form.label :name, "Name", class: "form-label" %>
+        <%= form.text_field :name, class: "form-input", placeholder: "z.B. Mein Dashboard" %>
+        <div class="form-hint">Der Name wird in der Übersicht angezeigt.</div>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :icon, "Icon", class: "form-label" %>
+        <div class="icon-selector">
+          <% ["📊", "📈", "📉", "🏠", "⚙️", "🔧", "💡", "🎯", "📱", "💻", "🌡️", "⚡", "🔋", "💧", "🌤️"].each do |icon| %>
+            <label class="icon-option <%= 'selected' if dashboard.icon == icon %>" data-icon="<%= icon %>">
+              <%= form.radio_button :icon, icon, style: "display: none;" %>
+              <%= icon %>
+            </label>
+          <% end %>
+        </div>
+        <div class="form-hint">Wähle ein Icon für dein Dashboard.</div>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :columns, "Spalten", class: "form-label" %>
+        <%= form.select :columns, options_for_select([
+          ["2 Spalten", 2],
+          ["3 Spalten", 3],
+          ["4 Spalten", 4],
+          ["6 Spalten", 6]
+        ], dashboard.columns || 3), {}, class: "form-select" %>
+        <div class="form-hint">Anzahl der Spalten im Widget-Grid.</div>
+      </div>
+
+      <div class="form-group">
+        <div class="form-checkbox-wrapper">
+          <%= form.check_box :is_public, class: "form-checkbox" %>
+          <%= form.label :is_public, "Öffentlich zugänglich", class: "form-label", style: "margin-bottom: 0;" %>
+        </div>
+        <div class="form-hint" style="margin-left: 2rem;">Öffentliche Dashboards können von allen Benutzern eingesehen werden.</div>
+      </div>
+    </div>
   </div>
 
-  <div>
-    <%= form.label :columns, style: "display: block" %>
-    <%= form.number_field :columns %>
-  </div>
-
-  <div>
-    <%= form.label :is_public, style: "display: block" %>
-    <%= form.checkbox :is_public %>
-  </div>
-
-  <div>
-    <%= form.label :icon, style: "display: block" %>
-    <%= form.text_field :icon %>
-  </div>
-
-  <div>
-    <%= form.submit %>
+  <div class="form-actions">
+    <%= form.submit dashboard.persisted? ? "Speichern" : "Dashboard erstellen", class: "btn btn-primary btn-lg" %>
+    <%= link_to "Abbrechen", dashboard.persisted? ? dashboard_path(dashboard) : dashboards_path, class: "btn btn-secondary btn-lg" %>
   </div>
 <% end %>
+
+<script>
+  document.querySelectorAll('.icon-option').forEach(function(option) {
+    option.addEventListener('click', function() {
+      document.querySelectorAll('.icon-option').forEach(function(o) {
+        o.classList.remove('selected');
+      });
+      this.classList.add('selected');
+    });
+  });
+</script>

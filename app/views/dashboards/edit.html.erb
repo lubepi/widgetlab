@@ -1,12 +1,14 @@
-<% content_for :title, "Editing dashboard" %>
+<% content_for :title, "Dashboard bearbeiten" %>
 
-<h1>Editing dashboard</h1>
+<header class="main-header">
+  <div class="dashboard-title">
+    <div class="dashboard-icon" style="width: 40px; height: 40px; font-size: 1.25rem;">
+      <%= @dashboard.icon.present? ? @dashboard.icon : "📊" %>
+    </div>
+    <h1><%= @dashboard.name || "Dashboard" %> bearbeiten</h1>
+  </div>
+</header>
 
-<%= render "form", dashboard: @dashboard %>
-
-<br>
-
-<div>
-  <%= link_to "Show this dashboard", @dashboard %> |
-  <%= link_to "Back to dashboards", dashboards_path %>
+<div class="main-body">
+  <%= render "form", dashboard: @dashboard %>
 </div>
