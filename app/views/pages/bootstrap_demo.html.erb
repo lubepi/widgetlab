@@ -1,0 +1,208 @@
+<div class="container my-5">
+  <div class="row">
+    <div class="col-12">
+      <h1 class="display-4 text-primary mb-4">
+        <i class="bi bi-bootstrap"></i> Bootstrap 5.3 Test
+      </h1>
+      <p class="lead">Diese Seite zeigt verschiedene Bootstrap-Komponenten um die Installation zu testen.</p>
+      <hr class="my-4">
+    </div>
+  </div>
+
+  <!-- Alert Beispiele -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <h2>Alerts</h2>
+      <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Erfolg!</strong> Bootstrap wurde erfolgreich installiert.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+      <div class="alert alert-info" role="alert">
+        <strong>Info:</strong> Das ist eine Info-Nachricht.
+      </div>
+      <div class="alert alert-warning" role="alert">
+        <strong>Warnung:</strong> Das ist eine Warnmeldung.
+      </div>
+    </div>
+  </div>
+
+  <!-- Button Beispiele -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <h2>Buttons</h2>
+      <button type="button" class="btn btn-primary">Primary</button>
+      <button type="button" class="btn btn-secondary">Secondary</button>
+      <button type="button" class="btn btn-success">Success</button>
+      <button type="button" class="btn btn-danger">Danger</button>
+      <button type="button" class="btn btn-warning">Warning</button>
+      <button type="button" class="btn btn-info">Info</button>
+      <button type="button" class="btn btn-light">Light</button>
+      <button type="button" class="btn btn-dark">Dark</button>
+      <button type="button" class="btn btn-link">Link</button>
+    </div>
+  </div>
+
+  <!-- Card Beispiele -->
+  <div class="row mb-4">
+    <div class="col-md-4">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Card Titel</h5>
+          <p class="card-text">Das ist ein Beispiel für eine Bootstrap Card-Komponente.</p>
+          <a href="#" class="btn btn-primary">Button</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card text-white bg-primary">
+        <div class="card-body">
+          <h5 class="card-title">Primary Card</h5>
+          <p class="card-text">Eine Card mit Primary-Hintergrund.</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card text-white bg-success">
+        <div class="card-body">
+          <h5 class="card-title">Success Card</h5>
+          <p class="card-text">Eine Card mit Success-Hintergrund.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Beispiel -->
+  <div class="row mb-4" data-controller="bootstrap">
+    <div class="col-12">
+      <h2>Modal (JavaScript Test)</h2>
+      <button type="button" class="btn btn-primary" data-action="click->bootstrap#openModal" data-bs-target="#exampleModal">
+        Modal öffnen (via Stimulus)
+      </button>
+
+      <button type="button" class="btn btn-secondary ms-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        Modal öffnen (native Bootstrap)
+      </button>
+
+      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Bootstrap Modal</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <p>✅ Wenn dieses Modal funktioniert, ist Bootstrap JavaScript korrekt geladen!</p>
+              <p class="mb-0 text-muted small">Turbo-Kompatibilität wird getestet.</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Schließen</button>
+              <button type="button" class="btn btn-primary">Speichern</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Form Beispiel -->
+  <div class="row mb-4">
+    <div class="col-md-6">
+      <h2>Formular</h2>
+      <form>
+        <div class="mb-3">
+          <label for="exampleInputEmail1" class="form-label">Email Adresse</label>
+          <input type="email" class="form-control" id="exampleInputEmail1" placeholder="name@example.com">
+        </div>
+        <div class="mb-3">
+          <label for="exampleInputPassword1" class="form-label">Passwort</label>
+          <input type="password" class="form-control" id="exampleInputPassword1">
+        </div>
+        <div class="mb-3 form-check">
+          <input type="checkbox" class="form-check-input" id="exampleCheck1">
+          <label class="form-check-label" for="exampleCheck1">
+            Erinnere mich
+          </label>
+        </div>
+        <button type="submit" class="btn btn-primary">Absenden</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Badge und Pill Beispiele -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <h2>Badges</h2>
+      <span class="badge bg-primary">Primary</span>
+      <span class="badge bg-secondary">Secondary</span>
+      <span class="badge bg-success">Success</span>
+      <span class="badge bg-danger">Danger</span>
+      <span class="badge bg-warning text-dark">Warning</span>
+      <span class="badge bg-info text-dark">Info</span>
+      <span class="badge bg-light text-dark">Light</span>
+      <span class="badge bg-dark">Dark</span>
+    </div>
+  </div>
+
+  <!-- Spinner Beispiele -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <h2>Spinner</h2>
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Lädt...</span>
+      </div>
+      <div class="spinner-border text-secondary" role="status">
+        <span class="visually-hidden">Lädt...</span>
+      </div>
+      <div class="spinner-border text-success" role="status">
+        <span class="visually-hidden">Lädt...</span>
+      </div>
+      <div class="spinner-grow text-danger" role="status">
+        <span class="visually-hidden">Lädt...</span>
+      </div>
+      <div class="spinner-grow text-warning" role="status">
+        <span class="visually-hidden">Lädt...</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Zurück Button -->
+  <div class="row">
+    <div class="col-12">
+      <hr class="my-4">
+
+      <!-- Debug Info -->
+      <div class="alert alert-info">
+        <h5>Debug Information</h5>
+        <p class="mb-1"><strong>Bootstrap JavaScript Status:</strong> <span id="bootstrap-status">Prüfe...</span></p>
+        <p class="mb-0"><strong>Importmap Status:</strong> <span id="importmap-status">Prüfe...</span></p>
+      </div>
+
+      <script>
+        // Debug: Bootstrap-Status prüfen
+        document.addEventListener('DOMContentLoaded', function() {
+          const bootstrapStatus = document.getElementById('bootstrap-status');
+          const importmapStatus = document.getElementById('importmap-status');
+
+          if (typeof window.bootstrap !== 'undefined') {
+            bootstrapStatus.innerHTML = '<span class="text-success">✅ Geladen (window.bootstrap verfügbar)</span>';
+          } else {
+            bootstrapStatus.innerHTML = '<span class="text-danger">❌ Nicht geladen</span>';
+          }
+
+          if (typeof importShim !== 'undefined' || document.querySelector('script[type="importmap"]')) {
+            importmapStatus.innerHTML = '<span class="text-success">✅ Importmap aktiv</span>';
+          } else {
+            importmapStatus.innerHTML = '<span class="text-warning">⚠️ Importmap nicht erkannt</span>';
+          }
+        });
+      </script>
+
+      <p class="text-muted">
+        Wenn alle Komponenten korrekt angezeigt werden und das Modal funktioniert,
+        ist Bootstrap erfolgreich installiert! 🎉
+      </p>
+      <%= link_to "Zurück zur Startseite", root_path, class: "btn btn-outline-secondary" if defined?(root_path) %>
+    </div>
+  </div>
+</div>
+
