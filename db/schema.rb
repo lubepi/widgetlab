@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_12_22_133717) do
+ActiveRecord::Schema[8.1].define(version: 2026_01_10_123506) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -132,8 +132,8 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_22_133717) do
     t.string "description"
     t.boolean "is_public"
     t.string "name"
-    t.integer "type"
     t.datetime "updated_at", null: false
+    t.integer "widget_type"
   end
 
   add_foreign_key "dashboard_user_roles", "dashboards"

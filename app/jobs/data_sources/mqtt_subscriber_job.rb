@@ -2,6 +2,12 @@ module DataSources
   class MqttSubscriberJob < ApplicationJob
     queue_as :default
 
+    # Mehr Retry-Versuche für MQTT, da es langlebige Verbindungen sind
+    retry_on StandardError, wait: 30.seconds, attempts: 10
+
+    # Nicht automatisch bei diesen Fehlern wiederholen
+    discard_on ActiveRecord::RecordNotFound
+
     def perform(data_source_id)
       data_source = DataSource.find(data_source_id)
 
@@ -13,14 +19,17 @@ module DataSources
       subscriber = MqttSubscriber.new(data_source)
 
       Rails.logger.info("Starting MQTT subscriber for data source #{data_source_id}")
+
+      # Diese Methode blockiert und hört kontinuierlich auf Nachrichten
+      # Bei Verbindungsabbruch wird eine Exception geworfen und der Job neu geplant
       subscriber.subscribe
 
-    rescue ActiveRecord::RecordNotFound
-      Rails.logger.error("Data source #{data_source_id} not found")
-    rescue StandardError => e
-      Rails.logger.error("Error in MqttSubscriberJob for data source #{data_source_id}: #{e.message}")
-      # Bei Fehler automatisch nach 30 Sekunden neu versuchen
-      retry_job wait: 30.seconds, queue: :default
+    rescue MQTT::ProtocolException, Errno::ECONNREFUSED, Errno::ETIMEDOUT => e
+      Rails.logger.error("MQTT connection error for data source #{data_source_id}: #{e.message}")
+      raise # Trigger retry
+    rescue Interrupt, SignalException => e
+      Rails.logger.info("MQTT subscriber for data source #{data_source_id} was interrupted: #{e.message}")
+      # Graceful shutdown - nicht erneut planen
     end
   end
 end

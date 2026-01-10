@@ -12,6 +12,10 @@ class DataSource < ApplicationRecord
   validates :source_type, presence: true
   validates :config, presence: true
 
+  # Callbacks
+  after_create :start_subscription, if: :auto_subscribe?
+  before_destroy :stop_subscription
+
   # Gibt die Config als typisiertes Objekt zurück
   def typed_config
     case source_type.to_sym
@@ -22,6 +26,16 @@ class DataSource < ApplicationRecord
     else
       raise ArgumentError, "Unknown source type: #{source_type}"
     end
+  end
+
+  # Startet das Abonnement für diese Datenquelle
+  def start_subscription
+    DataSources::ManagerService.subscribe(self)
+  end
+
+  # Stoppt das Abonnement für diese Datenquelle
+  def stop_subscription
+    DataSources::ManagerService.unsubscribe(self)
   end
 
   # Hilfsmethode zum Speichern neuer Werte
@@ -37,5 +51,27 @@ class DataSource < ApplicationRecord
   # Hilfsmethode zum Abrufen des letzten gespeicherten Werts
   def latest_value
     data_source_storages.recent.first
+  end
+
+  # Gibt zurück ob in letzter Zeit Daten empfangen wurden
+  def receiving_data?(within: 5.minutes)
+    data_source_storages.since(within.ago).exists?
+  end
+
+  # Statistik über gespeicherte Daten
+  def storage_stats
+    {
+      total_count: data_source_storages.count,
+      oldest: data_source_storages.oldest_first.first&.stored_at,
+      newest: data_source_storages.recent.first&.stored_at,
+      last_24h_count: data_source_storages.since(24.hours.ago).count
+    }
+  end
+
+  private
+
+  def auto_subscribe?
+    # Standardmäßig automatisch subscriben, kann über Config überschrieben werden
+    (config || {}).with_indifferent_access[:auto_subscribe] != false
   end
 end

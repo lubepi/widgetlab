@@ -1,7 +1,12 @@
 Rails.application.routes.draw do
   resources :data_source_whitelists
   resources :widget_data_source_transformers
-  resources :data_sources
+  resources :data_sources do
+    member do
+      post :start_subscription
+      post :stop_subscription
+    end
+  end
   resources :dashboard_widgets
   resources :user_widget_roles
   resources :widgets
