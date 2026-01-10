@@ -51,6 +51,11 @@ gem "mqtt"
 # HTTP client for JSON API data sources
 gem "httparty"
 
+# OAuth2/OpenID Connect authentication with Keycloak
+gem "omniauth"
+gem "omniauth-rails_csrf_protection"
+gem "omniauth_openid_connect"
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"

@@ -1,4 +1,10 @@
 Rails.application.routes.draw do
+  # OmniAuth/Keycloak Authentifizierung
+  get "/auth/:provider/callback", to: "sessions#create"
+  get "/auth/failure", to: "sessions#failure"
+  get "/login", to: "sessions#new", as: :login
+  delete "/logout", to: "sessions#destroy", as: :logout
+
   resources :data_source_whitelists
   resources :widget_data_source_transformers
   resources :data_sources do
@@ -30,5 +36,5 @@ Rails.application.routes.draw do
   # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
 
   # Defines the root path route ("/")
-  # root "posts#index"
+  root "dashboards#index"
 end
