@@ -9,18 +9,26 @@ module DataSources
 
     # Führt einen einzelnen Fetch-Vorgang durch
     def fetch_and_store
+      data_source.mark_attempt!
       response = fetch_data
 
       if response.success?
         value = parse_response(response)
         store_value(value)
+        data_source.mark_success!
         Rails.logger.info("Successfully stored JSON API data for data source #{data_source.id}")
         { success: true, value: value }
       else
+        error_message = "HTTP #{response.code}: #{response.message}"
+        data_source.mark_error!(error_message)
         Rails.logger.error("Failed to fetch JSON API data: #{response.code} - #{response.message}")
-        { success: false, error: "HTTP #{response.code}: #{response.message}" }
+        { success: false, error: error_message }
       end
     rescue StandardError => e
+      begin
+        data_source.mark_error!(e.message)
+      rescue StandardError
+      end
       Rails.logger.error("Error fetching JSON API data: #{e.message}")
       { success: false, error: e.message }
     end

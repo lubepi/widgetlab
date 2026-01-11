@@ -1,0 +1,92 @@
+<% config = data_source.new_record? ? {} : (data_source.config || {}).with_indifferent_access %>
+
+<h5 class="mb-3">JSON API Konfiguration</h5>
+
+<div class="mb-3">
+  <label for="data_source_config_url" class="form-label">URL *</label>
+  <input type="url" name="data_source[config][url]" id="data_source_config_url" value="<%= config[:url] %>" class="form-control" placeholder="https://api.example.com/data" required="required">
+  <div class="form-text">Vollständige URL zur JSON API</div>
+</div>
+
+<div class="row">
+  <div class="col-md-6 mb-3">
+    <label for="data_source_config_method" class="form-label">HTTP Methode</label>
+    <select name="data_source[config][method]" id="data_source_config_method" class="form-select">
+      <option value="get" <%= 'selected' if (config[:method] || 'get') == 'get' %>>GET</option>
+      <option value="post" <%= 'selected' if config[:method] == 'post' %>>POST</option>
+      <option value="put" <%= 'selected' if config[:method] == 'put' %>>PUT</option>
+      <option value="patch" <%= 'selected' if config[:method] == 'patch' %>>PATCH</option>
+      <option value="delete" <%= 'selected' if config[:method] == 'delete' %>>DELETE</option>
+    </select>
+  </div>
+  <div class="col-md-3 mb-3">
+    <label for="data_source_config_timeout" class="form-label">Timeout (Sekunden)</label>
+    <input type="number" name="data_source[config][timeout]" id="data_source_config_timeout" value="<%= config[:timeout] || 30 %>" class="form-control" min="1">
+  </div>
+  <div class="col-md-3 mb-3">
+    <label for="data_source_config_interval" class="form-label">Intervall (Sekunden)</label>
+    <input type="number" name="data_source[config][interval]" id="data_source_config_interval" value="<%= config[:interval] || 60 %>" class="form-control" min="1">
+    <div class="form-text">Abrufintervall</div>
+  </div>
+</div>
+
+<div class="mb-3">
+  <label for="data_source_config_json_path" class="form-label">JSON Path</label>
+  <input type="text" name="data_source[config][json_path]" id="data_source_config_json_path" value="<%= config[:json_path] %>" class="form-control" placeholder="z.B. data.temperature">
+  <div class="form-text">Optional: Pfad zum gewünschten Wert in der JSON-Antwort (z.B. "data.temperature")</div>
+</div>
+
+<div class="card bg-light mb-3">
+  <div class="card-body">
+    <h6 class="card-title">HTTP Headers</h6>
+    <div class="mb-3">
+      <label for="data_source_config_headers" class="form-label">Headers (JSON Format)</label>
+      <textarea name="data_source[config][headers]" id="data_source_config_headers" class="form-control font-monospace" rows="4" placeholder='{"Content-Type": "application/json", "X-API-Key": "your-key"}'><%= config[:headers].present? ? JSON.pretty_generate(config[:headers]) : '' %></textarea>
+      <div class="form-text">Optional: Zusätzliche HTTP Headers im JSON-Format</div>
+    </div>
+  </div>
+</div>
+
+<div class="card bg-light mb-3">
+  <div class="card-body">
+    <h6 class="card-title">Query Parameter</h6>
+    <div class="mb-3">
+      <label for="data_source_config_query_params" class="form-label">Query Parameter (JSON Format)</label>
+      <textarea name="data_source[config][query_params]" id="data_source_config_query_params" class="form-control font-monospace" rows="3" placeholder='{"limit": 10, "format": "json"}'><%= config[:query_params].present? ? JSON.pretty_generate(config[:query_params]) : '' %></textarea>
+      <div class="form-text">Optional: URL Query Parameter im JSON-Format</div>
+    </div>
+  </div>
+</div>
+
+<div class="card bg-light mb-3">
+  <div class="card-body">
+    <h6 class="card-title">Request Body</h6>
+    <div class="mb-3">
+      <label for="data_source_config_body" class="form-label">Body (JSON Format)</label>
+      <textarea name="data_source[config][body]" id="data_source_config_body" class="form-control font-monospace" rows="4" placeholder='{"key": "value"}'><%= config[:body].present? ? (config[:body].is_a?(String) ? config[:body] : JSON.pretty_generate(config[:body])) : '' %></textarea>
+      <div class="form-text">Optional: Request Body für POST/PUT/PATCH Requests</div>
+    </div>
+  </div>
+</div>
+
+<div class="card bg-light">
+  <div class="card-body">
+    <h6 class="card-title">Authentifizierung</h6>
+    <div class="mb-3">
+      <label for="data_source_config_bearer_token" class="form-label">Bearer Token</label>
+      <input type="text" name="data_source[config][bearer_token]" id="data_source_config_bearer_token" value="<%= config[:bearer_token] %>" class="form-control" placeholder="Optional: Bearer Token für Authorization Header" autocomplete="off">
+    </div>
+    <hr>
+    <h6 class="mb-3">Basic Authentication</h6>
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <label for="data_source_config_auth_username" class="form-label">Benutzername</label>
+        <input type="text" name="data_source[config][auth][username]" id="data_source_config_auth_username" value="<%= config.dig(:auth, :username) %>" class="form-control" autocomplete="off">
+      </div>
+      <div class="col-md-6 mb-3">
+        <label for="data_source_config_auth_password" class="form-label">Passwort</label>
+        <input type="password" name="data_source[config][auth][password]" id="data_source_config_auth_password" value="<%= config.dig(:auth, :password) %>" class="form-control" autocomplete="off">
+      </div>
+    </div>
+  </div>
+</div>

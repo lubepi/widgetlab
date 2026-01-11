@@ -14,16 +14,31 @@ module DataSources
 
         # Erforderlich
         @url = @config_hash[:url]
+        if @url.is_a?(String)
+          @url = @url.strip.gsub(/\s+/, "")
+          @config_hash[:url] = @url
+        end
 
         # Optional mit Defaults
         @method = @config_hash[:method] || "get"
         @headers = @config_hash[:headers] || {}
         @query_params = @config_hash[:query_params] || {}
         @body = @config_hash[:body]
-        @timeout = @config_hash[:timeout] || 30
-        @interval = @config_hash[:interval] || 60
+        @timeout = coerce_numeric(@config_hash[:timeout], default: 30)
+        @interval = coerce_numeric(@config_hash[:interval], default: 60)
+        @config_hash[:timeout] = @timeout
+        @config_hash[:interval] = @interval
         @json_path = @config_hash[:json_path]
         @auth = @config_hash[:auth]
+        if @auth.is_a?(Hash)
+          @auth = @auth.with_indifferent_access
+          if @auth[:username].blank? && @auth[:password].blank?
+            @auth = nil
+            @config_hash.delete(:auth)
+          else
+            @config_hash[:auth] = @auth
+          end
+        end
         @bearer_token = @config_hash[:bearer_token]
 
         validate!
@@ -53,6 +68,22 @@ module DataSources
       end
 
       private
+
+      def coerce_numeric(value, default:)
+        return default if value.nil?
+
+        return value if value.is_a?(Numeric)
+        return value.to_i if defined?(ActiveSupport::Duration) && value.is_a?(ActiveSupport::Duration)
+
+        if value.is_a?(String)
+          stripped = value.strip
+          return default if stripped.empty?
+          return Integer(stripped) if stripped.match?(/\A-?\d+\z/)
+          return Float(stripped) if stripped.match?(/\A-?\d+(?:\.\d+)?\z/)
+        end
+
+        raise ArgumentError, "timeout must be of type Integer or Numeric"
+      end
 
       def validate!
         super

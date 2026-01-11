@@ -1,0 +1,56 @@
+<% is_new = data_source.new_record? %>
+
+<% if data_source.errors.any? %>
+  <div class="alert alert-danger">
+    <h5><%= pluralize(data_source.errors.count, "Fehler") %> verhindert das Speichern:</h5>
+    <ul class="mb-0">
+      <% data_source.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<div class="mb-3">
+  <%= form.label :name, "Name", class: "form-label" %>
+  <%= form.text_field :name, class: "form-control", placeholder: "z.B. Temperatur Sensor" %>
+</div>
+
+<div class="mb-3">
+  <%= form.label :source_type, "Typ", class: "form-label" %>
+  <%= form.select :source_type, 
+      options_for_select([
+        ["JSON API", "json_api"],
+        ["MQTT", "mqtt"]
+      ], data_source.source_type),
+      { prompt: "Bitte wählen..." },
+      { 
+        class: "form-select",
+        disabled: !is_new,
+        data: { 
+          action: "change->data-source-form#typeChanged",
+          data_source_form_target: "typeSelect"
+        }
+      } %>
+  <% unless is_new %>
+    <div class="form-text">Der Typ kann bei vorhandenen Datenquellen nicht geändert werden.</div>
+  <% end %>
+</div>
+
+<div class="mb-3 form-check">
+  <%= form.check_box :is_public, class: "form-check-input" %>
+  <%= form.label :is_public, "Öffentlich", class: "form-check-label" %>
+  <div class="form-text">Öffentliche Datenquellen können von allen Benutzern verwendet werden.</div>
+</div>
+
+<hr class="my-4">
+
+<div data-data-source-form-target="configContainer">
+  <% if data_source.source_type.present? %>
+    <%= render "config_fields_#{data_source.source_type}", form: form, data_source: data_source %>
+  <% else %>
+    <div class="alert alert-info">
+      <i class="bi bi-info-circle"></i> Bitte wählen Sie einen Typ aus, um die Konfigurationsfelder anzuzeigen.
+    </div>
+  <% end %>
+</div>

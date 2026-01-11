@@ -1,0 +1,21 @@
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="confirmDeleteModalLabel" data-confirm-delete-target="title">Löschen bestätigen</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" data-action="confirm-delete#close"></button>
+      </div>
+      <div class="modal-body" data-confirm-delete-target="body">
+        Sind Sie sicher?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-action="confirm-delete#close">Abbrechen</button>
+        <form method="post" data-confirm-delete-target="form">
+          <input type="hidden" name="_method" value="delete">
+          <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+          <button type="submit" class="btn btn-danger" data-confirm-delete-target="confirmButton">Löschen</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

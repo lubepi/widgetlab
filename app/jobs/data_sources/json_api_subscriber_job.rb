@@ -13,6 +13,11 @@ module DataSources
         return
       end
 
+      unless data_source.send(:auto_subscribe?)
+        Rails.logger.info("JSON API subscription disabled for data source #{data_source_id} - skipping")
+        return
+      end
+
       subscriber = JsonApiSubscriber.new(data_source)
       result = subscriber.fetch_and_store
 
@@ -32,6 +37,8 @@ module DataSources
     private
 
     def schedule_next_fetch(data_source)
+      return unless data_source.send(:auto_subscribe?)
+
       interval = data_source.typed_config.interval
       self.class.set(wait: interval.seconds).perform_later(data_source.id, reschedule: true)
       Rails.logger.debug("Scheduled next JSON API fetch for data source #{data_source.id} in #{interval}s")

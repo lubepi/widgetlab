@@ -14,6 +14,10 @@ module DataSources
       subscribe_to_topics
       listen_for_messages
     rescue StandardError => e
+      begin
+        data_source.mark_error!(e.message)
+      rescue StandardError
+      end
       Rails.logger.error("Error in MQTT subscription: #{e.message}")
       disconnect
       raise
@@ -71,8 +75,13 @@ module DataSources
       end
 
       @client.connect
+      data_source.update(status: :inactive, last_error: nil)
       Rails.logger.info("Connected to MQTT broker at #{config.host}:#{config.port}")
     rescue StandardError => e
+      begin
+        data_source.mark_error!(e.message)
+      rescue StandardError
+      end
       Rails.logger.error("Failed to connect to MQTT broker: #{e.message}")
       raise
     end
@@ -89,8 +98,12 @@ module DataSources
 
     def listen_for_messages
       @client.get do |topic, message|
+        break unless data_source.reload.send(:auto_subscribe?)
+
         process_message(topic, message)
       end
+
+      disconnect
     end
 
     def process_message(topic, message)
@@ -99,8 +112,14 @@ module DataSources
       value = parse_message(message)
       store_value(value, topic)
 
+      data_source.mark_success!
+
       Rails.logger.info("Stored MQTT message from topic #{topic} for data source #{data_source.id}")
     rescue StandardError => e
+      begin
+        data_source.mark_error!(e.message)
+      rescue StandardError
+      end
       Rails.logger.error("Error processing MQTT message: #{e.message}")
     end
 

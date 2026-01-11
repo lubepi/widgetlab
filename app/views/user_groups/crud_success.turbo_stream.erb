@@ -1,0 +1,22 @@
+<%= turbo_stream.replace "user_groups_table" do %>
+  <%= render "table", user_groups: @user_groups %>
+<% end %>
+
+<%= turbo_stream.replace "modal" do %>
+  <%= render "modal" %>
+  <script>
+    document.querySelectorAll(".modal.show").forEach((el) => {
+      if (window.bootstrap && window.bootstrap.Modal) {
+        const instance = window.bootstrap.Modal.getInstance(el) || new window.bootstrap.Modal(el)
+        instance.hide()
+      } else {
+        el.classList.remove("show")
+        el.style.display = "none"
+      }
+    })
+
+    document.body.classList.remove("modal-open")
+    document.body.style.overflow = ""
+    document.querySelectorAll(".modal-backdrop").forEach((el) => el.remove())
+  </script>
+<% end %>

@@ -1,0 +1,49 @@
+<div class="table-responsive">
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Mitglieder</th>
+        <th class="text-end">Aktionen</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if user_groups.any? %>
+        <% user_groups.each do |user_group| %>
+          <tr>
+            <td><strong><%= user_group.name %></strong></td>
+            <td><%= user_group.members.count %></td>
+            <td class="text-end">
+              <div class="btn-group" role="group">
+                <%= link_to edit_user_group_path(user_group),
+                    class: "btn btn-sm btn-outline-secondary",
+                    title: "Bearbeiten",
+                    data: {
+                      turbo_frame: "modal",
+                      turbo_method: :get
+                    } do %>
+                  <i class="bi bi-pencil"></i>
+                <% end %>
+                <button type="button"
+                        class="btn btn-sm btn-outline-danger"
+                        title="Löschen"
+                        data-action="confirm-delete#open"
+                        data-delete-url="<%= user_group_path(user_group) %>"
+                        data-delete-title="Gruppe löschen"
+                        data-delete-message="Soll die Gruppe '<%= user_group.name %>' wirklich gelöscht werden?">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        <% end %>
+      <% else %>
+        <tr>
+          <td colspan="3" class="text-center text-muted py-4">
+            Keine Gruppen vorhanden. Erstellen Sie eine neue Gruppe.
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
