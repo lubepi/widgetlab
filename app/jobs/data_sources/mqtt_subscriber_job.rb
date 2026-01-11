@@ -16,7 +16,14 @@ module DataSources
         return
       end
 
+      unless data_source.send(:auto_subscribe?)
+        Rails.logger.info("MQTT subscription disabled for data source #{data_source_id} - skipping")
+        return
+      end
+
       subscriber = MqttSubscriber.new(data_source)
+
+      data_source.mark_attempt!
 
       Rails.logger.info("Starting MQTT subscriber for data source #{data_source_id}")
 
@@ -25,6 +32,10 @@ module DataSources
       subscriber.subscribe
 
     rescue MQTT::ProtocolException, Errno::ECONNREFUSED, Errno::ETIMEDOUT => e
+      begin
+        data_source.mark_error!(e.message)
+      rescue StandardError
+      end
       Rails.logger.error("MQTT connection error for data source #{data_source_id}: #{e.message}")
       raise # Trigger retry
     rescue Interrupt, SignalException => e

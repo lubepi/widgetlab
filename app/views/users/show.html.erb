@@ -1,10 +1,41 @@
-<p style="color: green"><%= notice %></p>
+<%= turbo_frame_tag "modal" do %>
+  <div class="modal fade show" id="showUserModal" tabindex="-1" aria-labelledby="showUserModalLabel" style="display: block;" data-controller="modal">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="showUserModalLabel">Benutzer</h5>
+          <%= link_to "", users_path, class: "btn-close", aria: { label: "Close" }, data: { turbo_frame: "_top" } %>
+        </div>
+        <div class="modal-body">
+          <dl class="row mb-0">
+            <dt class="col-sm-4">Vorname</dt>
+            <dd class="col-sm-8"><%= @user.first_name %></dd>
 
-<%= render @user %>
+            <dt class="col-sm-4">Nachname</dt>
+            <dd class="col-sm-8"><%= @user.last_name %></dd>
 
-<div>
-  <%= link_to "Edit this user", edit_user_path(@user) %> |
-  <%= link_to "Back to users", users_path %>
+            <dt class="col-sm-4">Email</dt>
+            <dd class="col-sm-8"><%= @user.email %></dd>
 
-  <%= button_to "Destroy this user", @user, method: :delete %>
-</div>
+            <dt class="col-sm-4">Sub</dt>
+            <dd class="col-sm-8"><%= @user.sub %></dd>
+
+            <dt class="col-sm-4">Gruppen</dt>
+            <dd class="col-sm-8">
+              <% if @user.user_groups.any? %>
+                <% @user.user_groups.order(:name).each do |group| %>
+                  <%= link_to group.name, user_group_path(group), class: "badge text-bg-secondary text-decoration-none me-1", data: { turbo_frame: "_top" } %>
+                <% end %>
+              <% else %>
+                <span class="text-muted">Keine</span>
+              <% end %>
+            </dd>
+          </dl>
+        </div>
+        <div class="modal-footer">
+          <%= link_to "Schließen", users_path, class: "btn btn-secondary", data: { turbo_frame: "_top" } %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

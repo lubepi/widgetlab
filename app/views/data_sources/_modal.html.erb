@@ -1,0 +1,19 @@
+<div class="modal fade" id="newDataSourceModal" tabindex="-1" aria-labelledby="newDataSourceModalLabel" aria-hidden="true" data-controller="data-source-form">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="newDataSourceModalLabel">Neue Datenquelle erstellen</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <%= form_with(model: DataSource.new, local: true, id: "new_data_source_form", data: { data_source_form_target: "form" }) do |form| %>
+          <%= render "form_fields", form: form, data_source: DataSource.new %>
+        <% end %>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Abbrechen</button>
+        <button type="submit" class="btn btn-primary" form="new_data_source_form">Erstellen</button>
+      </div>
+    </div>
+  </div>
+</div>

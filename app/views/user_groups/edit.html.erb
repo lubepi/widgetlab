@@ -1,12 +1,19 @@
-<% content_for :title, "Editing user group" %>
-
-<h1>Editing user group</h1>
-
-<%= render "form", user_group: @user_group %>
-
-<br>
-
-<div>
-  <%= link_to "Show this user group", @user_group %> |
-  <%= link_to "Back to user groups", user_groups_path %>
-</div>
+<%= turbo_frame_tag "modal" do %>
+  <div class="modal fade show" id="editUserGroupModal" tabindex="-1" aria-labelledby="editUserGroupModalLabel" style="display: block;" data-controller="modal">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editUserGroupModalLabel">Gruppe bearbeiten</h5>
+          <%= link_to "", user_groups_path, class: "btn-close", aria: { label: "Close" }, data: { turbo_frame: "_top" } %>
+        </div>
+        <div class="modal-body">
+          <%= render "form_fields", user_group: @user_group %>
+        </div>
+        <div class="modal-footer">
+          <%= link_to "Abbrechen", user_groups_path, class: "btn btn-secondary", data: { turbo_frame: "_top" } %>
+          <button type="submit" class="btn btn-primary" form="<%= "edit_user_group_form_#{@user_group.id}" %>">Speichern</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

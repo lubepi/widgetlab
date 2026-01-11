@@ -1,16 +1,29 @@
-<p style="color: green"><%= notice %></p>
+<% content_for :title, "Gruppen" %>
 
-<% content_for :title, "User groups" %>
+<div class="container-fluid py-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Gruppen</h1>
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newUserGroupModal">
+      <i class="bi bi-plus-circle"></i> Neue Gruppe
+    </button>
+  </div>
 
-<h1>User groups</h1>
-
-<div id="user_groups">
-  <% @user_groups.each do |user_group| %>
-    <%= render user_group %>
-    <p>
-      <%= link_to "Show this user group", user_group %>
-    </p>
+  <% if notice %>
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+      <%= notice %>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
   <% end %>
+
+  <div class="card">
+    <div class="card-body">
+      <%= turbo_frame_tag "user_groups_table" do %>
+        <%= render "table", user_groups: @user_groups %>
+      <% end %>
+    </div>
+  </div>
 </div>
 
-<%= link_to "New user group", new_user_group_path %>
+<%= turbo_frame_tag "modal", data: { controller: "modal-frame" } do %>
+  <%= render "modal" %>
+<% end %>

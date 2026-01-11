@@ -1,16 +1,25 @@
-<p style="color: green"><%= notice %></p>
+<% content_for :title, "Benutzer" %>
 
-<% content_for :title, "Users" %>
+<div class="container-fluid py-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Benutzer</h1>
+  </div>
 
-<h1>Users</h1>
-
-<div id="users">
-  <% @users.each do |user| %>
-    <%= render user %>
-    <p>
-      <%= link_to "Show this user", user %>
-    </p>
+  <% if notice %>
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+      <%= notice %>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
   <% end %>
+
+  <div class="card">
+    <div class="card-body">
+      <%= turbo_frame_tag "users_table" do %>
+        <%= render "table", users: @users %>
+      <% end %>
+    </div>
+  </div>
 </div>
 
-<%= link_to "New user", new_user_path %>
+<%= turbo_frame_tag "modal", data: { controller: "modal-frame" } do %>
+<% end %>

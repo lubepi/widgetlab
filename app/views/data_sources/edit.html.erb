@@ -1,12 +1,21 @@
-<% content_for :title, "Editing data source" %>
-
-<h1>Editing data source</h1>
-
-<%= render "form", data_source: @data_source %>
-
-<br>
-
-<div>
-  <%= link_to "Show this data source", @data_source %> |
-  <%= link_to "Back to data sources", data_sources_path %>
-</div>
+<%= turbo_frame_tag "modal" do %>
+  <div class="modal fade show" id="editDataSourceModal" tabindex="-1" aria-labelledby="editDataSourceModalLabel" style="display: block;" data-controller="modal data-source-form">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editDataSourceModalLabel">Datenquelle bearbeiten</h5>
+          <%= link_to "", data_sources_path, class: "btn-close", aria: { label: "Close" }, data: { turbo_frame: "_top" } %>
+        </div>
+        <div class="modal-body">
+          <%= form_with(model: @data_source, url: data_source_path(@data_source, format: :turbo_stream), id: "edit_data_source_form_#{@data_source.id}", data: { turbo_frame: "_top" }) do |form| %>
+            <%= render "form_fields", form: form, data_source: @data_source %>
+          <% end %>
+        </div>
+        <div class="modal-footer">
+          <%= link_to "Abbrechen", data_sources_path, class: "btn btn-secondary", data: { turbo_frame: "_top" } %>
+          <button type="submit" class="btn btn-primary" form="<%= "edit_data_source_form_#{@data_source.id}" %>">Speichern</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

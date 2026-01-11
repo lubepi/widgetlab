@@ -1,16 +1,37 @@
-<p style="color: green"><%= notice %></p>
+<% content_for :title, "Datenquellen" %>
 
-<% content_for :title, "Data sources" %>
+<div class="container-fluid py-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Datenquellen</h1>
+    <div class="d-flex gap-2">
+      <%= button_to start_all_subscriptions_data_sources_path,
+          method: :post,
+          class: "btn btn-outline-primary" do %>
+        <i class="bi bi-play-fill"></i> Alle starten
+      <% end %>
 
-<h1>Data sources</h1>
+      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newDataSourceModal">
+        <i class="bi bi-plus-circle"></i> Neue Datenquelle
+      </button>
+    </div>
+  </div>
 
-<div id="data_sources">
-  <% @data_sources.each do |data_source| %>
-    <%= render data_source %>
-    <p>
-      <%= link_to "Show this data source", data_source %>
-    </p>
+  <% if notice %>
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+      <%= notice %>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
   <% end %>
+
+  <div class="card">
+    <div class="card-body">
+      <%= turbo_frame_tag "data_sources_table" do %>
+        <%= render "table", data_sources: @data_sources %>
+      <% end %>
+    </div>
+  </div>
 </div>
 
-<%= link_to "New data source", new_data_source_path %>
+<%= turbo_frame_tag "modal", data: { controller: "modal-frame" } do %>
+  <%= render "modal" %>
+<% end %>

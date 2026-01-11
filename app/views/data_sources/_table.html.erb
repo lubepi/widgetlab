@@ -1,0 +1,103 @@
+<div class="table-responsive">
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Typ</th>
+        <th>Ersteller</th>
+        <th>Öffentlich</th>
+        <th>Status</th>
+        <th>Job</th>
+        <th>Erstellt am</th>
+        <th class="text-end">Aktionen</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if data_sources.any? %>
+        <% data_sources.each do |data_source| %>
+          <tr>
+            <td><strong><%= data_source.name %></strong></td>
+            <td>
+              <% if data_source.mqtt? %>
+                <span class="badge bg-info">MQTT</span>
+              <% else %>
+                <span class="badge bg-success">JSON API</span>
+              <% end %>
+            </td>
+            <td><%= data_source.creator.email %></td>
+            <td>
+              <% if data_source.is_public == true %>
+                <i class="bi bi-check-circle-fill text-success"></i>
+                Ja
+              <% else %>
+                <i class="bi bi-x-circle-fill text-muted"></i>
+                Nein
+              <% end %>
+            </td>
+            <td>
+              <% if data_source.error? %>
+                <span class="badge bg-danger" title="<%= data_source.last_error %>">Fehler</span>
+              <% elsif data_source.ok? %>
+                <span class="badge bg-success">OK</span>
+              <% else %>
+                <span class="badge bg-secondary">Inaktiv</span>
+              <% end %>
+            </td>
+            <td>
+              <% if data_source.job_running? %>
+                <span class="badge bg-info">Läuft</span>
+              <% else %>
+                <span class="badge bg-secondary">Aus</span>
+              <% end %>
+            </td>
+            <td><%= l(data_source.created_at, format: :short) %></td>
+            <td class="text-end">
+              <div class="btn-group" role="group">
+                <%= button_to start_subscription_data_source_path(data_source),
+                    method: :post,
+                    class: "btn btn-sm btn-outline-success",
+                    disabled: data_source.job_running?,
+                    title: "Starten" do %>
+                  <i class="bi bi-play"></i>
+                <% end %>
+
+                <%= button_to stop_subscription_data_source_path(data_source),
+                    method: :post,
+                    class: "btn btn-sm btn-outline-warning",
+                    disabled: !data_source.job_running?,
+                    title: "Stoppen" do %>
+                  <i class="bi bi-stop"></i>
+                <% end %>
+
+                <%= link_to edit_data_source_path(data_source),
+                    class: "btn btn-sm btn-outline-secondary",
+                    title: "Bearbeiten",
+                    data: {
+                      turbo_frame: "modal",
+                      turbo_method: :get
+                    } do %>
+                  <i class="bi bi-pencil"></i>
+                <% end %>
+                <button type="button"
+                        class="btn btn-sm btn-outline-danger"
+                        title="Löschen"
+                        data-action="confirm-delete#open"
+                        data-delete-url="<%= data_source_path(data_source) %>"
+                        data-delete-title="Datenquelle löschen"
+                        data-delete-message="Soll die Datenquelle '<%= data_source.name %>' wirklich gelöscht werden?">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        <% end %>
+      <% else %>
+        <tr>
+          <td colspan="8" class="text-center text-muted py-4">
+            Keine Datenquellen vorhanden. Erstellen Sie eine neue Datenquelle.
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

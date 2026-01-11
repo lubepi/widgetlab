@@ -8,6 +8,8 @@ class DataSource < ApplicationRecord
   # Enum für die verschiedenen Datenquellentypen
   enum :source_type, { json_api: 0, mqtt: 1 }
 
+  enum :status, { inactive: 0, ok: 1, error: 2 }
+
   validates :name, presence: true
   validates :source_type, presence: true
   validates :config, presence: true
@@ -41,6 +43,37 @@ class DataSource < ApplicationRecord
   # Hilfsmethode zum Speichern neuer Werte
   def store_value(value, stored_at: Time.current)
     data_source_storages.create!(value: value, stored_at: stored_at)
+  end
+
+  def mark_attempt!
+    update!(last_attempt_at: Time.current)
+  end
+
+  def mark_success!
+    update!(status: :ok, last_success_at: Time.current, last_error: nil)
+  end
+
+  def mark_error!(message)
+    update!(status: :error, last_error: message)
+  end
+
+  def job_running?
+    return false unless auto_subscribe?
+    return false if last_attempt_at.blank?
+
+    case source_type.to_sym
+    when :json_api
+      interval = typed_config.interval
+      return false unless interval.is_a?(Numeric)
+
+      last_attempt_at > (Time.current - (interval.to_f * 2).seconds)
+    when :mqtt
+      last_attempt_at > 2.minutes.ago
+    else
+      false
+    end
+  rescue StandardError
+    false
   end
 
   # Hilfsmethode zum Abrufen der neuesten Werte

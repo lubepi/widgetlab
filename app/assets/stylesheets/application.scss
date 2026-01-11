@@ -12,3 +12,15 @@
 // Import Bootstrap
 @use "bootstrap";
 
+.modal-dialog-scrollable {
+  max-height: 85vh;
+}
+
+.modal-dialog-scrollable .modal-content {
+  max-height: 85vh;
+}
+
+.modal-dialog-scrollable .modal-body {
+  overflow-y: auto;
+}
+

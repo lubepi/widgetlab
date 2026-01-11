@@ -7,7 +7,11 @@ Rails.application.routes.draw do
 
   resources :data_source_whitelists
   resources :widget_data_source_transformers
-  resources :data_sources do
+  resources :data_sources, only: %i[index show create edit update destroy] do
+    collection do
+      get :config_fields
+      post :start_all_subscriptions
+    end
     member do
       post :start_subscription
       post :stop_subscription
@@ -17,10 +21,10 @@ Rails.application.routes.draw do
   resources :user_widget_roles
   resources :widgets
   resources :user_group_roles
-  resources :user_groups
+  resources :user_groups, only: %i[index show new create edit update destroy]
   resources :dashboard_user_roles
   resources :dashboards
-  resources :users
+  resources :users, only: %i[index show]
 
   # Bootstrap Demo Seite
   get "bootstrap_demo", to: "pages#bootstrap_demo"
