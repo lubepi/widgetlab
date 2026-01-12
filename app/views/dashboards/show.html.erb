@@ -1,10 +1,130 @@
-<p style="color: green"><%= notice %></p>
+<% content_for :title, @dashboard.name %>
+<% content_for :fullscreen, true %>
 
-<%= render @dashboard %>
-
-<div>
-  <%= link_to "Edit this dashboard", edit_dashboard_path(@dashboard) %> |
-  <%= link_to "Back to dashboards", dashboards_path %>
-
-  <%= button_to "Destroy this dashboard", @dashboard, method: :delete %>
+<!-- Dashboard Header -->
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <div class="d-flex align-items-center">
+    <%= link_to dashboards_path, class: "btn btn-outline-secondary btn-sm me-3" do %>
+      <i class="bi bi-arrow-left"></i>
+    <% end %>
+    <div class="d-flex align-items-center">
+      <div class="rounded-circle bg-primary bg-opacity-10 d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px; flex-shrink: 0;">
+        <i class="bi bi-<%= @dashboard.icon.presence || 'grid-1x2' %> fs-5 text-primary"></i>
+      </div>
+      <div>
+        <h1 class="mb-0 h3"><%= @dashboard.name %></h1>
+        <div class="d-flex gap-2 mt-1">
+          <% if @dashboard.is_public %>
+            <span class="badge bg-success"><i class="bi bi-globe me-1"></i>Öffentlich</span>
+          <% else %>
+            <span class="badge bg-secondary"><i class="bi bi-lock me-1"></i>Privat</span>
+          <% end %>
+          <span class="badge bg-info">
+            <i class="bi bi-columns-gap me-1"></i><%= @dashboard.columns || 3 %> Spalten
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="d-flex gap-2">
+    <!-- Info Dropdown -->
+    <div class="dropdown">
+      <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="bi bi-info-circle"></i>
+      </button>
+      <div class="dropdown-menu dropdown-menu-end p-3" style="min-width: 300px;">
+        <h6 class="dropdown-header px-0">Dashboard Informationen</h6>
+        <div class="mb-2">
+          <small class="text-muted d-block">Erstellt</small>
+          <span><%= @dashboard.created_at.strftime("%d.%m.%Y um %H:%M") %></span>
+        </div>
+        <div class="mb-2">
+          <small class="text-muted d-block">Zuletzt bearbeitet</small>
+          <span><%= @dashboard.updated_at.strftime("%d.%m.%Y um %H:%M") %></span>
+        </div>
+        <div>
+          <small class="text-muted d-block">Widgets</small>
+          <span><%= @dashboard.widgets.count %> Widget<%= @dashboard.widgets.count == 1 ? '' : 's' %></span>
+        </div>
+      </div>
+    </div>
+    
+    <% if @dashboard.owner?(current_user) %>
+      <%= link_to access_dashboard_path(@dashboard), class: "btn btn-outline-secondary", data: { turbo_frame: "modal" } do %>
+        <i class="bi bi-shield-lock me-1"></i>Zugriff
+      <% end %>
+      <%= link_to edit_dashboard_path(@dashboard), class: "btn btn-outline-secondary" do %>
+        <i class="bi bi-pencil me-1"></i>Bearbeiten
+      <% end %>
+      <%= button_to dashboard_path(@dashboard), method: :delete, class: "btn btn-outline-danger",
+          data: { turbo_confirm: "Möchtest du das Dashboard '#{@dashboard.name}' wirklich löschen?" } do %>
+        <i class="bi bi-trash me-1"></i>Löschen
+      <% end %>
+    <% elsif @dashboard.can_edit?(current_user) %>
+      <%= link_to edit_dashboard_path(@dashboard), class: "btn btn-outline-secondary" do %>
+        <i class="bi bi-pencil me-1"></i>Bearbeiten
+      <% end %>
+    <% end %>
+  </div>
 </div>
+
+<!-- Widgets Grid -->
+<% if @dashboard.dashboard_widgets.empty? %>
+  <div class="card">
+    <div class="card-body text-center py-5">
+      <i class="bi bi-grid-1x2 display-1 text-muted mb-3"></i>
+      <h4 class="text-muted">Noch keine Widgets hinzugefügt</h4>
+      <p class="text-muted mb-4">Füge Widgets hinzu, um dein Dashboard mit Inhalten zu füllen.</p>
+      <%= link_to widgets_path, class: "btn btn-primary" do %>
+        <i class="bi bi-plus-lg me-1"></i>
+        Widgets verwalten
+      <% end %>
+    </div>
+  </div>
+<% else %>
+  <div class="row" style="--bs-columns: <%= @dashboard.columns || 3 %>;">
+    <% @dashboard.dashboard_widgets.includes(:widget).each do |dashboard_widget| %>
+      <% widget = dashboard_widget.widget %>
+      <div class="col" style="grid-column: span <%= [dashboard_widget.width || 1, @dashboard.columns || 3].min %>;">
+        <div class="card h-100 <%= dashboard_widget.color.present? ? "border-#{dashboard_widget.color}" : '' %>">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <h6 class="mb-0">
+              <i class="bi bi-graph-up me-2"></i>
+              <%= widget.name %>
+            </h6>
+            <span class="badge bg-secondary"><%= widget.widget_type.humanize %></span>
+          </div>
+          <div class="card-body">
+            <% if widget.data_source.present? %>
+              <% latest = widget.latest_data %>
+              <% if latest %>
+                <div class="text-center">
+                  <div class="display-4 fw-bold text-primary">
+                    <%= latest[:value] %>
+                  </div>
+                  <small class="text-muted">
+                    Aktualisiert: <%= time_ago_in_words(latest[:stored_at]) %> ago
+                  </small>
+                </div>
+              <% else %>
+                <p class="text-muted text-center mb-0">Keine Daten verfügbar</p>
+              <% end %>
+            <% else %>
+              <p class="text-muted text-center mb-0">
+                <i class="bi bi-exclamation-circle me-1"></i>
+                Keine Datenquelle konfiguriert
+              </p>
+            <% end %>
+          </div>
+          <div class="card-footer bg-transparent">
+            <small class="text-muted">
+              Position: (<%= dashboard_widget.position_x || 0 %>, <%= dashboard_widget.position_y || 0 %>) | 
+              Größe: <%= dashboard_widget.width || 1 %> × <%= dashboard_widget.height || 1 %>
+            </small>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% end %>

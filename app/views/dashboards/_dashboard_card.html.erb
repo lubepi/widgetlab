@@ -1,4 +1,4 @@
-<div id="<%= dom_id dashboard %>" class="col">
+<div class="col">
   <%= link_to dashboard, class: "text-decoration-none" do %>
     <div class="card h-100 dashboard-card" style="cursor: pointer; transition: transform 0.15s, box-shadow 0.15s;" 
          onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.15)';" 
@@ -29,9 +29,9 @@
           <span class="badge bg-info">
             <i class="bi bi-columns-gap me-1"></i><%= dashboard.columns || 3 %> Spalten
           </span>
-          <% if defined?(role) && role.present? %>
+          <% if role.present? %>
             <span class="badge <%= role == 'owner' ? 'bg-warning text-dark' : (role == 'editor' ? 'bg-primary' : 'bg-secondary') %>">
-              <i class="bi bi-<%= role == 'owner' ? 'crown' : (role == 'editor' ? 'pencil' : 'eye') %> me-1"></i><%= role.capitalize %>
+              <i class="bi bi-<%= role == 'owner' ? 'crown' : (role == 'editor' ? 'pencil' : 'eye') %> me-1"></i><%= role.to_s.capitalize %>
             </span>
           <% end %>
         </div>

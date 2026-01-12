@@ -28,9 +28,30 @@
   <body data-controller="confirm-delete sidebar theme" data-sidebar-default-collapsed-value="<%= current_page?(dashboards_path) %>">
     <%= render "shared/confirm_delete_modal" %>
 
-    <div class="container-fluid">
-      <div class="row flex-nowrap">
-        <aside class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-body-tertiary border-end min-vh-100 sidebar" data-sidebar-target="sidebar">
+    <% if content_for?(:fullscreen) %>
+      <%# Fullscreen-Modus: Kein Sidebar, volle Breite %>
+      <%= turbo_frame_tag "modal" %>
+      <div class="container-fluid p-3">
+        <% if flash[:notice].present? %>
+          <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <%= flash[:notice] %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        <% end %>
+        <% if flash[:alert].present? %>
+          <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <%= flash[:alert] %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        <% end %>
+
+        <%= yield %>
+      </div>
+    <% else %>
+      <%# Normaler Modus: Mit Sidebar %>
+      <div class="container-fluid">
+        <div class="row flex-nowrap">
+          <aside class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-body-tertiary border-end min-vh-100 sidebar" data-sidebar-target="sidebar">
           <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-3 text-body sidebar-inner w-100">
             <%= link_to root_path, class: "d-flex align-items-center pb-3 mb-2 text-decoration-none" do %>
               <span class="fs-5 fw-semibold sidebar-label d-none d-sm-inline">Widgetlab</span>
@@ -128,5 +149,6 @@
         </main>
       </div>
     </div>
+    <% end %>
   </body>
 </html>

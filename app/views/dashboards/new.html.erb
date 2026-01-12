@@ -1,11 +1,23 @@
-<% content_for :title, "New dashboard" %>
+<% content_for :title, "Neues Dashboard" %>
 
-<h1>New dashboard</h1>
+<div class="row justify-content-center">
+  <div class="col-lg-6 col-md-8">
+    <div class="mb-4">
+      <%= link_to dashboards_path, class: "btn btn-outline-secondary btn-sm" do %>
+        <i class="bi bi-arrow-left me-1"></i>Zurück
+      <% end %>
+    </div>
 
-<%= render "form", dashboard: @dashboard %>
-
-<br>
-
-<div>
-  <%= link_to "Back to dashboards", dashboards_path %>
+    <div class="card">
+      <div class="card-header">
+        <h4 class="mb-0">
+          <i class="bi bi-plus-circle me-2"></i>
+          Neues Dashboard erstellen
+        </h4>
+      </div>
+      <div class="card-body">
+        <%= render "form", dashboard: @dashboard %>
+      </div>
+    </div>
+  </div>
 </div>
