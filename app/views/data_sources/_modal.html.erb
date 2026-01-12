@@ -7,7 +7,7 @@
       </div>
       <div class="modal-body">
         <%= form_with(model: DataSource.new, local: true, id: "new_data_source_form", data: { data_source_form_target: "form" }) do |form| %>
-          <%= render "form_fields", form: form, data_source: DataSource.new %>
+          <%= render "data_sources/form_fields", form: form, data_source: DataSource.new %>
         <% end %>
       </div>
       <div class="modal-footer">

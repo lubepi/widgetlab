@@ -4,6 +4,7 @@ class DataSource < ApplicationRecord
   has_many :widget_data_source_transformers, dependent: :destroy
   has_many :widgets, through: :widget_data_source_transformers
   has_many :data_source_storages, dependent: :destroy
+  has_many :data_source_whitelists, dependent: :destroy
 
   # Enum für die verschiedenen Datenquellentypen
   enum :source_type, { json_api: 0, mqtt: 1 }
@@ -13,6 +14,20 @@ class DataSource < ApplicationRecord
   validates :name, presence: true
   validates :source_type, presence: true
   validates :config, presence: true
+
+  def self.accessible_for(user)
+    return where(is_public: true) if user.blank?
+
+    group_ids = user.user_groups.select(:id)
+
+    left_outer_joins(:data_source_whitelists)
+      .where(
+        "data_sources.is_public = TRUE OR (data_sources.is_public IS DISTINCT FROM TRUE AND ((data_source_whitelists.whitelistable_type = 'User' AND data_source_whitelists.whitelistable_id = ?) OR (data_source_whitelists.whitelistable_type = 'UserGroup' AND data_source_whitelists.whitelistable_id IN (?))))",
+        user.id,
+        group_ids
+      )
+      .distinct
+  end
 
   # Callbacks
   after_create :start_subscription, if: :auto_subscribe?

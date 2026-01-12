@@ -19,6 +19,7 @@ export default class extends Controller {
   toggleAll(event) {
     const checked = event.params.checked === true
     this.checkboxTargets.forEach((cb) => {
+      if (cb.disabled) return
       cb.checked = checked
     })
     this.updateCount()

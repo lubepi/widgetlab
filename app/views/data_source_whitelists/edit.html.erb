@@ -1,0 +1,82 @@
+<%= turbo_frame_tag "modal" do %>
+  <div class="modal fade show" id="editDataSourceWhitelistModal" tabindex="-1" aria-labelledby="editDataSourceWhitelistModalLabel" style="display: block;" data-controller="modal">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editDataSourceWhitelistModalLabel">Whitelist bearbeiten</h5>
+          <%= link_to "", data_sources_path, class: "btn-close", aria: { label: "Close" }, data: { turbo_frame: "_top" } %>
+        </div>
+        <div class="modal-body">
+          <%= form_with(url: whitelist_data_source_path(@data_source, format: :turbo_stream), method: :patch, id: "edit_data_source_whitelist_form_#{@data_source.id}", data: { turbo_frame: "_top", controller: "data-source-whitelist", data_source_whitelist_group_members_value: @group_member_info.to_json }) do %>
+            <div class="mb-4">
+              <div class="form-text">Datenquelle: <strong><%= @data_source.name %></strong></div>
+            </div>
+
+            <div data-data-source-whitelist-target="hiddenContainer"></div>
+
+            <div class="mb-4">
+              <label class="form-label">Benutzer</label>
+              <div class="card" data-controller="member-picker" data-action="change->member-picker#updateCount">
+                <div class="card-body">
+                  <div class="row g-2 align-items-center mb-2">
+                    <div class="col-sm">
+                      <input type="search" class="form-control" placeholder="Suchen (E-Mail)…" data-member-picker-target="query" data-action="input->member-picker#filter">
+                    </div>
+                    <div class="col-sm-auto">
+                      <button type="button" class="btn btn-outline-secondary" data-action="member-picker#toggleAll" data-member-picker-checked-param="true">Alle</button>
+                      <button type="button" class="btn btn-outline-secondary" data-action="member-picker#toggleAll" data-member-picker-checked-param="false">Keine</button>
+                    </div>
+                  </div>
+
+                  <div class="small text-muted mb-2" data-member-picker-target="count"></div>
+
+                  <div class="border rounded p-2" style="max-height: 260px; overflow: auto;">
+                    <% @users.each do |user| %>
+                      <div class="form-check" data-member-picker-target="item" data-search="<%= user.email %>">
+                        <input class="form-check-input" type="checkbox" value="<%= user.id %>" name="whitelist[user_ids][]" id="data_source_whitelist_user_<%= user.id %>" data-member-picker-target="checkbox" data-data-source-whitelist-target="userCheckbox" <%= "checked" if @selected_user_ids.include?(user.id) %>>
+                        <label class="form-check-label" for="data_source_whitelist_user_<%= user.id %>"><%= user.email %></label>
+                        <div class="small text-muted" data-data-source-whitelist-target="userHint" data-user-id="<%= user.id %>"></div>
+                      </div>
+                    <% end %>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mb-4">
+              <label class="form-label">Gruppen</label>
+              <div class="card" data-controller="member-picker" data-action="change->member-picker#updateCount">
+                <div class="card-body">
+                  <div class="row g-2 align-items-center mb-2">
+                    <div class="col-sm">
+                      <input type="search" class="form-control" placeholder="Suchen (Name)…" data-member-picker-target="query" data-action="input->member-picker#filter">
+                    </div>
+                    <div class="col-sm-auto">
+                      <button type="button" class="btn btn-outline-secondary" data-action="member-picker#toggleAll" data-member-picker-checked-param="true">Alle</button>
+                      <button type="button" class="btn btn-outline-secondary" data-action="member-picker#toggleAll" data-member-picker-checked-param="false">Keine</button>
+                    </div>
+                  </div>
+
+                  <div class="small text-muted mb-2" data-member-picker-target="count"></div>
+
+                  <div class="border rounded p-2" style="max-height: 260px; overflow: auto;">
+                    <% @user_groups.each do |group| %>
+                      <div class="form-check" data-member-picker-target="item" data-search="<%= group.name %>">
+                        <input class="form-check-input" type="checkbox" value="<%= group.id %>" name="whitelist[user_group_ids][]" id="data_source_whitelist_group_<%= group.id %>" data-member-picker-target="checkbox" data-data-source-whitelist-target="groupCheckbox" <%= "checked" if @selected_user_group_ids.include?(group.id) %>>
+                        <label class="form-check-label" for="data_source_whitelist_group_<%= group.id %>"><%= group.name %></label>
+                      </div>
+                    <% end %>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+        <div class="modal-footer">
+          <%= link_to "Abbrechen", data_sources_path, class: "btn btn-secondary", data: { turbo_frame: "_top" } %>
+          <button type="submit" class="btn btn-primary" form="<%= "edit_data_source_whitelist_form_#{@data_source.id}" %>">Speichern</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

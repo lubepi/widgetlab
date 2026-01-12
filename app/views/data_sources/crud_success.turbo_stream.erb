@@ -1,9 +1,9 @@
 <%= turbo_stream.replace "data_sources_table" do %>
-  <%= render "table", data_sources: @data_sources %>
+  <%= render "data_sources/table", data_sources: @data_sources %>
 <% end %>
 
 <%= turbo_stream.replace "modal" do %>
-  <%= render "modal" %>
+  <%= render "data_sources/modal" %>
   <script>
     document.querySelectorAll(".modal.show").forEach((el) => {
       if (window.bootstrap && window.bootstrap.Modal) {

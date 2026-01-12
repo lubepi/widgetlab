@@ -78,6 +78,18 @@
                     } do %>
                   <i class="bi bi-pencil"></i>
                 <% end %>
+
+                <% if data_source.is_public != true %>
+                  <%= link_to whitelist_data_source_path(data_source),
+                      class: "btn btn-sm btn-outline-primary",
+                      title: "Whitelist bearbeiten",
+                      data: {
+                        turbo_frame: "modal",
+                        turbo_method: :get
+                      } do %>
+                    <i class="bi bi-person-lock"></i>
+                  <% end %>
+                <% end %>
                 <button type="button"
                         class="btn btn-sm btn-outline-danger"
                         title="Löschen"

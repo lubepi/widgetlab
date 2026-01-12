@@ -15,6 +15,8 @@ Rails.application.routes.draw do
     member do
       post :start_subscription
       post :stop_subscription
+      get :whitelist, to: "data_source_whitelists#edit"
+      patch :whitelist, to: "data_source_whitelists#update"
     end
   end
   resources :dashboard_widgets
