@@ -1,0 +1,189 @@
+<% if widget.errors.any? %>
+  <div class="alert alert-danger" role="alert">
+    <h5 class="alert-heading">
+      <%= pluralize(widget.errors.count, "Fehler") %> verhinderte das Speichern des Widgets:
+    </h5>
+    <ul class="mb-0">
+      <% widget.errors.each do |error| %>
+        <li><%= error.full_message %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<div class="mb-3">
+  <%= form.label :name, "Name", class: "form-label" %>
+  <%= form.text_field :name, class: "form-control", placeholder: "z.B. Temperatur Sensor" %>
+</div>
+
+<div class="mb-3">
+  <%= form.label :description, "Beschreibung", class: "form-label" %>
+  <%= form.text_area :description, class: "form-control", rows: 3, placeholder: "Optionale Beschreibung des Widgets" %>
+</div>
+
+<div class="mb-3">
+  <%= form.label :widget_type, "Widget-Typ", class: "form-label" %>
+  <%= form.select :widget_type, Widget.widget_types.keys.map { |k| [k.titleize, k] }, { prompt: "Bitte wählen..." }, { class: "form-select" } %>
+  <div class="form-text">Value = Einzelwert, Line/Bar/Column/Pie = Diagramme (Chart.js)</div>
+</div>
+
+<div class="mb-3">
+  <%= form.label :data_source_id, "Datenquelle", class: "form-label" %>
+  <% current_data_source_id = widget.widget_data_source_transformer&.data_source_id %>
+  <%= select_tag 'widget[data_source_id]', 
+      options_from_collection_for_select(@data_sources || DataSource.all, :id, :name, current_data_source_id),
+      prompt: "Bitte wählen...", 
+      class: "form-select" %>
+  <div class="form-text">Die Datenquelle, von der die Widget-Daten bezogen werden</div>
+</div>
+
+<!-- Daten-Transformation -->
+<div class="card mb-3">
+  <div class="card-header">
+    <strong>Daten-Transformation (optional)</strong>
+  </div>
+  <div class="card-body">
+    <p class="text-muted small">
+      Transformiert die Rohdaten der Datenquelle, bevor sie im Widget angezeigt werden.
+    </p>
+
+    <% current_config = widget.widget_data_source_transformer&.config || {} %>
+
+    <div class="mb-3">
+      <%= label_tag 'widget[transformer_config][json_path]', "JSON-Pfad", class: "form-label" %>
+      <%= text_field_tag 'widget[transformer_config][json_path]', 
+          current_config['json_path'], 
+          class: "form-control", 
+          placeholder: "z.B. data.temperature oder items.0.value" %>
+      <div class="form-text">
+        Extrahiert einen verschachtelten Wert aus JSON-Daten (mit Punkt-Notation)
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-4">
+        <div class="mb-3">
+          <%= label_tag 'widget[transformer_config][multiply]', "Multiplikator", class: "form-label" %>
+          <%= number_field_tag 'widget[transformer_config][multiply]', 
+              current_config['multiply'], 
+              class: "form-control", 
+              step: 0.01,
+              placeholder: "z.B. 1.8 für Fahrenheit" %>
+          <div class="form-text">Multipliziert den Wert</div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="mb-3">
+          <%= label_tag 'widget[transformer_config][add]', "Addition", class: "form-label" %>
+          <%= number_field_tag 'widget[transformer_config][add]', 
+              current_config['add'], 
+              class: "form-control", 
+              step: 0.01,
+              placeholder: "z.B. 32 für Fahrenheit" %>
+          <div class="form-text">Addiert zum Wert</div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="mb-3">
+          <%= label_tag 'widget[transformer_config][round]', "Dezimalstellen", class: "form-label" %>
+          <%= number_field_tag 'widget[transformer_config][round]', 
+              current_config['round'], 
+              class: "form-control", 
+              min: 0, 
+              max: 10,
+              placeholder: "z.B. 2" %>
+          <div class="form-text">Rundet auf N Stellen</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <%= label_tag 'widget[transformer_config][format]', "Format", class: "form-label" %>
+      <%= select_tag 'widget[transformer_config][format]', 
+          options_for_select(
+            [
+              ['Automatisch', ''],
+              ['Zahl (Float)', 'number'],
+              ['Ganzzahl (Integer)', 'integer'],
+              ['Text (String)', 'string'],
+              ['Ja/Nein (Boolean)', 'boolean']
+            ], 
+            current_config['format']
+          ),
+          class: "form-select" %>
+      <div class="form-text">Konvertiert den finalen Wert in das gewählte Format</div>
+    </div>
+
+    <div class="alert alert-info mb-0">
+      <strong>Beispiel:</strong> Celsius → Fahrenheit<br>
+      Multiplikator: <code>1.8</code>, Addition: <code>32</code>, Dezimalstellen: <code>1</code>
+    </div>
+  </div>
+</div>
+
+<div class="mb-3">
+  <%= form.label :color, "Farbe", class: "form-label" %>
+  <%= form.color_field :color, class: "form-control form-control-color", value: widget.color || "#0d6efd" %>
+</div>
+
+<!-- Zeitbereich-Konfiguration -->
+<div class="card mb-3">
+  <div class="card-header">
+    <strong>Zeitbereich & Datenverarbeitung</strong>
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="mb-3">
+          <%= form.label :time_range_value, "Zeitbereich (Wert)", class: "form-label" %>
+          <%= form.number_field :time_range_value, class: "form-control", value: widget.time_range_value || 24, min: 1 %>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="mb-3">
+          <%= form.label :time_range_unit, "Zeiteinheit", class: "form-label" %>
+          <%= form.select :time_range_unit, 
+              Widget::TIME_RANGE_UNITS.map { |u| [I18n.t("time_units.#{u}", default: u), u] }, 
+              { selected: widget.time_range_unit || 'hours' }, 
+              { class: "form-select" } %>
+        </div>
+      </div>
+    </div>
+    <div class="form-text mb-3">Zeitspanne für Datenabruf (z.B. "24 Stunden" oder "7 Tage")</div>
+
+    <div class="row">
+      <div class="col-md-4">
+        <div class="mb-3">
+          <%= form.label :group_by, "Gruppierung", class: "form-label" %>
+          <%= form.select :group_by, 
+              Widget::GROUP_BY_OPTIONS.map { |o| [I18n.t("group_by.#{o}", default: o), o] }, 
+              { selected: widget.group_by || 'hour' }, 
+              { class: "form-select" } %>
+          <div class="form-text">Zeitintervall für Datenpunkte</div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="mb-3">
+          <%= form.label :aggregate_function, "Aggregation", class: "form-label" %>
+          <%= form.select :aggregate_function, 
+              Widget::AGGREGATE_FUNCTIONS.map { |f| [I18n.t("aggregate.#{f}", default: f), f] }, 
+              { selected: widget.aggregate_function || 'avg' }, 
+              { class: "form-select" } %>
+          <div class="form-text">Berechnungsmethode</div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="mb-3">
+          <%= form.label :data_limit, "Max. Datenpunkte", class: "form-label" %>
+          <%= form.number_field :data_limit, class: "form-control", value: widget.data_limit || 100, min: 10, max: 1000 %>
+          <div class="form-text">Maximale Anzahl</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="mb-3 form-check">
+  <%= form.check_box :is_public, class: "form-check-input" %>
+  <%= form.label :is_public, "Öffentlich sichtbar", class: "form-check-label" %>
+</div>

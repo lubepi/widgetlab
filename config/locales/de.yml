@@ -1,0 +1,20 @@
+de:
+  time_units:
+    minutes: "Minuten"
+    hours: "Stunden"
+    days: "Tage"
+    weeks: "Wochen"
+    months: "Monate"
+  
+  group_by:
+    minute: "Minute"
+    hour: "Stunde"
+    day: "Tag"
+    week: "Woche"
+  
+  aggregate:
+    avg: "Durchschnitt"
+    min: "Minimum"
+    max: "Maximum"
+    sum: "Summe"
+    count: "Anzahl"

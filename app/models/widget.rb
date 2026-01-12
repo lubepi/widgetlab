@@ -11,7 +11,51 @@ class Widget < ApplicationRecord
 
   enum :widget_type, { value: 0, line: 1, bar: 2, column: 3, pie: 4 }
 
+  TIME_RANGE_UNITS = %w[minutes hours days weeks months].freeze
+  GROUP_BY_OPTIONS = %w[minute hour day week].freeze
+  AGGREGATE_FUNCTIONS = %w[avg min max sum count].freeze
+
   validates :name, presence: true
+  validates :time_range_unit, inclusion: { in: TIME_RANGE_UNITS }, allow_nil: true
+  validates :group_by, inclusion: { in: GROUP_BY_OPTIONS }, allow_nil: true
+  validates :aggregate_function, inclusion: { in: AGGREGATE_FUNCTIONS }, allow_nil: true
+
+  # Berechnet die Start-Zeit basierend auf time_range_value und time_range_unit
+  def time_range_start
+    return 24.hours.ago if time_range_value.nil? || time_range_unit.nil?
+
+    case time_range_unit
+    when 'minutes'
+      time_range_value.minutes.ago
+    when 'hours'
+      time_range_value.hours.ago
+    when 'days'
+      time_range_value.days.ago
+    when 'weeks'
+      time_range_value.weeks.ago
+    when 'months'
+      time_range_value.months.ago
+    else
+      24.hours.ago
+    end
+  end
+
+  # Holt die Daten für dieses Widget basierend auf Konfiguration
+  def fetch_data
+    return nil unless data_source.present?
+
+    if widget_type == 'value'
+      latest_data
+    else
+      # Für Charts: Verwende aggregierte Daten mit Widget-Konfiguration
+      aggregated_data(
+        start_time: time_range_start,
+        end_time: Time.current,
+        group_by: (group_by || 'hour').to_sym,
+        aggregate: (aggregate_function || 'avg').to_sym
+      )
+    end
+  end
 
   # Holt die aktuellen Daten für das Widget von der verknüpften Datenquelle
   # Optional mit Transformation basierend auf der Transformer-Config

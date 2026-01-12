@@ -1,0 +1,59 @@
+<div class="modal fade show" id="widgetShowModal" tabindex="-1" aria-labelledby="widgetShowModalLabel" aria-modal="true" role="dialog" style="display: block;">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="widgetShowModalLabel"><%= @widget.name %></h5>
+        <%= link_to "", widgets_path, class: "btn-close", aria: { label: "Close" }, data: { turbo_frame: "_top" } %>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4">
+          <div class="card">
+            <div class="card-body" style="min-height: 300px;">
+              <%= render @widget %>
+            </div>
+          </div>
+        </div>
+
+        <% if @widget.description.present? %>
+          <div class="mb-3">
+            <strong>Beschreibung:</strong>
+            <p class="text-muted"><%= @widget.description %></p>
+          </div>
+        <% end %>
+
+        <div class="row">
+          <div class="col-md-6">
+            <strong>Typ:</strong> <%= @widget.widget_type&.titleize || 'Nicht gesetzt' %>
+          </div>
+          <div class="col-md-6">
+            <strong>Datenquelle:</strong> 
+            <% if @widget.widget_data_source_transformer&.data_source %>
+              <%= @widget.widget_data_source_transformer.data_source.name %>
+            <% else %>
+              <span class="text-muted">Keine</span>
+            <% end %>
+          </div>
+        </div>
+
+        <div class="row mt-2">
+          <div class="col-md-6">
+            <strong>Zeitbereich:</strong> <%= @widget.time_range_value %> <%= I18n.t("time_units.#{@widget.time_range_unit}", default: @widget.time_range_unit) %>
+          </div>
+          <div class="col-md-6">
+            <strong>Öffentlich:</strong> <%= @widget.is_public? ? 'Ja' : 'Nein' %>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <%= link_to "Bearbeiten", edit_widget_path(@widget), 
+            class: "btn btn-primary",
+            data: { turbo_frame: "widget_modal" } %>
+        <%= button_to "Löschen", @widget, method: :delete, 
+            class: "btn btn-danger", 
+            data: { turbo_confirm: "Möchten Sie dieses Widget wirklich löschen?" } %>
+        <%= link_to "Schließen", widgets_path, class: "btn btn-secondary", data: { turbo_frame: "_top" } %>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-backdrop fade show"></div>

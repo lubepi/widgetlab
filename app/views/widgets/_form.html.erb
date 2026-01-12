@@ -1,42 +1,8 @@
 <%= form_with(model: widget) do |form| %>
-  <% if widget.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(widget.errors.count, "error") %> prohibited this widget from being saved:</h2>
+  <%= render "widgets/form_fields", form: form, widget: widget %>
 
-      <ul>
-        <% widget.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
-
-  <div>
-    <%= form.label :name, style: "display: block" %>
-    <%= form.text_field :name %>
-  </div>
-
-  <div>
-    <%= form.label :description, style: "display: block" %>
-    <%= form.text_field :description %>
-  </div>
-
-  <div>
-    <%= form.label :type, style: "display: block" %>
-    <%= form.number_field :type %>
-  </div>
-
-  <div>
-    <%= form.label :color, style: "display: block" %>
-    <%= form.text_field :color %>
-  </div>
-
-  <div>
-    <%= form.label :is_public, style: "display: block" %>
-    <%= form.checkbox :is_public %>
-  </div>
-
-  <div>
-    <%= form.submit %>
+  <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+    <%= link_to "Abbrechen", widgets_path, class: "btn btn-secondary" %>
+    <%= form.submit "Widget speichern", class: "btn btn-primary" %>
   </div>
 <% end %>

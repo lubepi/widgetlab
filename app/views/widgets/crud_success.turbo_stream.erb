@@ -1,0 +1,21 @@
+<%= turbo_stream.replace "widgets_grid" do %>
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4" id="widgets">
+    <% @widgets.each do |widget| %>
+      <div class="col">
+        <div class="card h-100 shadow-sm">
+          <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
+            <%= render widget %>
+          </div>
+          <div class="card-body">
+            <h5 class="card-title"><%= widget.name %></h5>
+            <%= link_to "Details", widget, class: "btn btn-sm btn-outline-primary" %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% end %>
+
+<%= turbo_stream.replace "widget_modal" do %>
+  <%= render "widgets/show_modal" %>
+<% end %>
