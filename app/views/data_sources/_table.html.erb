@@ -53,20 +53,30 @@
             <td><%= l(data_source.created_at, format: :short) %></td>
             <td class="text-end">
               <div class="btn-group" role="group">
-                <%= button_to start_subscription_data_source_path(data_source),
-                    method: :post,
-                    class: "btn btn-sm btn-outline-success",
-                    disabled: data_source.job_running?,
-                    title: "Starten" do %>
-                  <i class="bi bi-play"></i>
+                <% if data_source.job_running? %>
+                  <button type="button" class="btn btn-sm btn-outline-success" disabled title="Starten">
+                    <i class="bi bi-play"></i>
+                  </button>
+                <% else %>
+                  <%= link_to start_subscription_data_source_path(data_source),
+                      class: "btn btn-sm btn-outline-success",
+                      title: "Starten",
+                      data: { turbo_method: :post } do %>
+                    <i class="bi bi-play"></i>
+                  <% end %>
                 <% end %>
 
-                <%= button_to stop_subscription_data_source_path(data_source),
-                    method: :post,
-                    class: "btn btn-sm btn-outline-warning",
-                    disabled: !data_source.job_running?,
-                    title: "Stoppen" do %>
-                  <i class="bi bi-stop"></i>
+                <% if !data_source.job_running? %>
+                  <button type="button" class="btn btn-sm btn-outline-warning" disabled title="Stoppen">
+                    <i class="bi bi-stop"></i>
+                  </button>
+                <% else %>
+                  <%= link_to stop_subscription_data_source_path(data_source),
+                      class: "btn btn-sm btn-outline-warning",
+                      title: "Stoppen",
+                      data: { turbo_method: :post } do %>
+                    <i class="bi bi-stop"></i>
+                  <% end %>
                 <% end %>
 
                 <%= link_to edit_data_source_path(data_source),
