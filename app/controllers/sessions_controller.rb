@@ -1,3 +1,5 @@
+require "json/jwt"
+
 class SessionsController < ApplicationController
   skip_before_action :authenticate_user!, only: [ :new, :create, :failure ]
 
@@ -11,6 +13,7 @@ class SessionsController < ApplicationController
 
     # Nur User-ID in der Session speichern (Tokens sind zu groß für Cookie-Sessions)
     session[:user_id] = user.id
+    session[:keycloak_roles] = extract_keycloak_roles(auth_hash)
 
     redirect_to root_path, notice: "Erfolgreich angemeldet!"
   end
@@ -42,6 +45,32 @@ class SessionsController < ApplicationController
         last_name: auth_hash.info.last_name || auth_hash.info.family_name
       )
     end
+  end
+
+  def extract_keycloak_roles(auth_hash)
+    access_token = auth_hash&.credentials&.token
+    claims = jwt_claims(access_token)
+
+    if claims.blank?
+      raw_info = auth_hash&.extra&.raw_info
+      claims = raw_info.respond_to?(:to_h) ? raw_info.to_h : {}
+    end
+
+    realm_access = claims["realm_access"] || claims[:realm_access] || {}
+    realm_access_hash = realm_access.respond_to?(:to_h) ? realm_access.to_h : {}
+    realm_roles = realm_access_hash["roles"] || realm_access_hash[:roles] || []
+
+    groups = claims["groups"] || claims[:groups] || []
+
+    Array(realm_roles).concat(Array(groups)).map(&:to_s).map(&:downcase).uniq
+  end
+
+  def jwt_claims(token)
+    return {} if token.blank?
+
+    JSON::JWT.decode(token, :skip_verification).to_h
+  rescue JSON::JWT::InvalidFormat, JSON::JWS::VerificationFailed, ArgumentError
+    {}
   end
 
   def build_keycloak_logout_url

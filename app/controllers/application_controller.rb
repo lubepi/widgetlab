@@ -8,7 +8,7 @@ class ApplicationController < ActionController::Base
   # Authentifizierung für alle Controller
   before_action :authenticate_user!
 
-  helper_method :current_user, :user_signed_in?
+  helper_method :current_user, :user_signed_in?, :keycloak_roles, :has_role?, :admin?
 
   private
 
@@ -18,6 +18,18 @@ class ApplicationController < ActionController::Base
 
   def user_signed_in?
     current_user.present?
+  end
+
+  def keycloak_roles
+    Array(session[:keycloak_roles]).map(&:to_s).map(&:downcase).uniq
+  end
+
+  def has_role?(role)
+    keycloak_roles.include?(role.to_s.downcase)
+  end
+
+  def admin?
+    has_role?("admin")
   end
 
   def authenticate_user!
