@@ -3,7 +3,11 @@ class DashboardsController < ApplicationController
 
   # GET /dashboards or /dashboards.json
   def index
-    @dashboards = Dashboard.all
+    @owned_dashboards = Dashboard.owned_by(current_user)
+    @shared_dashboards = Dashboard.shared_with(current_user)
+    @public_dashboards = Dashboard.where(is_public: true)
+                                  .where.not(id: @owned_dashboards.select(:id))
+                                  .where.not(id: @shared_dashboards.select(:id))
   end
 
   # GET /dashboards/1 or /dashboards/1.json
@@ -25,7 +29,9 @@ class DashboardsController < ApplicationController
 
     respond_to do |format|
       if @dashboard.save
-        format.html { redirect_to @dashboard, notice: "Dashboard was successfully created." }
+        # Ersteller wird automatisch Owner
+        @dashboard.dashboard_user_roles.create!(user: current_user, role: :owner)
+        format.html { redirect_to @dashboard, notice: "Dashboard wurde erfolgreich erstellt." }
         format.json { render :show, status: :created, location: @dashboard }
       else
         format.html { render :new, status: :unprocessable_entity }

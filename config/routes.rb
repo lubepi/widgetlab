@@ -25,7 +25,12 @@ Rails.application.routes.draw do
   resources :user_group_roles
   resources :user_groups, only: %i[index show new create edit update destroy]
   resources :dashboard_user_roles
-  resources :dashboards
+  resources :dashboards do
+    member do
+      get :access, to: "dashboard_user_roles#edit"
+      patch :access, to: "dashboard_user_roles#update"
+    end
+  end
   resources :users, only: %i[index show]
 
   # Bootstrap Demo Seite

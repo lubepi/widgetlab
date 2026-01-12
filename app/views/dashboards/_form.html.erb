@@ -1,9 +1,11 @@
-<%= form_with(model: dashboard) do |form| %>
+<%= form_with(model: dashboard, class: "needs-validation") do |form| %>
   <% if dashboard.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(dashboard.errors.count, "error") %> prohibited this dashboard from being saved:</h2>
-
-      <ul>
+    <div class="alert alert-danger" role="alert">
+      <h6 class="alert-heading">
+        <i class="bi bi-exclamation-triangle me-2"></i>
+        <%= pluralize(dashboard.errors.count, "Fehler") %> verhindert das Speichern:
+      </h6>
+      <ul class="mb-0">
         <% dashboard.errors.each do |error| %>
           <li><%= error.full_message %></li>
         <% end %>
@@ -11,27 +13,75 @@
     </div>
   <% end %>
 
-  <div>
-    <%= form.label :name, style: "display: block" %>
-    <%= form.text_field :name %>
+  <div class="mb-3">
+    <%= form.label :name, "Name", class: "form-label" %>
+    <%= form.text_field :name, class: "form-control", placeholder: "z.B. Mein Dashboard", required: true %>
+    <div class="form-text">Gib deinem Dashboard einen aussagekräftigen Namen.</div>
   </div>
 
-  <div>
-    <%= form.label :columns, style: "display: block" %>
-    <%= form.number_field :columns %>
+  <div class="mb-3">
+    <%= form.label :columns, "Anzahl Spalten", class: "form-label" %>
+    <%= form.number_field :columns, class: "form-control", min: 1, max: 12, value: dashboard.columns || 3 %>
+    <div class="form-text">Wie viele Spalten soll das Grid haben? (1-12)</div>
   </div>
 
-  <div>
-    <%= form.label :is_public, style: "display: block" %>
-    <%= form.checkbox :is_public %>
+  <div class="mb-3">
+    <%= form.label :icon, "Icon", class: "form-label" %>
+    <%= form.hidden_field :icon, id: "dashboard_icon_field" %>
+    <div class="d-flex flex-wrap gap-2" id="icon-picker">
+      <%
+        icons = %w[
+          speedometer2 graph-up bar-chart-line pie-chart activity
+          grid-1x2 grid grid-3x3 columns-gap layout-split
+          house building gear sliders cpu
+          cloud sun-fill thermometer-half droplet lightning
+          wifi router broadcast globe signal
+          clock calendar calendar-week stopwatch alarm
+          person people person-badge person-circle users
+          bell chat-dots envelope megaphone telephone
+          folder file-earmark clipboard journal book
+          lock unlock shield-lock key eye
+          heart star star-fill flag bookmark
+          map geo-alt pin-map compass navigation
+          cart bag shop credit-card currency-dollar
+          camera image film play-circle music-note
+          tools wrench hammer screwdriver box
+          truck airplane car-front bicycle fuel-pump
+        ]
+      %>
+      <% icons.each do |icon| %>
+        <button type="button" 
+                class="btn btn-outline-secondary icon-option <%= 'active' if dashboard.icon == icon %>"
+                data-icon="<%= icon %>"
+                style="width: 42px; height: 42px; padding: 0;"
+                onclick="selectIcon('<%= icon %>')">
+          <i class="bi bi-<%= icon %>"></i>
+        </button>
+      <% end %>
+    </div>
+    <div class="form-text mt-2">Wähle ein Icon für dein Dashboard.</div>
+    <script>
+      function selectIcon(iconName) {
+        document.getElementById('dashboard_icon_field').value = iconName;
+        document.querySelectorAll('#icon-picker .icon-option').forEach(btn => {
+          btn.classList.remove('active', 'btn-primary');
+          btn.classList.add('btn-outline-secondary');
+        });
+        event.target.closest('.icon-option').classList.remove('btn-outline-secondary');
+        event.target.closest('.icon-option').classList.add('active', 'btn-primary');
+      }
+    </script>
   </div>
 
-  <div>
-    <%= form.label :icon, style: "display: block" %>
-    <%= form.text_field :icon %>
+  <div class="mb-4">
+    <div class="form-check form-switch">
+      <%= form.check_box :is_public, class: "form-check-input", role: "switch" %>
+      <%= form.label :is_public, "Öffentlich zugänglich", class: "form-check-label" %>
+    </div>
+    <div class="form-text">Öffentliche Dashboards können von allen Nutzern eingesehen werden.</div>
   </div>
 
-  <div>
-    <%= form.submit %>
+  <div class="d-grid gap-2">
+    <%= form.submit dashboard.persisted? ? "Dashboard speichern" : "Dashboard erstellen", class: "btn btn-primary" %>
   </div>
 <% end %>
