@@ -18,20 +18,28 @@ module DataSources
         @topic = @config_hash[:topic]
 
         # Optional mit Defaults
-        @port = @config_hash[:port] || 1883
+        @port = coerce_numeric(@config_hash[:port], default: 1883)
         @username = @config_hash[:username]
         @password = @config_hash[:password]
         @client_id = @config_hash[:client_id]
-        @clean_session = @config_hash.key?(:clean_session) ? @config_hash[:clean_session] : true
-        @keep_alive = @config_hash[:keep_alive] || 15
-        @qos = @config_hash[:qos] || 0
-        @parse_json = @config_hash.key?(:parse_json) ? @config_hash[:parse_json] : true
+        @clean_session = coerce_boolean(@config_hash[:clean_session], default: true)
+        @keep_alive = coerce_numeric(@config_hash[:keep_alive], default: 15)
+        @qos = coerce_numeric(@config_hash[:qos], default: 0)
+        @parse_json = coerce_boolean(@config_hash[:parse_json], default: true)
 
         # SSL/TLS
-        @use_ssl = @config_hash[:use_ssl] || false
+        @use_ssl = coerce_boolean(@config_hash[:use_ssl], default: false)
         @ca_file = @config_hash[:ca_file]
         @cert_file = @config_hash[:cert_file]
         @key_file = @config_hash[:key_file]
+
+        # Aktualisiere config_hash mit konvertierten Werten
+        @config_hash[:port] = @port
+        @config_hash[:clean_session] = @clean_session
+        @config_hash[:keep_alive] = @keep_alive
+        @config_hash[:qos] = @qos
+        @config_hash[:parse_json] = @parse_json
+        @config_hash[:use_ssl] = @use_ssl
 
         validate!
       end
@@ -69,6 +77,36 @@ module DataSources
       end
 
       private
+
+      def coerce_numeric(value, default:)
+        return default if value.nil?
+
+        return value if value.is_a?(Numeric)
+        return value.to_i if defined?(ActiveSupport::Duration) && value.is_a?(ActiveSupport::Duration)
+
+        if value.is_a?(String)
+          stripped = value.strip
+          return default if stripped.empty?
+          return Integer(stripped) if stripped.match?(/\A-?\d+\z/)
+          return Float(stripped) if stripped.match?(/\A-?\d+(?:\.\d+)?\z/)
+        end
+
+        raise ArgumentError, "#{caller_locations(1,1)[0].label} must be of type Integer or Numeric"
+      end
+
+      def coerce_boolean(value, default:)
+        return default if value.nil?
+
+        return value if value.is_a?(TrueClass) || value.is_a?(FalseClass)
+
+        if value.is_a?(String)
+          stripped = value.strip.downcase
+          return true if stripped == "true"
+          return false if stripped == "false"
+        end
+
+        raise ArgumentError, "#{caller_locations(1,1)[0].label} must be of type TrueClass or FalseClass"
+      end
 
       def validate!
         super
