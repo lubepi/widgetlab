@@ -8,6 +8,7 @@ class UsersController < ApplicationController
 
   # GET /users/1 or /users/1.json
   def show
+    @accessible_data_sources = DataSource.accessible_for(@user).order(:name)
   end
 
   private

@@ -30,6 +30,17 @@
                 <span class="text-muted">Keine</span>
               <% end %>
             </dd>
+
+            <dt class="col-sm-4">Datenquellen</dt>
+            <dd class="col-sm-8">
+              <% if @accessible_data_sources.any? %>
+                <% @accessible_data_sources.each do |data_source| %>
+                  <span class="badge text-bg-light border me-1"><%= data_source.name %></span>
+                <% end %>
+              <% else %>
+                <span class="text-muted">Keine</span>
+              <% end %>
+            </dd>
           </dl>
         </div>
         <div class="modal-footer">
