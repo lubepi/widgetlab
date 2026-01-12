@@ -68,7 +68,7 @@ class Widget < ApplicationRecord
     raw_values.map do |storage|
       {
         value: transformer.transform(storage.value),
-        stored_at: storage.stored_at
+        stored_at: storage.stored_at.in_time_zone(Time.zone)
       }
     end
   end
@@ -82,7 +82,7 @@ class Widget < ApplicationRecord
 
     {
       value: widget_data_source_transformer.transform(storage.value),
-      stored_at: storage.stored_at
+      stored_at: storage.stored_at.in_time_zone(Time.zone)
     }
   end
 
@@ -96,7 +96,7 @@ class Widget < ApplicationRecord
     storages.map do |storage|
       {
         value: transformer.transform(storage.value),
-        stored_at: storage.stored_at
+        stored_at: storage.stored_at.in_time_zone(Time.zone)
       }
     end
   end
@@ -151,7 +151,7 @@ class Widget < ApplicationRecord
 
       {
         value: aggregated_value,
-        stored_at: time,
+        stored_at: time.in_time_zone(Time.zone),
         count: group_storages.size
       }
     end

@@ -80,7 +80,7 @@ export default class extends Controller {
     if (this.typeValue !== 'pie') {
       baseOptions.scales = {
         y: {
-          beginAtZero: true
+          beginAtZero: false
         }
       }
     }
