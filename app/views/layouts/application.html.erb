@@ -25,33 +25,37 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body data-controller="confirm-delete">
+  <body data-controller="confirm-delete sidebar theme" data-sidebar-default-collapsed-value="<%= current_page?(dashboards_path) %>">
     <%= render "shared/confirm_delete_modal" %>
 
     <div class="container-fluid">
       <div class="row flex-nowrap">
-        <aside class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-body-tertiary border-end min-vh-100">
-          <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-3 text-body">
+        <aside class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-body-tertiary border-end min-vh-100 sidebar" data-sidebar-target="sidebar">
+          <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-3 text-body sidebar-inner w-100">
             <%= link_to root_path, class: "d-flex align-items-center pb-3 mb-2 text-decoration-none" do %>
-              <span class="fs-5 fw-semibold d-none d-sm-inline">Widgetlab</span>
+              <span class="fs-5 fw-semibold sidebar-label d-none d-sm-inline">Widgetlab</span>
             <% end %>
+
+            <button type="button" class="btn btn-sm btn-outline-secondary mb-2 sidebar-toggle-btn" data-action="sidebar#toggle" aria-label="Sidebar einklappen/ausklappen">
+              <i class="bi" data-sidebar-target="toggleIcon"></i>
+            </button>
 
             <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start w-100" id="menu">
               <li class="nav-item w-100">
-                <div class="small text-uppercase text-secondary px-3 mt-2 mb-1">Übersicht</div>
+                <div class="small text-uppercase text-secondary px-3 mt-2 mb-1 sidebar-section-label">Übersicht</div>
               </li>
 
               <li class="nav-item w-100">
                 <%= link_to dashboards_path, class: "nav-link px-3 #{current_page?(dashboards_path) ? 'active' : 'text-body'}" do %>
                   <i class="bi bi-speedometer2 me-2"></i>
-                  <span class="d-none d-sm-inline">Dashboards</span>
+                  <span class="d-none d-sm-inline sidebar-label">Dashboards</span>
                 <% end %>
               </li>
 
               <li class="nav-item w-100">
                 <%= link_to widgets_path, class: "nav-link px-3 #{current_page?(widgets_path) ? 'active' : 'text-body'}" do %>
                   <i class="bi bi-grid me-2"></i>
-                  <span class="d-none d-sm-inline">Widgets</span>
+                  <span class="d-none d-sm-inline sidebar-label">Widgets</span>
                 <% end %>
               </li>
 
@@ -61,23 +65,27 @@
                 </li>
 
                 <li class="nav-item w-100">
+                  <div class="small text-uppercase text-secondary px-3 mt-2 mb-1 sidebar-section-label">Admin</div>
+                </li>
+
+                <li class="nav-item w-100">
                   <%= link_to data_sources_path, class: "nav-link px-3 #{current_page?(data_sources_path) ? 'active' : 'text-body'}" do %>
                     <i class="bi bi-database me-2"></i>
-                    <span class="d-none d-sm-inline">Datenquellen</span>
+                    <span class="d-none d-sm-inline sidebar-label">Datenquellen</span>
                   <% end %>
                 </li>
 
                 <li class="nav-item w-100">
                   <%= link_to user_groups_path, class: "nav-link px-3 #{current_page?(user_groups_path) ? 'active' : 'text-body'}" do %>
                     <i class="bi bi-people me-2"></i>
-                    <span class="d-none d-sm-inline">Gruppen</span>
+                    <span class="d-none d-sm-inline sidebar-label">Gruppen</span>
                   <% end %>
                 </li>
 
                 <li class="nav-item w-100">
                   <%= link_to users_path, class: "nav-link px-3 #{current_page?(users_path) ? 'active' : 'text-body'}" do %>
                     <i class="bi bi-person-badge me-2"></i>
-                    <span class="d-none d-sm-inline">Users</span>
+                    <span class="d-none d-sm-inline sidebar-label">Users</span>
                   <% end %>
                 </li>
               <% end %>
@@ -86,13 +94,20 @@
             <hr class="w-100">
 
             <div class="pb-3 w-100">
+              <button type="button" class="btn btn-sm btn-outline-secondary w-100 sidebar-theme-btn" data-action="theme#toggle" aria-label="Dark/Light Mode wechseln">
+                <i class="bi" data-theme-target="icon"></i>
+                <span class="sidebar-label d-none d-sm-inline ms-2" data-theme-target="label"></span>
+              </button>
+            </div>
+
+            <div class="pb-3 w-100">
               <% if user_signed_in? %>
-                <div class="d-flex align-items-center justify-content-between w-100 px-3">
-                  <div class="text-truncate me-2">
+                <div class="d-flex align-items-center justify-content-between w-100 px-3 sidebar-footer">
+                  <div class="text-truncate me-2 sidebar-footer-label">
                     <div class="fw-semibold"><%= [current_user&.first_name, current_user&.last_name].compact.join(" ") %></div>
                     <div class="small text-secondary"><%= current_user&.email %></div>
                   </div>
-                  <%= link_to logout_path, class: "btn btn-sm btn-outline-secondary", data: { turbo: false } do %>
+                  <%= link_to logout_path, class: "btn btn-sm btn-outline-secondary sidebar-logout-btn", data: { turbo: false } do %>
                     <i class="bi bi-box-arrow-right"></i>
                   <% end %>
                 </div>
