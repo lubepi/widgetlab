@@ -16,13 +16,6 @@
     </div>
   </div>
 
-  <% if notice %>
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-      <%= notice %>
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-  <% end %>
-
   <div class="card">
     <div class="card-body">
       <%= turbo_frame_tag "data_sources_table" do %>
