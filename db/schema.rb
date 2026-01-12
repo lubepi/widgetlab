@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_01_11_220500) do
+ActiveRecord::Schema[8.1].define(version: 2026_01_12_132000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -132,11 +132,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_11_220500) do
   end
 
   create_table "widgets", force: :cascade do |t|
+    t.string "aggregate_function", default: "avg", comment: "Aggregation: avg, min, max, sum, count"
     t.string "color"
     t.datetime "created_at", null: false
+    t.integer "data_limit", default: 100, comment: "Maximale Anzahl Datenpunkte"
     t.string "description"
+    t.string "group_by", default: "hour", comment: "Gruppierung: minute, hour, day, week"
     t.boolean "is_public"
     t.string "name"
+    t.string "time_range_unit", default: "hours", comment: "Einheit: minutes, hours, days, weeks, months"
+    t.integer "time_range_value", default: 24, comment: "Wert für den Zeitbereich (z.B. 24 für 24 Stunden)"
     t.datetime "updated_at", null: false
     t.integer "widget_type"
   end

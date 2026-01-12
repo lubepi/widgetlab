@@ -1,27 +1,31 @@
-<div id="<%= dom_id widget %>">
-  <div>
-    <strong>Name:</strong>
-    <%= widget.name %>
-  </div>
-
-  <div>
-    <strong>Description:</strong>
-    <%= widget.description %>
-  </div>
-
-  <div>
-    <strong>Type:</strong>
-    <%= widget.type %>
-  </div>
-
-  <div>
-    <strong>Color:</strong>
-    <%= widget.color %>
-  </div>
-
-  <div>
-    <strong>Is public:</strong>
-    <%= widget.is_public %>
-  </div>
-
+<div id="<%= dom_id widget %>" class="widget-container h-100 d-flex align-items-center justify-content-center">
+  <% if widget.widget_type.blank? %>
+    <!-- Fehlendes Widget Type -->
+    <div class="text-center p-4 w-100 text-muted">
+      <i class="bi bi-exclamation-triangle fs-1"></i>
+      <div class="mt-2">Widget-Typ nicht gesetzt</div>
+    </div>
+  <% elsif widget.widget_type == 'value' %>
+    <!-- Value Widget: Zeigt einzelnen Wert -->
+    <div class="text-center p-4 w-100">
+      <div class="display-4 fw-bold" style="color: <%= widget.color || '#0d6efd' %>;">
+        <%= widget_current_value(widget) %>
+      </div>
+      <div class="text-muted mt-2 small">
+        <%= widget.name %>
+      </div>
+    </div>
+  <% else %>
+    <!-- Chart Widget: Zeigt Diagramm -->
+    <% chart_data = prepare_chart_data(widget) %>
+    <div class="w-100 p-3" style="height: 200px;">
+      <canvas 
+        data-controller="widget-chart"
+        data-widget-chart-type-value="<%= widget.widget_type %>"
+        data-widget-chart-data-value='<%= chart_data.to_json %>'
+        data-widget-chart-color-value="<%= widget.color || '#0d6efd' %>"
+        style="max-height: 100%;">
+      </canvas>
+    </div>
+  <% end %>
 </div>
