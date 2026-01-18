@@ -189,11 +189,6 @@ class WidgetsController < ApplicationController
   def add_to_dashboard
     @available_dashboards = Dashboard.accessible_by(current_user)
                                      .where.not(id: @widget.dashboard_ids)
-    
-    respond_to do |format|
-      format.html { render partial: "add_to_dashboard_modal", layout: false }
-      format.turbo_stream
-    end
   end
 
   # POST /widgets/:id/add_to_dashboard

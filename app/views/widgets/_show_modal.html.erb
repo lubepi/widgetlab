@@ -1,10 +1,11 @@
 <%= turbo_frame_tag "widget_modal" do %>
-  <div class="modal fade show" id="widgetShowModal" tabindex="-1" aria-labelledby="widgetShowModalLabel" aria-modal="true" role="dialog" style="display: block;">
+  <div class="modal-backdrop fade show"></div>
+  <div class="modal fade show" id="widgetShowModal" tabindex="-1" aria-labelledby="widgetShowModalLabel" aria-modal="true" role="dialog" style="display: block;" data-controller="modal">
     <div class="modal-dialog modal-lg modal-dialog-scrollable">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="widgetShowModalLabel"><%= @widget.name %></h5>
-          <button type="button" class="btn-close" onclick="document.getElementById('widget_modal').innerHTML = ''; document.querySelectorAll('.modal-backdrop').forEach(b => b.remove()); document.body.classList.remove('modal-open'); document.body.style.overflow = ''; document.body.style.paddingRight = '';"></button>
+          <%= link_to "", widgets_path, class: "btn-close", aria: { label: "Close" }, data: { turbo_frame: "_top" } %>
         </div>
       <div class="modal-body">
         <% if @widget.description.present? %>
@@ -185,16 +186,18 @@
         </div>
       </div>
       <div class="modal-footer">
-        <%= button_tag type: "button", class: "btn btn-success me-auto", onclick: "alert('Dashboard-Auswahl wird noch implementiert')" do %>
+        <%= link_to add_to_dashboard_widget_path(@widget), 
+            class: "btn btn-success me-auto",
+            data: { turbo_frame: "widget_modal" } do %>
           <i class="bi bi-plus-circle me-1"></i>
-          Hinzufügen
+          Zu Dashboard hinzufügen
         <% end %>
         <% if @widget.can_edit?(current_user) %>
           <%= link_to "Bearbeiten", edit_widget_path(@widget), 
               class: "btn btn-primary",
               data: { turbo_frame: "widget_modal" } %>
         <% end %>
-        <button type="button" class="btn btn-secondary" onclick="document.getElementById('widget_modal').innerHTML = ''; document.querySelectorAll('.modal-backdrop').forEach(b => b.remove()); document.body.classList.remove('modal-open'); document.body.style.overflow = ''; document.body.style.paddingRight = '';">Schließen</button>
+        <%= link_to "Schließen", widgets_path, class: "btn btn-secondary", data: { turbo_frame: "_top" } %>
       </div>
     </div>
   </div>
