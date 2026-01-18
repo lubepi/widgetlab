@@ -15,28 +15,17 @@
      gs-max-h="4">
   <div class="grid-stack-item-content">
     <div class="card h-100 dashboard-widget-card <%= dashboard_widget.color.present? ? "border-#{dashboard_widget.color}" : '' %>">
-      <!-- Widget Header mit Drag Handle -->
-      <div class="card-header widget-drag-handle d-flex justify-content-between align-items-center">
-        <h6 class="mb-0 text-truncate">
-          <i class="bi bi-<%= widget_icon_for(widget) %> me-2"></i>
-          <%= widget.name %>
-        </h6>
-        <div class="d-flex align-items-center gap-2">
-          <span class="badge bg-secondary"><%= widget.widget_type.humanize %></span>
-          <!-- Edit Controls (nur im Edit Mode sichtbar) -->
-          <div class="widget-edit-controls" style="display: none;">
-            <button type="button" 
-                    class="btn btn-sm btn-outline-danger"
-                    data-action="click->dashboard-grid#removeWidget"
-                    title="Widget entfernen">
-              <i class="bi bi-x-lg"></i>
-            </button>
-          </div>
-        </div>
-      </div>
-      
       <!-- Widget Content -->
-      <div class="card-body widget-content overflow-hidden">
+      <div class="card-body widget-content overflow-hidden p-0">
+        <!-- Edit Controls (nur im Edit Mode sichtbar, als Overlay) -->
+        <div class="widget-edit-controls position-absolute top-0 end-0 m-2" style="display: none; z-index: 10;">
+          <button type="button" 
+                  class="btn btn-sm btn-danger"
+                  data-action="click->dashboard-grid#removeWidget"
+                  title="Widget entfernen">
+            <i class="bi bi-x-lg"></i>
+          </button>
+        </div>
         <%= render widget %>
       </div>
     </div>
