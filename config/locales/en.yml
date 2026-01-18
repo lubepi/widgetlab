@@ -1,31 +1,719 @@
-# Files in the config/locales directory are used for internationalization and
-# are automatically loaded by Rails. If you want to use locales other than
-# English, add the necessary files in this directory.
-#
-# To use the locales, use `I18n.t`:
-#
-#     I18n.t "hello"
-#
-# In views, this is aliased to just `t`:
-#
-#     <%= t("hello") %>
-#
-# To use a different locale, set it with `I18n.locale`:
-#
-#     I18n.locale = :es
-#
-# This would use the information in config/locales/es.yml.
-#
-# To learn more about the API, please read the Rails Internationalization guide
-# at https://guides.rubyonrails.org/i18n.html.
-#
-# Be aware that YAML interprets the following case-insensitive strings as
-# booleans: `true`, `false`, `on`, `off`, `yes`, `no`. Therefore, these strings
-# must be quoted to be interpreted as strings. For example:
-#
-#     en:
-#       "yes": yup
-#       enabled: "ON"
-
 en:
-  hello: "Hello world"
+  # ==========================================
+  # Date and Time Formats
+  # ==========================================
+  date:
+    formats:
+      default: "%Y-%m-%d"
+      short: "%m/%d/%Y"
+      long: "%B %d, %Y"
+    day_names:
+      - Sunday
+      - Monday
+      - Tuesday
+      - Wednesday
+      - Thursday
+      - Friday
+      - Saturday
+    abbr_day_names:
+      - Sun
+      - Mon
+      - Tue
+      - Wed
+      - Thu
+      - Fri
+      - Sat
+    month_names:
+      - ~
+      - January
+      - February
+      - March
+      - April
+      - May
+      - June
+      - July
+      - August
+      - September
+      - October
+      - November
+      - December
+    abbr_month_names:
+      - ~
+      - Jan
+      - Feb
+      - Mar
+      - Apr
+      - May
+      - Jun
+      - Jul
+      - Aug
+      - Sep
+      - Oct
+      - Nov
+      - Dec
+  
+  time:
+    formats:
+      default: "%Y-%m-%d %H:%M"
+      short: "%m/%d/%Y"
+      long: "%B %d, %Y at %H:%M"
+
+  # ==========================================
+  # General Translations
+  # ==========================================
+  
+  # Time units
+  time_units:
+    minutes: "Minutes"
+    hours: "Hours"
+    days: "Days"
+    weeks: "Weeks"
+    months: "Months"
+  
+  # Grouping
+  group_by:
+    minute: "Minute"
+    hour: "Hour"
+    day: "Day"
+    week: "Week"
+  
+  # Aggregation
+  aggregate:
+    avg: "Average"
+    min: "Minimum"
+    max: "Maximum"
+    sum: "Sum"
+    count: "Count"
+  
+  # ==========================================
+  # Common Translations
+  # ==========================================
+  common:
+    buttons:
+      save: "Save"
+      cancel: "Cancel"
+      delete: "Delete"
+      back: "Back"
+      edit: "Edit"
+      create: "Create"
+      close: "Close"
+      add: "Add"
+      remove: "Remove"
+      start: "Start"
+      stop: "Stop"
+      all: "All"
+      none: "None"
+    
+    badges:
+      public: "Public"
+      private: "Private"
+      owner: "Owner"
+      viewer: "Viewer"
+      editor: "Editor"
+    
+    labels:
+      name: "Name"
+      description: "Description"
+      type: "Type"
+      status: "Status"
+      created_at: "Created at"
+      updated_at: "Last updated"
+      actions: "Actions"
+      yes: "Yes"
+      no: "No"
+      columns: "Columns"
+      none: "None"
+      icon: "Icon"
+      color: "Color"
+      unit: "Unit"
+    
+    confirmations:
+      delete: "Are you sure you want to delete this item?"
+      confirm_delete: "Confirm deletion"
+      are_you_sure: "Are you sure?"
+    
+    errors:
+      prevented_saving:
+        one: "One error prevented saving:"
+        other: "%{count} errors prevented saving:"
+    
+    placeholders:
+      search: "Search..."
+    
+    prompts:
+      please_select: "Please select..."
+    
+    messages:
+      no_data: "No data available"
+  
+  # ==========================================
+  # ActiveRecord Models
+  # ==========================================
+  activerecord:
+    models:
+      dashboard:
+        one: "Dashboard"
+        other: "Dashboards"
+      widget:
+        one: "Widget"
+        other: "Widgets"
+      data_source:
+        one: "Data Source"
+        other: "Data Sources"
+      user:
+        one: "User"
+        other: "Users"
+      user_group:
+        one: "Group"
+        other: "Groups"
+    
+    attributes:
+      dashboard:
+        name: "Name"
+        columns: "Columns"
+        is_public: "Public"
+        icon: "Icon"
+      widget:
+        name: "Name"
+        description: "Description"
+        widget_type: "Widget Type"
+        color: "Color"
+        unit: "Unit"
+        is_public: "Public"
+      data_source:
+        name: "Name"
+        source_type: "Type"
+        is_public: "Public"
+      user:
+        email: "Email"
+        first_name: "First Name"
+        last_name: "Last Name"
+      user_group:
+        name: "Name"
+    
+    errors:
+      messages:
+        blank: "can't be blank"
+        taken: "has already been taken"
+        invalid: "is invalid"
+  
+  # ==========================================
+  # Layout
+  # ==========================================
+  layouts:
+    application:
+      title: "Widgetlab"
+      toggle_sidebar: "Toggle sidebar"
+      toggle_theme: "Toggle dark/light mode"
+      navigation:
+        overview: "Overview"
+        dashboards: "Dashboards"
+        widgets: "Widgets"
+        admin: "Admin"
+        data_sources: "Data Sources"
+        groups: "Groups"
+        users: "Users"
+      language:
+        label: "Language"
+        de: "Deutsch"
+        en: "English"
+  
+  # ==========================================
+  # Dashboards
+  # ==========================================
+  dashboards:
+    index:
+      title: "Dashboards"
+      new_dashboard: "New Dashboard"
+      empty_state:
+        title: "No dashboards yet"
+        description: "Create your first dashboard to get started."
+        button: "Create Dashboard"
+      sections:
+        my_dashboards: "My Dashboards"
+        shared_with_me: "Shared with me"
+        public_dashboards: "Public Dashboards"
+    
+    show:
+      info: "Dashboard Information"
+      created: "Created"
+      last_edited: "Last edited"
+      widgets_count: "Widgets"
+      add_widget: "Add Widget"
+      access: "Access"
+      settings: "Settings"
+      empty_state:
+        title: "No widgets added yet"
+        description: "Switch to edit mode to add widgets."
+        button: "Start editing"
+      confirm_delete: "Do you really want to delete the dashboard '%{name}'?"
+    
+    new:
+      title: "New Dashboard"
+      heading: "Create New Dashboard"
+      back: "Back"
+    
+    edit:
+      back: "Back to Dashboard"
+      heading: "Edit Dashboard"
+    
+    form:
+      name_placeholder: "e.g. My Dashboard"
+      name_help: "Give your dashboard a meaningful name."
+      columns_help: "How many columns should the grid have? (1-12, recommended: 12)"
+      icon_help: "Choose an icon for your dashboard."
+      is_public_label: "Publicly accessible"
+      is_public_help: "Public dashboards can be viewed by all users."
+      submit_create: "Create Dashboard"
+      submit_update: "Save Dashboard"
+    
+    flash:
+      created: "Dashboard was successfully created."
+      updated: "Dashboard was successfully updated."
+      destroyed: "Dashboard was successfully deleted."
+  
+  # ==========================================
+  # Dashboard Widgets
+  # ==========================================
+  dashboard_widgets:
+    select_widget:
+      title: "Add widget to \"%{dashboard}\""
+      empty_state:
+        title: "No more widgets available"
+        description: "All available widgets have already been added or there are no widgets yet."
+        button: "Go to Widget Store"
+      description: "Select a widget to add to the dashboard \"%{dashboard}\"."
+    
+    grid_item:
+      remove_widget: "Remove widget"
+    
+    flash:
+      added: "Widget was added."
+      updated: "Widget was updated."
+      removed: "Widget was removed."
+  
+  # ==========================================
+  # Widgets
+  # ==========================================
+  widgets:
+    index:
+      title: "Widget Store"
+      new_widget: "Create Widget"
+      empty_state:
+        title: "No widgets yet"
+        description: "Create your first widget to get started."
+        button: "Create Widget"
+      sections:
+        my_widgets: "My Widgets"
+        shared_with_me: "Shared with me"
+        public_widgets: "Public Widgets"
+    
+    new:
+      title: "New Widget"
+      heading: "Create New Widget"
+      back: "Back to Widget Store"
+    
+    edit:
+      title: "Edit Widget"
+      confirm_delete: "Do you really want to delete this widget?"
+    
+    show:
+      info: "Information"
+      creator: "Creator"
+      data_source: "Data Source"
+      visibility: "Visibility"
+      time_range: "Time Range"
+      grouping: "Grouping"
+      aggregation: "Aggregation"
+      max_data_points: "Max. Data Points"
+      transformation: "Data Transformation"
+      json_path: "JSON Path:"
+      multiplier: "Multiplier:"
+      addition: "Addition:"
+      decimals: "Decimals:"
+      format: "Format:"
+      add_to_dashboard: "Add to Dashboard"
+      type_not_set: "Widget type not set"
+      data_source_not_available: "Data source access not available"
+    
+    card:
+      add_to_dashboard: "Add to Dashboard"
+    
+    actions:
+      add_to_dashboard: "Add to Dashboard"
+    
+    visibility:
+      public: "Public"
+      private: "Private"
+    
+    roles:
+      owner: "Owner"
+      viewer: "Viewer"
+      owner_description: "Full access"
+      viewer_description: "View only"
+      no_access: "No access"
+    
+    form:
+      name_placeholder: "e.g. Temperature Sensor"
+      description_placeholder: "Optional widget description"
+      widget_type_prompt: "Please select..."
+      widget_type_help: "Value = Single value, Line/Bar/Column/Pie = Charts (Chart.js)"
+      unit_placeholder: "e.g. °C, €, %, kg"
+      unit_help: "Optional unit displayed with values or on charts"
+      data_source: "Data Source"
+      data_source_prompt: "Please select..."
+      data_source_help: "The data source from which widget data is retrieved"
+      
+      # Transformation
+      data_transformation_title: "Data Transformation (optional)"
+      data_transformation_help: "Transforms raw data from the data source before displaying in the widget."
+      last_response: "Last response from data source"
+      json_path: "JSON Path"
+      json_path_placeholder: "e.g. data.temperature or items.0.value"
+      json_path_help: "Extracts a nested value from JSON data (using dot notation)"
+      multiplier: "Multiplier"
+      multiplier_placeholder: "e.g. 1.8 for Fahrenheit"
+      multiplier_help: "Multiplies the value"
+      addition: "Addition"
+      addition_placeholder: "e.g. 32 for Fahrenheit"
+      addition_help: "Adds to the value"
+      decimal_places: "Decimal places"
+      decimal_places_placeholder: "e.g. 2"
+      decimal_places_help: "Rounds to N places"
+      format: "Format"
+      format_help: "Converts the final value to the selected format"
+      format_auto: "Automatic"
+      format_number: "Number (Float)"
+      format_integer: "Integer"
+      format_string: "Text (String)"
+      format_boolean: "Yes/No (Boolean)"
+      
+      # Time Range
+      time_range_title: "Time Range & Data Processing"
+      time_range_value: "Time Range (Value)"
+      time_range_unit: "Time Unit"
+      time_range_help: "Time span for data retrieval (e.g. \"24 hours\" or \"7 days\")"
+      grouping: "Grouping"
+      grouping_help: "Time interval for data points"
+      aggregation: "Aggregation"
+      aggregation_help: "Calculation method"
+      max_data_points: "Max. Data Points"
+      max_data_points_help: "Maximum number"
+      
+      # Access Rights
+      access_rights_title: "Access Rights"
+      public_visible: "Publicly visible"
+      public_visible_help: "When enabled, the widget is visible to all users."
+      users_and_roles: "Users & Roles"
+      search_placeholder: "Search (Email or Name)…"
+      
+      submit_create: "Create"
+      submit_update: "Save"
+    
+    add_to_dashboard:
+      title: "Add \"%{widget}\" to Dashboard"
+      empty_state:
+        title: "No dashboards available"
+        description: "The widget is already in all your dashboards or you haven't created any dashboards yet."
+        button: "Create New Dashboard"
+      description: "Select a dashboard to add the widget to."
+    
+    flash:
+      created: "Widget was successfully created."
+      updated: "Widget was successfully updated."
+      destroyed: "Widget was successfully deleted."
+      added_to_dashboard: "Widget was added to dashboard."
+      no_permission_add: "You don't have permission to add widgets to this dashboard."
+      no_permission_edit: "You don't have permission to edit this widget."
+  
+  # ==========================================
+  # Data Sources
+  # ==========================================
+  data_sources:
+    index:
+      title: "Data Sources"
+      start_all: "Start All"
+      new_data_source: "New Data Source"
+    
+    table:
+      headers:
+        name: "Name"
+        type: "Type"
+        creator: "Creator"
+        public: "Public"
+        status: "Status"
+        job: "Job"
+        created_at: "Created at"
+        actions: "Actions"
+      types:
+        mqtt: "MQTT"
+        json_api: "JSON API"
+      status:
+        error: "Error"
+        ok: "OK"
+        inactive: "Inactive"
+      job:
+        running: "Running"
+        stopped: "Off"
+      actions:
+        start: "Start"
+        stop: "Stop"
+        edit: "Edit"
+        whitelist: "Edit Whitelist"
+        delete: "Delete"
+      confirm_delete:
+        title: "Delete Data Source"
+        message: "Are you sure you want to delete the data source '%{name}'?"
+      empty_state: "No data sources available. Create a new data source."
+    
+    new:
+      title: "Create New Data Source"
+      back: "Back to Data Sources"
+    
+    edit:
+      title: "Edit Data Source"
+    
+    form:
+      name_placeholder: "e.g. Temperature Sensor"
+      type_prompt: "Please select..."
+      type_disabled_help: "The type cannot be changed for existing data sources."
+      is_public_help: "Public data sources can be used by all users."
+      select_type_info: "Please select a type to display the configuration fields."
+      creator: "Creator"
+      config: "Configuration"
+    
+    config_mqtt:
+      title: "MQTT Configuration"
+      host_label: "Host *"
+      host_placeholder: "e.g. mqtt.example.com or 192.168.1.100"
+      port_label: "Port"
+      topic_label: "Topic *"
+      topic_placeholder: "e.g. sensors/temperature"
+      topic_help: "MQTT topic to subscribe to"
+      username_label: "Username"
+      password_label: "Password"
+      client_id_label: "Client ID"
+      client_id_placeholder: "Optional - will be auto-generated if empty"
+      qos_label: "QoS Level"
+      qos_options:
+        at_most_once: "0 - At most once"
+        at_least_once: "1 - At least once"
+        exactly_once: "2 - Exactly once"
+      keep_alive_label: "Keep Alive (Seconds)"
+      parse_json_label: "Parse JSON"
+      clean_session_label: "Clean Session"
+      clean_session_help: "When clean session is enabled, no messages are stored during offline time."
+      ssl:
+        title: "SSL/TLS Settings"
+        use_ssl_label: "Use SSL/TLS"
+        ca_file_label: "CA Certificate Path"
+        cert_file_label: "Client Certificate Path"
+        key_file_label: "Client Key Path"
+    
+    config_json_api:
+      title: "JSON API Configuration"
+      url_label: "URL *"
+      url_placeholder: "https://api.example.com/data"
+      url_help: "Complete URL to the JSON API"
+      method_label: "HTTP Method"
+      method_options:
+        get: "GET"
+        post: "POST"
+        put: "PUT"
+        patch: "PATCH"
+        delete: "DELETE"
+      timeout_label: "Timeout (Seconds)"
+      interval_label: "Interval (Seconds)"
+      interval_help: "Polling interval"
+      json_path_label: "JSON Path"
+      json_path_placeholder: "e.g. data.temperature"
+      json_path_help: "Optional: Path to desired value in JSON response (e.g. \"data.temperature\")"
+      headers:
+        title: "HTTP Headers"
+        label: "Headers (JSON Format)"
+        help: "Optional: Additional HTTP headers in JSON format"
+      query_params:
+        title: "Query Parameters"
+        label: "Query Parameters (JSON Format)"
+        help: "Optional: URL query parameters in JSON format"
+      body:
+        title: "Request Body"
+        label: "Body (JSON Format)"
+        help: "Optional: Request body for POST/PUT/PATCH requests"
+      auth:
+        title: "Authentication"
+        bearer_label: "Bearer Token"
+        bearer_placeholder: "Optional: Bearer token for Authorization header"
+        basic_title: "Basic Authentication"
+        username_label: "Username"
+        password_label: "Password"
+    
+    flash:
+      created: "Data source was successfully created."
+      updated: "Data source was successfully updated."
+      destroyed: "Data source was successfully deleted."
+      started: "Data source was started."
+      stopped: "Data source was stopped."
+      all_started: "All data sources were started."
+  
+  # ==========================================
+  # Users
+  # ==========================================
+  users:
+    index:
+      title: "Users"
+    
+    new:
+      title: "New User"
+      heading: "New User"
+      back: "Back to Users"
+    
+    edit:
+      title: "Edit User"
+      heading: "Edit User"
+      back: "Back to Users"
+    
+    form:
+      first_name: "First Name"
+      last_name: "Last Name"
+      email: "Email"
+      sub: "Sub"
+    
+    table:
+      headers:
+        name: "Name"
+        email: "Email"
+        sub: "Sub"
+        actions: "Actions"
+      actions:
+        show: "Show Details"
+      empty_state: "No users available."
+    
+    show:
+      title: "User"
+      first_name: "First Name"
+      last_name: "Last Name"
+      email: "Email"
+      sub: "Sub"
+      groups: "Groups"
+      data_sources: "Data Sources"
+  
+  # ==========================================
+  # User Groups
+  # ==========================================
+  user_groups:
+    index:
+      title: "Groups"
+      new_group: "New Group"
+    
+    table:
+      headers:
+        name: "Name"
+        members: "Members"
+        actions: "Actions"
+      actions:
+        edit: "Edit"
+        delete: "Delete"
+      confirm_delete:
+        title: "Delete Group"
+        message: "Are you sure you want to delete the group '%{name}'?"
+      empty_state: "No groups available. Create a new group."
+    
+    new:
+      title: "Create New Group"
+      page_title: "New Group"
+    
+    edit:
+      title: "Edit Group"
+    
+    form:
+      name_placeholder: "e.g. Backend Team"
+      members_label: "Members"
+      search_placeholder: "Search (Email)…"
+    
+    flash:
+      created: "Group was successfully created."
+      updated: "Group was successfully updated."
+      destroyed: "Group was successfully deleted."
+  
+  # ==========================================
+  # Whitelist
+  # ==========================================
+  data_source_whitelists:
+    edit:
+      title: "Edit Whitelist"
+      data_source_label: "Data Source:"
+      users_label: "Users"
+      users_search_placeholder: "Search (Email)…"
+      groups_label: "Groups"
+      groups_search_placeholder: "Search (Name)…"
+    
+    flash:
+      updated: "Whitelist was successfully updated."
+      public_no_whitelist: "Public data sources don't need a whitelist."
+  
+  # ==========================================
+  # Widget Access Rights
+  # ==========================================
+  user_widget_roles:
+    edit:
+      title: "Manage Access Rights"
+      widget_label: "Widget:"
+      is_public_label: "Publicly visible"
+      is_public_help: "When enabled, the widget is visible to all users."
+      users_label: "Users & Roles"
+      viewer_badge: "Viewer"
+      viewer_desc: "View only"
+      owner_badge: "Owner"
+      owner_desc: "Full access"
+      search_placeholder: "Search (Email or Name)…"
+      no_access: "No access"
+    
+    flash:
+      updated: "Access rights were updated."
+      must_have_owner: "There must be at least one owner."
+  
+  # ==========================================
+  # Dashboard Access Rights
+  # ==========================================
+  dashboard_user_roles:
+    edit:
+      title: "Manage Access Rights"
+      dashboard_label: "Dashboard:"
+      users_label: "Users & Roles"
+      groups_label: "Groups & Roles"
+      viewer_badge: "Viewer"
+      viewer_desc: "View only"
+      editor_badge: "Editor"
+      editor_desc: "Edit"
+      owner_badge: "Owner"
+      owner_desc: "Full access"
+      search_users_placeholder: "Search (Email or Name)…"
+      search_groups_placeholder: "Search (Group name)…"
+      no_access: "No access"
+      member:
+        one: "Member"
+        other: "Members"
+      info: "Viewer: Can view the dashboard | Editor: Can edit widgets | Owner: Full access including delete and manage access rights"
+    
+    flash:
+      updated: "Access rights were updated."
+      must_have_owner: "There must be at least one owner."
+  
+  # ==========================================
+  # Sessions / Authentication
+  # ==========================================
+  sessions:
+    flash:
+      signed_in: "Successfully signed in!"
+      auth_failed: "Authentication failed: %{message}"
+      please_sign_in: "Please sign in to continue."
+      not_authenticated: "Not authenticated"
+  
+  # ==========================================
+  # Shared
+  # ==========================================
+  shared:
+    confirm_delete_modal:
+      title: "Confirm Deletion"
+      body: "Are you sure?"

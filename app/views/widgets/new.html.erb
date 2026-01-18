@@ -1,9 +1,9 @@
-<% content_for :title, "Neues Widget" %>
+<% content_for :title, t('widgets.new.title') %>
 
 <div class="container-fluid py-4">
   <div class="d-flex justify-content-between align-items-center mb-4">
-    <h1>Neues Widget erstellen</h1>
-    <%= link_to "Zurück zum Widget Shop", widgets_path, class: "btn btn-outline-secondary" %>
+    <h1><%= t('widgets.new.heading') %></h1>
+    <%= link_to t('widgets.new.back'), widgets_path, class: "btn btn-outline-secondary" %>
   </div>
 
   <div class="card shadow-sm">

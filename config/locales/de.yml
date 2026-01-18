@@ -1,4 +1,68 @@
 de:
+  # ==========================================
+  # Datums- und Zeitformate
+  # ==========================================
+  date:
+    formats:
+      default: "%d.%m.%Y"
+      short: "%d.%m.%Y"
+      long: "%d. %B %Y"
+    day_names:
+      - Sonntag
+      - Montag
+      - Dienstag
+      - Mittwoch
+      - Donnerstag
+      - Freitag
+      - Samstag
+    abbr_day_names:
+      - So
+      - Mo
+      - Di
+      - Mi
+      - Do
+      - Fr
+      - Sa
+    month_names:
+      - ~
+      - Januar
+      - Februar
+      - März
+      - April
+      - Mai
+      - Juni
+      - Juli
+      - August
+      - September
+      - Oktober
+      - November
+      - Dezember
+    abbr_month_names:
+      - ~
+      - Jan
+      - Feb
+      - Mär
+      - Apr
+      - Mai
+      - Jun
+      - Jul
+      - Aug
+      - Sep
+      - Okt
+      - Nov
+      - Dez
+  
+  time:
+    formats:
+      default: "%d.%m.%Y %H:%M"
+      short: "%d.%m.%Y"
+      long: "%d. %B %Y um %H:%M Uhr"
+
+  # ==========================================
+  # Allgemeine Übersetzungen
+  # ==========================================
+  
+  # Zeiteinheiten
   time_units:
     minutes: "Minuten"
     hours: "Stunden"
@@ -6,15 +70,650 @@ de:
     weeks: "Wochen"
     months: "Monate"
   
+  # Gruppierung
   group_by:
     minute: "Minute"
     hour: "Stunde"
     day: "Tag"
     week: "Woche"
   
+  # Aggregation
   aggregate:
     avg: "Durchschnitt"
     min: "Minimum"
     max: "Maximum"
     sum: "Summe"
     count: "Anzahl"
+  
+  # ==========================================
+  # Gemeinsame Übersetzungen
+  # ==========================================
+  common:
+    buttons:
+      save: "Speichern"
+      cancel: "Abbrechen"
+      delete: "Löschen"
+      back: "Zurück"
+      edit: "Bearbeiten"
+      create: "Erstellen"
+      close: "Schließen"
+      add: "Hinzufügen"
+      remove: "Entfernen"
+      start: "Starten"
+      stop: "Stoppen"
+      all: "Alle"
+      none: "Keine"
+    
+    badges:
+      public: "Öffentlich"
+      private: "Privat"
+      owner: "Owner"
+      viewer: "Viewer"
+      editor: "Editor"
+    
+    labels:
+      name: "Name"
+      description: "Beschreibung"
+      type: "Typ"
+      status: "Status"
+      created_at: "Erstellt am"
+      updated_at: "Zuletzt bearbeitet"
+      actions: "Aktionen"
+      yes: "Ja"
+      no: "Nein"
+      columns: "Spalten"
+      none: "Keine"
+      icon: "Icon"
+      color: "Farbe"
+      unit: "Einheit"
+    
+    confirmations:
+      delete: "Möchten Sie diesen Eintrag wirklich löschen?"
+      confirm_delete: "Löschen bestätigen"
+      are_you_sure: "Sind Sie sicher?"
+    
+    errors:
+      prevented_saving:
+        one: "Ein Fehler verhindert das Speichern:"
+        other: "%{count} Fehler verhindern das Speichern:"
+    
+    placeholders:
+      search: "Suchen..."
+    
+    prompts:
+      please_select: "Bitte wählen..."
+    
+    messages:
+      no_data: "Keine Daten verfügbar"
+  
+  # ==========================================
+  # ActiveRecord Modelle
+  # ==========================================
+  activerecord:
+    models:
+      dashboard:
+        one: "Dashboard"
+        other: "Dashboards"
+      widget:
+        one: "Widget"
+        other: "Widgets"
+      data_source:
+        one: "Datenquelle"
+        other: "Datenquellen"
+      user:
+        one: "Benutzer"
+        other: "Benutzer"
+      user_group:
+        one: "Gruppe"
+        other: "Gruppen"
+    
+    attributes:
+      dashboard:
+        name: "Name"
+        columns: "Spalten"
+        is_public: "Öffentlich"
+        icon: "Icon"
+      widget:
+        name: "Name"
+        description: "Beschreibung"
+        widget_type: "Widget-Typ"
+        color: "Farbe"
+        unit: "Einheit"
+        is_public: "Öffentlich"
+      data_source:
+        name: "Name"
+        source_type: "Typ"
+        is_public: "Öffentlich"
+      user:
+        email: "E-Mail"
+        first_name: "Vorname"
+        last_name: "Nachname"
+      user_group:
+        name: "Name"
+    
+    errors:
+      messages:
+        blank: "darf nicht leer sein"
+        taken: "ist bereits vergeben"
+        invalid: "ist ungültig"
+  
+  # ==========================================
+  # Layout
+  # ==========================================
+  layouts:
+    application:
+      title: "Widgetlab"
+      toggle_sidebar: "Sidebar einklappen/ausklappen"
+      toggle_theme: "Dark/Light Mode wechseln"
+      navigation:
+        overview: "Übersicht"
+        dashboards: "Dashboards"
+        widgets: "Widgets"
+        admin: "Admin"
+        data_sources: "Datenquellen"
+        groups: "Gruppen"
+        users: "Users"
+      language:
+        label: "Sprache"
+        de: "Deutsch"
+        en: "English"
+  
+  # ==========================================
+  # Dashboards
+  # ==========================================
+  dashboards:
+    index:
+      title: "Dashboards"
+      new_dashboard: "Neues Dashboard"
+      empty_state:
+        title: "Noch keine Dashboards vorhanden"
+        description: "Erstelle dein erstes Dashboard, um loszulegen."
+        button: "Dashboard erstellen"
+      sections:
+        my_dashboards: "Meine Dashboards"
+        shared_with_me: "Mit mir geteilt"
+        public_dashboards: "Öffentliche Dashboards"
+    
+    show:
+      info: "Dashboard Informationen"
+      created: "Erstellt"
+      last_edited: "Zuletzt bearbeitet"
+      widgets_count: "Widgets"
+      add_widget: "Widget hinzufügen"
+      access: "Zugriff"
+      settings: "Einstellungen"
+      empty_state:
+        title: "Noch keine Widgets hinzugefügt"
+        description: "Wechsle in den Bearbeitungsmodus, um Widgets hinzuzufügen."
+        button: "Bearbeiten starten"
+      confirm_delete: "Möchtest du das Dashboard '%{name}' wirklich löschen?"
+    
+    new:
+      title: "Neues Dashboard"
+      heading: "Neues Dashboard erstellen"
+      back: "Zurück"
+    
+    edit:
+      back: "Zurück zum Dashboard"
+      heading: "Dashboard bearbeiten"
+    
+    form:
+      name_placeholder: "z.B. Mein Dashboard"
+      name_help: "Gib deinem Dashboard einen aussagekräftigen Namen."
+      columns_help: "Wie viele Spalten soll das Grid haben? (1-12, empfohlen: 12)"
+      icon_help: "Wähle ein Icon für dein Dashboard."
+      is_public_label: "Öffentlich zugänglich"
+      is_public_help: "Öffentliche Dashboards können von allen Nutzern eingesehen werden."
+      submit_create: "Dashboard erstellen"
+      submit_update: "Dashboard speichern"
+    
+    flash:
+      created: "Dashboard wurde erfolgreich erstellt."
+      updated: "Dashboard wurde erfolgreich aktualisiert."
+      destroyed: "Dashboard wurde erfolgreich gelöscht."
+  
+  # ==========================================
+  # Dashboard Widgets
+  # ==========================================
+  dashboard_widgets:
+    select_widget:
+      title: "Widget zu \"%{dashboard}\" hinzufügen"
+      empty_state:
+        title: "Keine weiteren Widgets verfügbar"
+        description: "Alle verfügbaren Widgets wurden bereits hinzugefügt oder es gibt noch keine Widgets."
+        button: "Zum Widget Store"
+      description: "Wähle ein Widget aus, um es zum Dashboard \"%{dashboard}\" hinzuzufügen."
+    
+    grid_item:
+      remove_widget: "Widget entfernen"
+    
+    flash:
+      added: "Widget wurde hinzugefügt."
+      updated: "Widget wurde aktualisiert."
+      removed: "Widget wurde entfernt."
+  
+  # ==========================================
+  # Widgets
+  # ==========================================
+  widgets:
+    index:
+      title: "Widget Store"
+      new_widget: "Widget erstellen"
+      empty_state:
+        title: "Noch keine Widgets vorhanden"
+        description: "Erstelle dein erstes Widget, um loszulegen."
+        button: "Widget erstellen"
+      sections:
+        my_widgets: "Meine Widgets"
+        shared_with_me: "Mit mir geteilt"
+        public_widgets: "Öffentliche Widgets"
+    
+    new:
+      title: "Neues Widget"
+      heading: "Neues Widget erstellen"
+      back: "Zurück zum Widget Shop"
+    
+    edit:
+      title: "Widget bearbeiten"
+      confirm_delete: "Möchten Sie dieses Widget wirklich löschen?"
+    
+    show:
+      info: "Informationen"
+      creator: "Ersteller"
+      data_source: "Datenquelle"
+      visibility: "Sichtbarkeit"
+      time_range: "Zeitbereich"
+      grouping: "Gruppierung"
+      aggregation: "Aggregation"
+      max_data_points: "Max. Datenpunkte"
+      transformation: "Daten-Transformation"
+      json_path: "JSON-Pfad:"
+      multiplier: "Multiplikator:"
+      addition: "Addition:"
+      decimals: "Dezimalstellen:"
+      format: "Format:"
+      add_to_dashboard: "Zu Dashboard hinzufügen"
+      type_not_set: "Widget-Typ nicht gesetzt"
+      data_source_not_available: "Zugriff auf Datenquelle nicht verfügbar"
+    
+    card:
+      add_to_dashboard: "Zum Dashboard hinzufügen"
+    
+    actions:
+      add_to_dashboard: "Zum Dashboard hinzufügen"
+    
+    visibility:
+      public: "Öffentlich"
+      private: "Privat"
+    
+    roles:
+      owner: "Owner"
+      viewer: "Viewer"
+      owner_description: "Vollzugriff"
+      viewer_description: "Nur anschauen"
+      no_access: "Kein Zugriff"
+    
+    form:
+      name_placeholder: "z.B. Temperatur Sensor"
+      description_placeholder: "Optionale Beschreibung des Widgets"
+      widget_type_prompt: "Bitte wählen..."
+      widget_type_help: "Value = Einzelwert, Line/Bar/Column/Pie = Diagramme (Chart.js)"
+      unit_placeholder: "z.B. °C, €, %, kg"
+      unit_help: "Optionale Einheit, die bei Werten oder am Chart angezeigt wird"
+      data_source: "Datenquelle"
+      data_source_prompt: "Bitte wählen..."
+      data_source_help: "Die Datenquelle, von der die Widget-Daten bezogen werden"
+      
+      # Transformation
+      data_transformation_title: "Daten-Transformation (optional)"
+      data_transformation_help: "Transformiert die Rohdaten der Datenquelle, bevor sie im Widget angezeigt werden."
+      last_response: "Letzte Response der Datenquelle"
+      json_path: "JSON-Pfad"
+      json_path_placeholder: "z.B. data.temperature oder items.0.value"
+      json_path_help: "Extrahiert einen verschachtelten Wert aus JSON-Daten (mit Punkt-Notation)"
+      multiplier: "Multiplikator"
+      multiplier_placeholder: "z.B. 1.8 für Fahrenheit"
+      multiplier_help: "Multipliziert den Wert"
+      addition: "Addition"
+      addition_placeholder: "z.B. 32 für Fahrenheit"
+      addition_help: "Addiert zum Wert"
+      decimal_places: "Dezimalstellen"
+      decimal_places_placeholder: "z.B. 2"
+      decimal_places_help: "Rundet auf N Stellen"
+      format: "Format"
+      format_help: "Konvertiert den finalen Wert in das gewählte Format"
+      format_auto: "Automatisch"
+      format_number: "Zahl (Float)"
+      format_integer: "Ganzzahl (Integer)"
+      format_string: "Text (String)"
+      format_boolean: "Ja/Nein (Boolean)"
+      
+      # Zeitbereich
+      time_range_title: "Zeitbereich & Datenverarbeitung"
+      time_range_value: "Zeitbereich (Wert)"
+      time_range_unit: "Zeiteinheit"
+      time_range_help: "Zeitspanne für Datenabruf (z.B. \"24 Stunden\" oder \"7 Tage\")"
+      grouping: "Gruppierung"
+      grouping_help: "Zeitintervall für Datenpunkte"
+      aggregation: "Aggregation"
+      aggregation_help: "Berechnungsmethode"
+      max_data_points: "Max. Datenpunkte"
+      max_data_points_help: "Maximale Anzahl"
+      
+      # Zugriffsrechte
+      access_rights_title: "Zugriffsrechte"
+      public_visible: "Öffentlich sichtbar"
+      public_visible_help: "Wenn aktiviert, ist das Widget für alle Benutzer sichtbar."
+      users_and_roles: "Benutzer & Rollen"
+      search_placeholder: "Suchen (E-Mail oder Name)…"
+      
+      submit_create: "Erstellen"
+      submit_update: "Speichern"
+    
+    add_to_dashboard:
+      title: "\"%{widget}\" zu Dashboard hinzufügen"
+      empty_state:
+        title: "Keine Dashboards verfügbar"
+        description: "Das Widget ist bereits in allen Ihren Dashboards vorhanden oder Sie haben noch keine Dashboards erstellt."
+        button: "Neues Dashboard erstellen"
+      description: "Wähle ein Dashboard aus, zu dem das Widget hinzugefügt werden soll."
+    
+    flash:
+      created: "Widget wurde erfolgreich erstellt."
+      updated: "Widget wurde erfolgreich aktualisiert."
+      destroyed: "Widget wurde erfolgreich gelöscht."
+      added_to_dashboard: "Widget wurde zum Dashboard hinzugefügt."
+      no_permission_add: "Sie haben keine Berechtigung, Widgets zu diesem Dashboard hinzuzufügen."
+      no_permission_edit: "Sie haben keine Berechtigung, dieses Widget zu bearbeiten."
+  
+  # ==========================================
+  # Datenquellen
+  # ==========================================
+  data_sources:
+    index:
+      title: "Datenquellen"
+      start_all: "Alle starten"
+      new_data_source: "Neue Datenquelle"
+    
+    table:
+      headers:
+        name: "Name"
+        type: "Typ"
+        creator: "Ersteller"
+        public: "Öffentlich"
+        status: "Status"
+        job: "Job"
+        created_at: "Erstellt am"
+        actions: "Aktionen"
+      types:
+        mqtt: "MQTT"
+        json_api: "JSON API"
+      status:
+        error: "Fehler"
+        ok: "OK"
+        inactive: "Inaktiv"
+      job:
+        running: "Läuft"
+        stopped: "Aus"
+      actions:
+        start: "Starten"
+        stop: "Stoppen"
+        edit: "Bearbeiten"
+        whitelist: "Whitelist bearbeiten"
+        delete: "Löschen"
+      confirm_delete:
+        title: "Datenquelle löschen"
+        message: "Soll die Datenquelle '%{name}' wirklich gelöscht werden?"
+      empty_state: "Keine Datenquellen vorhanden. Erstellen Sie eine neue Datenquelle."
+    
+    new:
+      title: "Neue Datenquelle erstellen"
+      back: "Zurück zu Datenquellen"
+    
+    edit:
+      title: "Datenquelle bearbeiten"
+    
+    form:
+      name_placeholder: "z.B. Temperatur Sensor"
+      type_prompt: "Bitte wählen..."
+      type_disabled_help: "Der Typ kann bei vorhandenen Datenquellen nicht geändert werden."
+      is_public_help: "Öffentliche Datenquellen können von allen Benutzern verwendet werden."
+      select_type_info: "Bitte wählen Sie einen Typ aus, um die Konfigurationsfelder anzuzeigen."
+      creator: "Ersteller"
+      config: "Konfiguration"
+    
+    config_mqtt:
+      title: "MQTT Konfiguration"
+      host_label: "Host *"
+      host_placeholder: "z.B. mqtt.example.com oder 192.168.1.100"
+      port_label: "Port"
+      topic_label: "Topic *"
+      topic_placeholder: "z.B. sensors/temperature"
+      topic_help: "MQTT Topic zum Abonnieren"
+      username_label: "Benutzername"
+      password_label: "Passwort"
+      client_id_label: "Client ID"
+      client_id_placeholder: "Optional - wird automatisch generiert falls leer"
+      qos_label: "QoS Level"
+      qos_options:
+        at_most_once: "0 - At most once"
+        at_least_once: "1 - At least once"
+        exactly_once: "2 - Exactly once"
+      keep_alive_label: "Keep Alive (Sekunden)"
+      parse_json_label: "JSON parsen"
+      clean_session_label: "Clean Session"
+      clean_session_help: "Bei aktivierter Clean Session werden keine Nachrichten während der Offline-Zeit gespeichert."
+      ssl:
+        title: "SSL/TLS Einstellungen"
+        use_ssl_label: "SSL/TLS verwenden"
+        ca_file_label: "CA Zertifikat Pfad"
+        cert_file_label: "Client Zertifikat Pfad"
+        key_file_label: "Client Key Pfad"
+    
+    config_json_api:
+      title: "JSON API Konfiguration"
+      url_label: "URL *"
+      url_placeholder: "https://api.example.com/data"
+      url_help: "Vollständige URL zur JSON API"
+      method_label: "HTTP Methode"
+      method_options:
+        get: "GET"
+        post: "POST"
+        put: "PUT"
+        patch: "PATCH"
+        delete: "DELETE"
+      timeout_label: "Timeout (Sekunden)"
+      interval_label: "Intervall (Sekunden)"
+      interval_help: "Abrufintervall"
+      json_path_label: "JSON Path"
+      json_path_placeholder: "z.B. data.temperature"
+      json_path_help: "Optional: Pfad zum gewünschten Wert in der JSON-Antwort (z.B. \"data.temperature\")"
+      headers:
+        title: "HTTP Headers"
+        label: "Headers (JSON Format)"
+        help: "Optional: Zusätzliche HTTP Headers im JSON-Format"
+      query_params:
+        title: "Query Parameter"
+        label: "Query Parameter (JSON Format)"
+        help: "Optional: URL Query Parameter im JSON-Format"
+      body:
+        title: "Request Body"
+        label: "Body (JSON Format)"
+        help: "Optional: Request Body für POST/PUT/PATCH Requests"
+      auth:
+        title: "Authentifizierung"
+        bearer_label: "Bearer Token"
+        bearer_placeholder: "Optional: Bearer Token für Authorization Header"
+        basic_title: "Basic Authentication"
+        username_label: "Benutzername"
+        password_label: "Passwort"
+    
+    flash:
+      created: "Datenquelle wurde erfolgreich erstellt."
+      updated: "Datenquelle wurde erfolgreich aktualisiert."
+      destroyed: "Datenquelle wurde erfolgreich gelöscht."
+      started: "Datenquelle wurde gestartet."
+      stopped: "Datenquelle wurde gestoppt."
+      all_started: "Alle Datenquellen wurden gestartet."
+  
+  # ==========================================
+  # Benutzer
+  # ==========================================
+  users:
+    index:
+      title: "Benutzer"
+    
+    new:
+      title: "Neuer Benutzer"
+      heading: "Neuer Benutzer"
+      back: "Zurück zu Benutzer"
+    
+    edit:
+      title: "Benutzer bearbeiten"
+      heading: "Benutzer bearbeiten"
+      back: "Zurück zu Benutzer"
+    
+    form:
+      first_name: "Vorname"
+      last_name: "Nachname"
+      email: "E-Mail"
+      sub: "Sub"
+    
+    table:
+      headers:
+        name: "Name"
+        email: "Email"
+        sub: "Sub"
+        actions: "Aktionen"
+      actions:
+        show: "Details anzeigen"
+      empty_state: "Keine Benutzer vorhanden."
+    
+    show:
+      title: "Benutzer"
+      first_name: "Vorname"
+      last_name: "Nachname"
+      email: "Email"
+      sub: "Sub"
+      groups: "Gruppen"
+      data_sources: "Datenquellen"
+  
+  # ==========================================
+  # Benutzergruppen
+  # ==========================================
+  user_groups:
+    index:
+      title: "Gruppen"
+      new_group: "Neue Gruppe"
+    
+    table:
+      headers:
+        name: "Name"
+        members: "Mitglieder"
+        actions: "Aktionen"
+      actions:
+        edit: "Bearbeiten"
+        delete: "Löschen"
+      confirm_delete:
+        title: "Gruppe löschen"
+        message: "Soll die Gruppe '%{name}' wirklich gelöscht werden?"
+      empty_state: "Keine Gruppen vorhanden. Erstellen Sie eine neue Gruppe."
+    
+    new:
+      title: "Neue Gruppe erstellen"
+      page_title: "Neue Gruppe"
+    
+    edit:
+      title: "Gruppe bearbeiten"
+    
+    form:
+      name_placeholder: "z.B. Team Backend"
+      members_label: "Mitglieder"
+      search_placeholder: "Suchen (E-Mail)…"
+    
+    flash:
+      created: "Gruppe wurde erfolgreich erstellt."
+      updated: "Gruppe wurde erfolgreich aktualisiert."
+      destroyed: "Gruppe wurde erfolgreich gelöscht."
+  
+  # ==========================================
+  # Whitelist
+  # ==========================================
+  data_source_whitelists:
+    edit:
+      title: "Whitelist bearbeiten"
+      data_source_label: "Datenquelle:"
+      users_label: "Benutzer"
+      users_search_placeholder: "Suchen (E-Mail)…"
+      groups_label: "Gruppen"
+      groups_search_placeholder: "Suchen (Name)…"
+    
+    flash:
+      updated: "Whitelist wurde erfolgreich aktualisiert."
+      public_no_whitelist: "Öffentliche Datenquellen benötigen keine Whitelist."
+  
+  # ==========================================
+  # Widget-Zugriffsrechte
+  # ==========================================
+  user_widget_roles:
+    edit:
+      title: "Zugriffsrechte verwalten"
+      widget_label: "Widget:"
+      is_public_label: "Öffentlich sichtbar"
+      is_public_help: "Wenn aktiviert, ist das Widget für alle Benutzer sichtbar."
+      users_label: "Benutzer & Rollen"
+      viewer_badge: "Viewer"
+      viewer_desc: "Nur anschauen"
+      owner_badge: "Owner"
+      owner_desc: "Vollzugriff"
+      search_placeholder: "Suchen (E-Mail oder Name)…"
+      no_access: "Kein Zugriff"
+    
+    flash:
+      updated: "Zugriffsrechte wurden aktualisiert."
+      must_have_owner: "Es muss mindestens einen Owner geben."
+  
+  # ==========================================
+  # Dashboard-Zugriffsrechte
+  # ==========================================
+  dashboard_user_roles:
+    edit:
+      title: "Zugriffsrechte verwalten"
+      dashboard_label: "Dashboard:"
+      users_label: "Benutzer & Rollen"
+      groups_label: "Gruppen & Rollen"
+      viewer_badge: "Viewer"
+      viewer_desc: "Nur anschauen"
+      editor_badge: "Editor"
+      editor_desc: "Bearbeiten"
+      owner_badge: "Owner"
+      owner_desc: "Vollzugriff"
+      search_users_placeholder: "Suchen (E-Mail oder Name)…"
+      search_groups_placeholder: "Suchen (Gruppenname)…"
+      no_access: "Kein Zugriff"
+      member:
+        one: "Mitglied"
+        other: "Mitglieder"
+      info: "Viewer: Kann das Dashboard anschauen | Editor: Kann Widgets bearbeiten | Owner: Vollzugriff inkl. Löschen und Zugriffsrechte verwalten"
+    
+    flash:
+      updated: "Zugriffsrechte wurden aktualisiert."
+      must_have_owner: "Es muss mindestens einen Owner geben."
+  
+  # ==========================================
+  # Sessions / Authentifizierung
+  # ==========================================
+  sessions:
+    flash:
+      signed_in: "Erfolgreich angemeldet!"
+      auth_failed: "Authentifizierung fehlgeschlagen: %{message}"
+      please_sign_in: "Bitte melde dich an, um fortzufahren."
+      not_authenticated: "Nicht authentifiziert"
+  
+  # ==========================================
+  # Shared
+  # ==========================================
+  shared:
+    confirm_delete_modal:
+      title: "Löschen bestätigen"
+      body: "Sind Sie sicher?"

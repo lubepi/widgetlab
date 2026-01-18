@@ -2,7 +2,7 @@
   <%= render "widgets/form_fields", form: form, widget: widget %>
 
   <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-    <%= link_to "Abbrechen", widgets_path, class: "btn btn-secondary" %>
-    <%= form.submit "Widget speichern", class: "btn btn-primary" %>
+    <%= link_to t('common.buttons.cancel'), widgets_path, class: "btn btn-secondary" %>
+    <%= form.submit t('common.buttons.save'), class: "btn btn-primary" %>
   </div>
 <% end %>

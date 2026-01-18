@@ -1,58 +1,58 @@
 <% config = data_source.new_record? ? {} : (data_source.config || {}).with_indifferent_access %>
 
-<h5 class="mb-3">MQTT Konfiguration</h5>
+<h5 class="mb-3"><%= t('data_sources.config_mqtt.title') %></h5>
 
 <div class="row">
   <div class="col-md-8 mb-3">
-    <label for="data_source_config_host" class="form-label">Host *</label>
-    <input type="text" name="data_source[config][host]" id="data_source_config_host" value="<%= config[:host] %>" class="form-control" placeholder="z.B. mqtt.example.com oder 192.168.1.100" required="required">
+    <label for="data_source_config_host" class="form-label"><%= t('data_sources.config_mqtt.host_label') %></label>
+    <input type="text" name="data_source[config][host]" id="data_source_config_host" value="<%= config[:host] %>" class="form-control" placeholder="<%= t('data_sources.config_mqtt.host_placeholder') %>" required="required">
   </div>
   <div class="col-md-4 mb-3">
-    <label for="data_source_config_port" class="form-label">Port</label>
+    <label for="data_source_config_port" class="form-label"><%= t('data_sources.config_mqtt.port_label') %></label>
     <input type="number" name="data_source[config][port]" id="data_source_config_port" value="<%= config[:port] || 1883 %>" class="form-control" min="1" max="65535">
   </div>
 </div>
 
 <div class="mb-3">
-  <label for="data_source_config_topic" class="form-label">Topic *</label>
-  <input type="text" name="data_source[config][topic]" id="data_source_config_topic" value="<%= config[:topic] %>" class="form-control" placeholder="z.B. sensors/temperature" required="required">
-  <div class="form-text">MQTT Topic zum Abonnieren</div>
+  <label for="data_source_config_topic" class="form-label"><%= t('data_sources.config_mqtt.topic_label') %></label>
+  <input type="text" name="data_source[config][topic]" id="data_source_config_topic" value="<%= config[:topic] %>" class="form-control" placeholder="<%= t('data_sources.config_mqtt.topic_placeholder') %>" required="required">
+  <div class="form-text"><%= t('data_sources.config_mqtt.topic_help') %></div>
 </div>
 
 <div class="row">
   <div class="col-md-6 mb-3">
-    <label for="data_source_config_username" class="form-label">Benutzername</label>
+    <label for="data_source_config_username" class="form-label"><%= t('data_sources.config_mqtt.username_label') %></label>
     <input type="text" name="data_source[config][username]" id="data_source_config_username" value="<%= config[:username] %>" class="form-control" autocomplete="off">
   </div>
   <div class="col-md-6 mb-3">
-    <label for="data_source_config_password" class="form-label">Passwort</label>
+    <label for="data_source_config_password" class="form-label"><%= t('data_sources.config_mqtt.password_label') %></label>
     <input type="password" name="data_source[config][password]" id="data_source_config_password" value="<%= config[:password] %>" class="form-control" autocomplete="off">
   </div>
 </div>
 
 <div class="mb-3">
-  <label for="data_source_config_client_id" class="form-label">Client ID</label>
-  <input type="text" name="data_source[config][client_id]" id="data_source_config_client_id" value="<%= config[:client_id] %>" class="form-control" placeholder="Optional - wird automatisch generiert falls leer">
+  <label for="data_source_config_client_id" class="form-label"><%= t('data_sources.config_mqtt.client_id_label') %></label>
+  <input type="text" name="data_source[config][client_id]" id="data_source_config_client_id" value="<%= config[:client_id] %>" class="form-control" placeholder="<%= t('data_sources.config_mqtt.client_id_placeholder') %>">
 </div>
 
 <div class="row">
   <div class="col-md-4 mb-3">
-    <label for="data_source_config_qos" class="form-label">QoS Level</label>
+    <label for="data_source_config_qos" class="form-label"><%= t('data_sources.config_mqtt.qos_label') %></label>
     <select name="data_source[config][qos]" id="data_source_config_qos" class="form-select">
-      <option value="0" <%= 'selected' if (config[:qos] || 0) == 0 %>>0 - At most once</option>
-      <option value="1" <%= 'selected' if config[:qos] == 1 %>>1 - At least once</option>
-      <option value="2" <%= 'selected' if config[:qos] == 2 %>>2 - Exactly once</option>
+      <option value="0" <%= 'selected' if (config[:qos] || 0) == 0 %>><%= t('data_sources.config_mqtt.qos_options.at_most_once') %></option>
+      <option value="1" <%= 'selected' if config[:qos] == 1 %>><%= t('data_sources.config_mqtt.qos_options.at_least_once') %></option>
+      <option value="2" <%= 'selected' if config[:qos] == 2 %>><%= t('data_sources.config_mqtt.qos_options.exactly_once') %></option>
     </select>
   </div>
   <div class="col-md-4 mb-3">
-    <label for="data_source_config_keep_alive" class="form-label">Keep Alive (Sekunden)</label>
+    <label for="data_source_config_keep_alive" class="form-label"><%= t('data_sources.config_mqtt.keep_alive_label') %></label>
     <input type="number" name="data_source[config][keep_alive]" id="data_source_config_keep_alive" value="<%= config[:keep_alive] || 15 %>" class="form-control" min="1">
   </div>
   <div class="col-md-4 mb-3 d-flex align-items-end">
     <div class="form-check">
       <input type="hidden" name="data_source[config][parse_json]" value="false">
       <input type="checkbox" name="data_source[config][parse_json]" id="data_source_config_parse_json" value="true" <%= 'checked' if config.key?(:parse_json) ? config[:parse_json] : true %> class="form-check-input">
-      <label for="data_source_config_parse_json" class="form-check-label">JSON parsen</label>
+      <label for="data_source_config_parse_json" class="form-check-label"><%= t('data_sources.config_mqtt.parse_json_label') %></label>
     </div>
   </div>
 </div>
@@ -61,32 +61,32 @@
   <div class="form-check">
     <input type="hidden" name="data_source[config][clean_session]" value="false">
     <input type="checkbox" name="data_source[config][clean_session]" id="data_source_config_clean_session" value="true" <%= 'checked' if config.key?(:clean_session) ? config[:clean_session] : true %> class="form-check-input">
-    <label for="data_source_config_clean_session" class="form-check-label">Clean Session</label>
-    <div class="form-text">Bei aktivierter Clean Session werden keine Nachrichten während der Offline-Zeit gespeichert.</div>
+    <label for="data_source_config_clean_session" class="form-check-label"><%= t('data_sources.config_mqtt.clean_session_label') %></label>
+    <div class="form-text"><%= t('data_sources.config_mqtt.clean_session_help') %></div>
   </div>
 </div>
 
 <div class="card bg-light">
   <div class="card-body">
-    <h6 class="card-title">SSL/TLS Einstellungen</h6>
+    <h6 class="card-title"><%= t('data_sources.config_mqtt.ssl.title') %></h6>
     <div class="mb-3">
       <div class="form-check">
         <input type="hidden" name="data_source[config][use_ssl]" value="false">
         <input type="checkbox" name="data_source[config][use_ssl]" id="data_source_config_use_ssl" value="true" <%= 'checked' if config[:use_ssl] %> class="form-check-input">
-        <label for="data_source_config_use_ssl" class="form-check-label">SSL/TLS verwenden</label>
+        <label for="data_source_config_use_ssl" class="form-check-label"><%= t('data_sources.config_mqtt.ssl.use_ssl_label') %></label>
       </div>
     </div>
     <div class="mb-3">
-      <label for="data_source_config_ca_file" class="form-label">CA Zertifikat Pfad</label>
+      <label for="data_source_config_ca_file" class="form-label"><%= t('data_sources.config_mqtt.ssl.ca_file_label') %></label>
       <input type="text" name="data_source[config][ca_file]" id="data_source_config_ca_file" value="<%= config[:ca_file] %>" class="form-control" placeholder="/path/to/ca.crt">
     </div>
     <div class="row">
       <div class="col-md-6 mb-3">
-        <label for="data_source_config_cert_file" class="form-label">Client Zertifikat Pfad</label>
+        <label for="data_source_config_cert_file" class="form-label"><%= t('data_sources.config_mqtt.ssl.cert_file_label') %></label>
         <input type="text" name="data_source[config][cert_file]" id="data_source_config_cert_file" value="<%= config[:cert_file] %>" class="form-control" placeholder="/path/to/client.crt">
       </div>
       <div class="col-md-6 mb-3">
-        <label for="data_source_config_key_file" class="form-label">Client Key Pfad</label>
+        <label for="data_source_config_key_file" class="form-label"><%= t('data_sources.config_mqtt.ssl.key_file_label') %></label>
         <input type="text" name="data_source[config][key_file]" id="data_source_config_key_file" value="<%= config[:key_file] %>" class="form-control" placeholder="/path/to/client.key">
       </div>
     </div>

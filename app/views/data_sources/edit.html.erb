@@ -3,8 +3,8 @@
     <div class="modal-dialog modal-lg modal-dialog-scrollable">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="editDataSourceModalLabel">Datenquelle bearbeiten</h5>
-          <%= link_to "", data_sources_path, class: "btn-close", aria: { label: "Close" }, data: { turbo_frame: "_top" } %>
+          <h5 class="modal-title" id="editDataSourceModalLabel"><%= t('data_sources.edit.title') %></h5>
+          <%= link_to "", data_sources_path, class: "btn-close", aria: { label: t('common.buttons.close') }, data: { turbo_frame: "_top" } %>
         </div>
         <div class="modal-body">
           <%= form_with(model: @data_source, url: data_source_path(@data_source, format: :turbo_stream), id: "edit_data_source_form_#{@data_source.id}", data: { turbo_frame: "_top" }) do |form| %>
@@ -12,8 +12,8 @@
           <% end %>
         </div>
         <div class="modal-footer">
-          <%= link_to "Abbrechen", data_sources_path, class: "btn btn-secondary", data: { turbo_frame: "_top" } %>
-          <button type="submit" class="btn btn-primary" form="<%= "edit_data_source_form_#{@data_source.id}" %>">Speichern</button>
+          <%= link_to t('common.buttons.cancel'), data_sources_path, class: "btn btn-secondary", data: { turbo_frame: "_top" } %>
+          <button type="submit" class="btn btn-primary" form="<%= "edit_data_source_form_#{@data_source.id}" %>"><%= t('common.buttons.save') %></button>
         </div>
       </div>
     </div>

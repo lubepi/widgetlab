@@ -19,15 +19,15 @@
         <div class="d-flex gap-2 flex-wrap">
           <% if dashboard.is_public %>
             <span class="badge bg-success">
-              <i class="bi bi-globe me-1"></i>Öffentlich
+              <i class="bi bi-globe me-1"></i><%= t('common.badges.public') %>
             </span>
           <% else %>
             <span class="badge bg-secondary">
-              <i class="bi bi-lock me-1"></i>Privat
+              <i class="bi bi-lock me-1"></i><%= t('common.badges.private') %>
             </span>
           <% end %>
           <span class="badge bg-info">
-            <i class="bi bi-columns-gap me-1"></i><%= dashboard.columns || 3 %> Spalten
+            <i class="bi bi-columns-gap me-1"></i><%= dashboard.columns || 3 %> <%= t('common.labels.columns') %>
           </span>
           <% if role.present? %>
             <span class="badge <%= role == 'owner' ? 'bg-warning text-dark' : (role == 'editor' ? 'bg-primary' : 'bg-secondary') %>">

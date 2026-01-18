@@ -15,7 +15,7 @@ class SessionsController < ApplicationController
     session[:user_id] = user.id
     session[:keycloak_roles] = extract_keycloak_roles(auth_hash)
 
-    redirect_to root_path, notice: "Erfolgreich angemeldet!"
+    redirect_to root_path, notice: t('sessions.flash.signed_in')
   end
 
   def destroy
@@ -27,7 +27,7 @@ class SessionsController < ApplicationController
   end
 
   def failure
-    redirect_to root_path, alert: "Authentifizierung fehlgeschlagen: #{params[:message]}"
+    redirect_to root_path, alert: t('sessions.flash.auth_failed', message: params[:message])
   end
 
   private

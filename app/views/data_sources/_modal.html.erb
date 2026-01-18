@@ -2,8 +2,8 @@
   <div class="modal-dialog modal-lg modal-dialog-scrollable">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="newDataSourceModalLabel">Neue Datenquelle erstellen</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <h5 class="modal-title" id="newDataSourceModalLabel"><%= t('data_sources.new.title') %></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="<%= t('common.buttons.close') %>"></button>
       </div>
       <div class="modal-body">
         <%= form_with(model: DataSource.new, local: true, id: "new_data_source_form", data: { data_source_form_target: "form" }) do |form| %>
@@ -11,8 +11,8 @@
         <% end %>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Abbrechen</button>
-        <button type="submit" class="btn btn-primary" form="new_data_source_form">Erstellen</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><%= t('common.buttons.cancel') %></button>
+        <button type="submit" class="btn btn-primary" form="new_data_source_form"><%= t('common.buttons.create') %></button>
       </div>
     </div>
   </div>

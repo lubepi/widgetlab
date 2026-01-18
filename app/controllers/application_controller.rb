@@ -5,12 +5,26 @@ class ApplicationController < ActionController::Base
   # Changes to the importmap will invalidate the etag for HTML responses
   stale_when_importmap_changes
 
+  # i18n: Locale aus der Session oder dem Browser setzen
+  before_action :set_locale
+
   # Authentifizierung für alle Controller
   before_action :authenticate_user!
 
   helper_method :current_user, :user_signed_in?, :keycloak_roles, :has_role?, :admin?
 
   private
+
+  def set_locale
+    I18n.locale = session[:locale] || extract_locale_from_accept_language_header || I18n.default_locale
+  end
+
+  def extract_locale_from_accept_language_header
+    return nil unless request.env['HTTP_ACCEPT_LANGUAGE']
+    
+    accepted = request.env['HTTP_ACCEPT_LANGUAGE'].scan(/[a-z]{2}/).first&.to_sym
+    I18n.available_locales.include?(accepted) ? accepted : nil
+  end
 
   def current_user
     @current_user ||= User.find_by(id: session[:user_id]) if session[:user_id]
@@ -35,8 +49,8 @@ class ApplicationController < ActionController::Base
   def authenticate_user!
     unless user_signed_in?
       respond_to do |format|
-        format.html { redirect_to login_path, alert: "Bitte melde dich an, um fortzufahren." }
-        format.json { render json: { error: "Nicht authentifiziert" }, status: :unauthorized }
+        format.html { redirect_to login_path, alert: t('sessions.flash.please_sign_in') }
+        format.json { render json: { error: t('sessions.flash.not_authenticated') }, status: :unauthorized }
       end
     end
   end

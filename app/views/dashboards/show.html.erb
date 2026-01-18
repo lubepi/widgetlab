@@ -25,12 +25,12 @@
           <h1 class="mb-0 h3 text-truncate"><%= @dashboard.name %></h1>
           <div class="d-flex gap-2 mt-1 flex-wrap">
             <% if @dashboard.is_public %>
-              <span class="badge bg-success"><i class="bi bi-globe me-1 d-none d-sm-inline"></i>Öffentlich</span>
+              <span class="badge bg-success"><i class="bi bi-globe me-1 d-none d-sm-inline"></i><%= t('common.badges.public') %></span>
             <% else %>
-              <span class="badge bg-secondary"><i class="bi bi-lock me-1 d-none d-sm-inline"></i>Privat</span>
+              <span class="badge bg-secondary"><i class="bi bi-lock me-1 d-none d-sm-inline"></i><%= t('common.badges.private') %></span>
             <% end %>
             <span class="badge bg-info">
-              <i class="bi bi-columns-gap me-1 d-none d-sm-inline"></i><%= @dashboard.columns || 12 %> Spalten
+              <i class="bi bi-columns-gap me-1 d-none d-sm-inline"></i><%= @dashboard.columns || 12 %> <%= t('common.labels.columns') %>
             </span>
           </div>
         </div>
@@ -44,17 +44,17 @@
           <i class="bi bi-info-circle"></i>
         </button>
         <div class="dropdown-menu dropdown-menu-end p-3" style="min-width: 300px;">
-          <h6 class="dropdown-header px-0">Dashboard Informationen</h6>
+          <h6 class="dropdown-header px-0"><%= t('dashboards.show.info') %></h6>
           <div class="mb-2">
-            <small class="text-muted d-block">Erstellt</small>
+            <small class="text-muted d-block"><%= t('dashboards.show.created') %></small>
             <span><%= @dashboard.created_at.strftime("%d.%m.%Y um %H:%M") %></span>
           </div>
           <div class="mb-2">
-            <small class="text-muted d-block">Zuletzt bearbeitet</small>
+            <small class="text-muted d-block"><%= t('dashboards.show.last_edited') %></small>
             <span><%= @dashboard.updated_at.strftime("%d.%m.%Y um %H:%M") %></span>
           </div>
           <div>
-            <small class="text-muted d-block">Widgets</small>
+            <small class="text-muted d-block"><%= t('dashboards.show.widgets_count') %></small>
             <span><%= @dashboard.widgets.count %> Widget<%= @dashboard.widgets.count == 1 ? '' : 's' %></span>
           </div>
         </div>
@@ -67,7 +67,7 @@
                 data-dashboard-grid-target="modeToggle"
                 data-action="click->dashboard-grid#toggleMode">
           <i class="bi bi-pencil me-1"></i>
-          <span class="d-none d-sm-inline">Bearbeiten</span>
+          <span class="d-none d-sm-inline"><%= t('common.buttons.edit') %></span>
         </button>
 
         <!-- Add Widget Button (nur im Edit Mode sichtbar) -->
@@ -79,19 +79,19 @@
                       dashboard_grid_target: "addWidgetBtn"
                     } do %>
           <i class="bi bi-plus-lg me-1"></i>
-          <span class="d-none d-sm-inline">Widget hinzufügen</span>
+          <span class="d-none d-sm-inline"><%= t('dashboards.show.add_widget') %></span>
         <% end %>
       <% end %>
       
       <% if @dashboard.owner?(current_user) %>
         <%= link_to access_dashboard_path(@dashboard), class: "btn btn-outline-secondary d-none d-lg-inline-flex", data: { turbo_frame: "modal" } do %>
-          <i class="bi bi-shield-lock me-1"></i><span class="d-none d-xl-inline">Zugriff</span>
+          <i class="bi bi-shield-lock me-1"></i><span class="d-none d-xl-inline"><%= t('dashboards.show.access') %></span>
         <% end %>
         <%= link_to edit_dashboard_path(@dashboard), class: "btn btn-outline-secondary d-none d-md-inline-flex" do %>
-          <i class="bi bi-gear me-1"></i><span class="d-none d-xl-inline">Einstellungen</span>
+          <i class="bi bi-gear me-1"></i><span class="d-none d-xl-inline"><%= t('dashboards.show.settings') %></span>
         <% end %>
         <%= button_to dashboard_path(@dashboard), method: :delete, class: "btn btn-outline-danger d-none d-md-inline-flex",
-            data: { turbo_confirm: "Möchtest du das Dashboard '#{@dashboard.name}' wirklich löschen?" } do %>
+            data: { turbo_confirm: t('dashboards.show.confirm_delete', name: @dashboard.name) } do %>
           <i class="bi bi-trash"></i>
         <% end %>
       <% end %>
@@ -103,14 +103,14 @@
     <div class="card" id="empty-dashboard-state">
       <div class="card-body text-center py-5">
         <i class="bi bi-grid-1x2 display-1 text-muted mb-3"></i>
-        <h4 class="text-muted">Noch keine Widgets hinzugefügt</h4>
-        <p class="text-muted mb-4">Wechsle in den Bearbeitungsmodus, um Widgets hinzuzufügen.</p>
+        <h4 class="text-muted"><%= t('dashboards.show.empty_state.title') %></h4>
+        <p class="text-muted mb-4"><%= t('dashboards.show.empty_state.description') %></p>
         <% if @dashboard.can_edit?(current_user) %>
           <button type="button" 
                   class="btn btn-primary"
                   data-action="click->dashboard-grid#toggleMode">
             <i class="bi bi-pencil me-1"></i>
-            Bearbeiten starten
+            <%= t('dashboards.show.empty_state.button') %>
           </button>
         <% end %>
       </div>

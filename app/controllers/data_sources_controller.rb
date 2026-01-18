@@ -39,7 +39,7 @@ class DataSourcesController < ApplicationController
           @data_sources = DataSource.all
           render :crud_success
         end
-        format.html { redirect_to data_sources_path, notice: "Datenquelle wurde erfolgreich erstellt." }
+        format.html { redirect_to data_sources_path, notice: t('data_sources.flash.created') }
         format.json { render :show, status: :created, location: @data_source }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -57,7 +57,7 @@ class DataSourcesController < ApplicationController
           @data_sources = DataSource.all
           render :crud_success
         end
-        format.html { redirect_to data_sources_path, notice: "Datenquelle wurde erfolgreich aktualisiert.", status: :see_other }
+        format.html { redirect_to data_sources_path, notice: t('data_sources.flash.updated'), status: :see_other }
         format.json { render :show, status: :ok, location: @data_source }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -72,7 +72,7 @@ class DataSourcesController < ApplicationController
     @data_source.destroy!
 
     respond_to do |format|
-      format.html { redirect_to data_sources_path, notice: "Datenquelle wurde erfolgreich gelöscht.", status: :see_other }
+      format.html { redirect_to data_sources_path, notice: t('data_sources.flash.destroyed'), status: :see_other }
       format.json { head :no_content }
     end
   end
@@ -100,7 +100,7 @@ class DataSourcesController < ApplicationController
           locals: { data_sources: @data_sources }
         )
       end
-      format.html { redirect_to data_sources_path, notice: "Datenquelle wurde gestartet." }
+      format.html { redirect_to data_sources_path, notice: t('data_sources.flash.started') }
     end
   end
 
@@ -122,7 +122,7 @@ class DataSourcesController < ApplicationController
           locals: { data_sources: @data_sources }
         )
       end
-      format.html { redirect_to data_sources_path, notice: "Datenquelle wurde gestoppt." }
+      format.html { redirect_to data_sources_path, notice: t('data_sources.flash.stopped') }
     end
   end
 
@@ -142,7 +142,7 @@ class DataSourcesController < ApplicationController
           locals: { data_sources: @data_sources }
         )
       end
-      format.html { redirect_to data_sources_path, notice: "Alle Datenquellen wurden gestartet." }
+      format.html { redirect_to data_sources_path, notice: t('data_sources.flash.all_started') }
     end
   end
 

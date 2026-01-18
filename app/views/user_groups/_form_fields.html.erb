@@ -2,7 +2,7 @@
 
 <% if user_group.errors.any? %>
   <div class="alert alert-danger">
-    <h5><%= pluralize(user_group.errors.count, "Fehler") %> verhindert das Speichern:</h5>
+    <h5><%= t('common.errors.prevented_saving', count: user_group.errors.count) %></h5>
     <ul class="mb-0">
       <% user_group.errors.full_messages.each do |message| %>
         <li><%= message %></li>
@@ -13,22 +13,22 @@
 
 <%= form_with(model: user_group, id: (is_new ? "new_user_group_form" : "edit_user_group_form_#{user_group.id}"), url: (is_new ? user_groups_path(format: :turbo_stream) : user_group_path(user_group, format: :turbo_stream)), data: { turbo_frame: "_top" }) do |form| %>
   <div class="mb-3">
-    <%= form.label :name, "Name", class: "form-label" %>
-    <%= form.text_field :name, class: "form-control", placeholder: "z.B. Team Backend" %>
+    <%= form.label :name, t('common.labels.name'), class: "form-label" %>
+    <%= form.text_field :name, class: "form-control", placeholder: t('user_groups.form.name_placeholder') %>
   </div>
 
   <div class="mb-3">
-    <%= form.label :member_ids, "Mitglieder", class: "form-label" %>
+    <%= form.label :member_ids, t('user_groups.form.members_label'), class: "form-label" %>
     <% selected_ids = user_group.members.pluck(:id) %>
     <div class="card" data-controller="member-picker" data-action="change->member-picker#updateCount">
       <div class="card-body">
         <div class="row g-2 align-items-center mb-2">
           <div class="col-sm">
-            <input type="search" class="form-control" placeholder="Suchen (E-Mail)…" data-member-picker-target="query" data-action="input->member-picker#filter">
+            <input type="search" class="form-control" placeholder="<%= t('user_groups.form.search_placeholder') %>" data-member-picker-target="query" data-action="input->member-picker#filter">
           </div>
           <div class="col-sm-auto">
-            <button type="button" class="btn btn-outline-secondary" data-action="member-picker#toggleAll" data-member-picker-checked-param="true">Alle</button>
-            <button type="button" class="btn btn-outline-secondary" data-action="member-picker#toggleAll" data-member-picker-checked-param="false">Keine</button>
+            <button type="button" class="btn btn-outline-secondary" data-action="member-picker#toggleAll" data-member-picker-checked-param="true"><%= t('common.buttons.all') %></button>
+            <button type="button" class="btn btn-outline-secondary" data-action="member-picker#toggleAll" data-member-picker-checked-param="false"><%= t('common.buttons.none') %></button>
           </div>
         </div>
 

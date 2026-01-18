@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  # i18n Locale Switcher
+  patch "/locale", to: "locales#update", as: :update_locale
+
   # OmniAuth/Keycloak Authentifizierung
   get "/auth/:provider/callback", to: "sessions#create"
   get "/auth/failure", to: "sessions#failure"

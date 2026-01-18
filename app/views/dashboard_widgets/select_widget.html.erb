@@ -9,24 +9,24 @@
         <div class="modal-header">
           <h5 class="modal-title">
             <i class="bi bi-grid me-2"></i>
-            Widget zu "<%= @dashboard.name %>" hinzufügen
+            <%= t('dashboard_widgets.select_widget.title', dashboard: @dashboard.name) %>
           </h5>
         </div>
         <div class="modal-body">
           <% if @available_widgets.empty? %>
             <div class="text-center py-5">
               <i class="bi bi-grid display-1 text-muted mb-3"></i>
-              <h4 class="text-muted">Keine weiteren Widgets verfügbar</h4>
+              <h4 class="text-muted"><%= t('dashboard_widgets.select_widget.empty_state.title') %></h4>
               <p class="text-muted mb-4">
-                Alle verfügbaren Widgets wurden bereits hinzugefügt oder es gibt noch keine Widgets.
+                <%= t('dashboard_widgets.select_widget.empty_state.description') %>
               </p>
               <%= link_to widgets_path, class: "btn btn-primary", data: { turbo_frame: "_top" } do %>
                 <i class="bi bi-grid me-1"></i>
-                Zum Widget Store
+                <%= t('dashboard_widgets.select_widget.empty_state.button') %>
               <% end %>
             </div>
           <% else %>
-            <p class="text-muted mb-4">Wähle ein Widget aus, um es zum Dashboard "<%= @dashboard.name %>" hinzuzufügen.</p>
+            <p class="text-muted mb-4"><%= t('dashboard_widgets.select_widget.description', dashboard: @dashboard.name) %></p>
             
             <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
               <% @available_widgets.each do |widget| %>
@@ -58,7 +58,7 @@
                         <div class="card-footer bg-transparent border-top-0">
                           <small class="text-primary">
                             <i class="bi bi-plus-circle me-1"></i>
-                            Hinzufügen
+                            <%= t('common.buttons.add') %>
                           </small>
                         </div>
                       </button>
@@ -71,7 +71,7 @@
         </div>
         <div class="modal-footer">
           <%= link_to dashboard_path(@dashboard), class: "btn btn-secondary" do %>
-            Abbrechen
+            <%= t('common.buttons.cancel') %>
           <% end %>
         </div>
       </div>

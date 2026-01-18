@@ -3,15 +3,15 @@
     <div class="modal-dialog modal-lg modal-dialog-scrollable">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="editUserGroupModalLabel">Gruppe bearbeiten</h5>
-          <%= link_to "", user_groups_path, class: "btn-close", aria: { label: "Close" }, data: { turbo_frame: "_top" } %>
+          <h5 class="modal-title" id="editUserGroupModalLabel"><%= t('user_groups.edit.title') %></h5>
+          <%= link_to "", user_groups_path, class: "btn-close", aria: { label: t('common.buttons.close') }, data: { turbo_frame: "_top" } %>
         </div>
         <div class="modal-body">
           <%= render "form_fields", user_group: @user_group %>
         </div>
         <div class="modal-footer">
-          <%= link_to "Abbrechen", user_groups_path, class: "btn btn-secondary", data: { turbo_frame: "_top" } %>
-          <button type="submit" class="btn btn-primary" form="<%= "edit_user_group_form_#{@user_group.id}" %>">Speichern</button>
+          <%= link_to t('common.buttons.cancel'), user_groups_path, class: "btn btn-secondary", data: { turbo_frame: "_top" } %>
+          <button type="submit" class="btn btn-primary" form="<%= "edit_user_group_form_#{@user_group.id}" %>"><%= t('common.buttons.save') %></button>
         </div>
       </div>
     </div>

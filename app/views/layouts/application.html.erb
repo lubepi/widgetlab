@@ -57,29 +57,29 @@
           <aside class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-body-tertiary border-end min-vh-100 sidebar" data-sidebar-target="sidebar">
           <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-3 text-body sidebar-inner w-100">
             <%= link_to root_path, class: "d-flex align-items-center pb-3 mb-2 text-decoration-none" do %>
-              <span class="fs-5 fw-semibold sidebar-label d-none d-sm-inline">Widgetlab</span>
+              <span class="fs-5 fw-semibold sidebar-label d-none d-sm-inline"><%= t('layouts.application.title') %></span>
             <% end %>
 
-            <button type="button" class="btn btn-sm btn-outline-secondary mb-2 sidebar-toggle-btn" data-action="sidebar#toggle" aria-label="Sidebar einklappen/ausklappen">
+            <button type="button" class="btn btn-sm btn-outline-secondary mb-2 sidebar-toggle-btn" data-action="sidebar#toggle" aria-label="<%= t('layouts.application.toggle_sidebar') %>">
               <i class="bi" data-sidebar-target="toggleIcon"></i>
             </button>
 
             <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start w-100" id="menu">
               <li class="nav-item w-100">
-                <div class="small text-uppercase text-secondary px-3 mt-2 mb-1 sidebar-section-label">Übersicht</div>
+                <div class="small text-uppercase text-secondary px-3 mt-2 mb-1 sidebar-section-label"><%= t('layouts.application.navigation.overview') %></div>
               </li>
 
               <li class="nav-item w-100">
                 <%= link_to dashboards_path, class: "nav-link px-3 #{current_page?(dashboards_path) ? 'active' : 'text-body'}" do %>
                   <i class="bi bi-speedometer2 me-2"></i>
-                  <span class="d-none d-sm-inline sidebar-label">Dashboards</span>
+                  <span class="d-none d-sm-inline sidebar-label"><%= t('layouts.application.navigation.dashboards') %></span>
                 <% end %>
               </li>
 
               <li class="nav-item w-100">
                 <%= link_to widgets_path, class: "nav-link px-3 #{current_page?(widgets_path) ? 'active' : 'text-body'}" do %>
                   <i class="bi bi-grid me-2"></i>
-                  <span class="d-none d-sm-inline sidebar-label">Widgets</span>
+                  <span class="d-none d-sm-inline sidebar-label"><%= t('layouts.application.navigation.widgets') %></span>
                 <% end %>
               </li>
 
@@ -89,27 +89,27 @@
                 </li>
 
                 <li class="nav-item w-100">
-                  <div class="small text-uppercase text-secondary px-3 mt-2 mb-1 sidebar-section-label">Admin</div>
+                  <div class="small text-uppercase text-secondary px-3 mt-2 mb-1 sidebar-section-label"><%= t('layouts.application.navigation.admin') %></div>
                 </li>
 
                 <li class="nav-item w-100">
                   <%= link_to data_sources_path, class: "nav-link px-3 #{current_page?(data_sources_path) ? 'active' : 'text-body'}" do %>
                     <i class="bi bi-database me-2"></i>
-                    <span class="d-none d-sm-inline sidebar-label">Datenquellen</span>
+                    <span class="d-none d-sm-inline sidebar-label"><%= t('layouts.application.navigation.data_sources') %></span>
                   <% end %>
                 </li>
 
                 <li class="nav-item w-100">
                   <%= link_to user_groups_path, class: "nav-link px-3 #{current_page?(user_groups_path) ? 'active' : 'text-body'}" do %>
                     <i class="bi bi-people me-2"></i>
-                    <span class="d-none d-sm-inline sidebar-label">Gruppen</span>
+                    <span class="d-none d-sm-inline sidebar-label"><%= t('layouts.application.navigation.groups') %></span>
                   <% end %>
                 </li>
 
                 <li class="nav-item w-100">
                   <%= link_to users_path, class: "nav-link px-3 #{current_page?(users_path) ? 'active' : 'text-body'}" do %>
                     <i class="bi bi-person-badge me-2"></i>
-                    <span class="d-none d-sm-inline sidebar-label">Users</span>
+                    <span class="d-none d-sm-inline sidebar-label"><%= t('layouts.application.navigation.users') %></span>
                   <% end %>
                 </li>
               <% end %>
@@ -118,10 +118,32 @@
             <hr class="w-100">
 
             <div class="pb-3 w-100">
-              <button type="button" class="btn btn-sm btn-outline-secondary w-100 sidebar-theme-btn" data-action="theme#toggle" aria-label="Dark/Light Mode wechseln">
+              <button type="button" class="btn btn-sm btn-outline-secondary w-100 sidebar-theme-btn" data-action="theme#toggle" aria-label="<%= t('layouts.application.toggle_theme') %>">
                 <i class="bi" data-theme-target="icon"></i>
                 <span class="sidebar-label d-none d-sm-inline ms-2" data-theme-target="label"></span>
               </button>
+            </div>
+
+            <%# Sprachumschalter %>
+            <div class="pb-3 w-100">
+              <div class="dropdown">
+                <button class="btn btn-sm btn-outline-secondary w-100 dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <i class="bi bi-globe me-2"></i>
+                  <span class="sidebar-label d-none d-sm-inline"><%= I18n.locale == :de ? 'DE' : 'EN' %></span>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                  <li>
+                    <%= button_to update_locale_path(locale: :de), method: :patch, class: "dropdown-item #{'active' if I18n.locale == :de}", data: { turbo: false } do %>
+                      <i class="bi bi-check2 me-2 <%= 'invisible' unless I18n.locale == :de %>"></i><%= t('layouts.application.language.de') %>
+                    <% end %>
+                  </li>
+                  <li>
+                    <%= button_to update_locale_path(locale: :en), method: :patch, class: "dropdown-item #{'active' if I18n.locale == :en}", data: { turbo: false } do %>
+                      <i class="bi bi-check2 me-2 <%= 'invisible' unless I18n.locale == :en %>"></i><%= t('layouts.application.language.en') %>
+                    <% end %>
+                  </li>
+                </ul>
+              </div>
             </div>
 
             <div class="pb-3 w-100">
