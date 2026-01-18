@@ -202,19 +202,19 @@
 <!-- Zugriffsrechte -->
 <div class="card mb-3">
   <div class="card-header">
-    <i class="bi bi-shield-lock me-2"></i>
     Zugriffsrechte
   </div>
   <div class="card-body">
     <div class="mb-3">
       <div class="form-check">
-        <%= form.check_box :is_public, class: "form-check-input" %>
+        <%= form.check_box :is_public, class: "form-check-input", id: "widget_is_public", 
+            data: { action: "change->toggle-access-section" } %>
         <%= form.label :is_public, "Öffentlich sichtbar", class: "form-check-label" %>
       </div>
       <div class="form-text">Wenn aktiviert, ist das Widget für alle Benutzer sichtbar.</div>
     </div>
 
-    <div class="mb-3">
+    <div class="mb-3" id="access-section">
       <div class="d-flex justify-content-between align-items-center mb-2">
         <label class="form-label mb-0">Benutzer & Rollen</label>
         <div class="small text-muted">
@@ -266,3 +266,35 @@
     </div>
   </div>
 </div>
+
+<script>
+  (function() {
+    const publicCheckbox = document.getElementById('widget_is_public');
+    const accessSection = document.getElementById('access-section');
+    
+    function toggleAccessSection() {
+      if (publicCheckbox && accessSection) {
+        const isPublic = publicCheckbox.checked;
+        const inputs = accessSection.querySelectorAll('input, select');
+        
+        inputs.forEach(input => {
+          input.disabled = isPublic;
+        });
+        
+        if (isPublic) {
+          accessSection.style.opacity = '0.5';
+          accessSection.style.pointerEvents = 'none';
+        } else {
+          accessSection.style.opacity = '1';
+          accessSection.style.pointerEvents = 'auto';
+        }
+      }
+    }
+    
+    if (publicCheckbox) {
+      publicCheckbox.addEventListener('change', toggleAccessSection);
+      // Initial state
+      toggleAccessSection();
+    }
+  })();
+</script>

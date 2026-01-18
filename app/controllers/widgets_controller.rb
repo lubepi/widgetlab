@@ -88,16 +88,24 @@ class WidgetsController < ApplicationController
 
   # PATCH/PUT /widgets/1 or /widgets/1.json
   def update
-    # Validiere Zugriffsrechte
-    user_roles = params.dig(:access, :user_roles) || {}
-    future_owner_count = user_roles.values.count { |role| role == 'owner' }
+    # Validiere Zugriffsrechte nur wenn Widget nicht öffentlich ist
+    is_public = params.dig(:widget, :is_public) == "1"
     
-    if future_owner_count == 0
-      respond_to do |format|
-        format.turbo_stream { render turbo_stream: turbo_stream.replace("widget_modal") { render partial: "edit_modal" } }
-        format.html { redirect_to edit_widget_path(@widget), alert: "Es muss mindestens einen Owner geben." }
+    unless is_public
+      user_roles = params.dig(:access, :user_roles) || {}
+      future_owner_count = user_roles.values.count { |role| role == 'owner' }
+      
+      if future_owner_count == 0
+        # Lade notwendige Variablen für edit_modal
+        @data_sources = DataSource.accessible_for(current_user)
+        @users = User.order(:email)
+        @roles = UserWidgetRole.roles.keys
+        @user_widget_roles = @widget.user_widget_roles.includes(:user).index_by(&:user_id)
+        
+        flash.now[:alert] = "Es muss mindestens einen Owner geben."
+        render partial: "edit_modal", layout: false
+        return
       end
-      return
     end
 
     respond_to do |format|
@@ -117,23 +125,26 @@ class WidgetsController < ApplicationController
           end
         end
 
-        # Aktualisiere Zugriffsrechte
-        ActiveRecord::Base.transaction do
-          # Bestehende Rollen aktualisieren oder entfernen
-          @widget.user_widget_roles.each do |uwr|
-            new_role = user_roles[uwr.user_id.to_s]
-            if new_role.blank?
-              uwr.destroy!
-            elsif uwr.role != new_role
-              uwr.update!(role: new_role)
+        # Aktualisiere Zugriffsrechte nur wenn Widget nicht öffentlich ist
+        unless is_public
+          user_roles = params.dig(:access, :user_roles) || {}
+          ActiveRecord::Base.transaction do
+            # Bestehende Rollen aktualisieren oder entfernen
+            @widget.user_widget_roles.each do |uwr|
+              new_role = user_roles[uwr.user_id.to_s]
+              if new_role.blank?
+                uwr.destroy!
+              elsif uwr.role != new_role
+                uwr.update!(role: new_role)
+              end
             end
-          end
 
-          # Neue Rollen hinzufügen
-          user_roles.each do |user_id, role|
-            next if role.blank?
-            next if @widget.user_widget_roles.exists?(user_id: user_id)
-            @widget.user_widget_roles.create!(user_id: user_id, role: role)
+            # Neue Rollen hinzufügen
+            user_roles.each do |user_id, role|
+              next if role.blank?
+              next if @widget.user_widget_roles.exists?(user_id: user_id)
+              @widget.user_widget_roles.create!(user_id: user_id, role: role)
+            end
           end
         end
 
