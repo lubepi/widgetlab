@@ -1,10 +1,16 @@
 class WidgetsController < ApplicationController
   before_action :set_widget, only: %i[ show edit update destroy ]
+  before_action :authorize_owner!, only: %i[ edit update destroy ]
 
   # GET /widgets or /widgets.json
   def index
-    @widgets = Widget.all
-    @data_sources = DataSource.all
+    @owned_widgets = Widget.owned_by(current_user).order(created_at: :desc)
+    @shared_widgets = Widget.shared_with(current_user).order(created_at: :desc)
+    @public_widgets = Widget.where(is_public: true)
+                            .where.not(id: @owned_widgets.select(:id))
+                            .where.not(id: @shared_widgets.select(:id))
+                            .order(created_at: :desc)
+    @data_sources = DataSource.accessible_for(current_user)
   end
 
   # GET /widgets/1 or /widgets/1.json
@@ -18,12 +24,29 @@ class WidgetsController < ApplicationController
   # GET /widgets/new
   def new
     @widget = Widget.new
-    @data_sources = DataSource.all
+    @data_sources = DataSource.accessible_for(current_user)
   end
 
   # GET /widgets/1/edit
   def edit
-    @data_sources = DataSource.all
+    @data_sources = DataSource.accessible_for(current_user)
+    @users = User.order(:email)
+    @roles = UserWidgetRole.roles.keys
+    @user_widget_roles = @widget.user_widget_roles.includes(:user).index_by(&:user_id)
+    
+    # Sortiere Benutzer nach Zugriffslevel (Owner > Viewer > Kein Zugriff)
+    @users = @users.sort_by do |user|
+      role = @user_widget_roles[user.id]&.role
+      case role
+      when 'owner'
+        0
+      when 'viewer'
+        1
+      else
+        2
+      end
+    end
+    
     respond_to do |format|
       format.html
       format.turbo_stream
@@ -36,6 +59,9 @@ class WidgetsController < ApplicationController
 
     respond_to do |format|
       if @widget.save
+        # Setze den aktuellen User als Owner
+        @widget.add_owner(current_user)
+
         # Erstelle den WidgetDataSourceTransformer, wenn eine Datenquelle ausgewählt wurde
         if params[:widget][:data_source_id].present?
           @widget.create_widget_data_source_transformer!(
@@ -45,7 +71,10 @@ class WidgetsController < ApplicationController
         end
 
         format.turbo_stream do
-          @widgets = Widget.all
+          @widgets = Widget.left_joins(:user_widget_roles)
+                           .where("widgets.is_public = ? OR user_widget_roles.user_id = ?", true, current_user.id)
+                           .distinct
+                           .order(created_at: :desc)
           render :crud_success
         end
         format.html { redirect_to @widget, notice: "Widget wurde erfolgreich erstellt." }
@@ -60,6 +89,18 @@ class WidgetsController < ApplicationController
 
   # PATCH/PUT /widgets/1 or /widgets/1.json
   def update
+    # Validiere Zugriffsrechte
+    user_roles = params.dig(:access, :user_roles) || {}
+    future_owner_count = user_roles.values.count { |role| role == 'owner' }
+    
+    if future_owner_count == 0
+      respond_to do |format|
+        format.turbo_stream { render turbo_stream: turbo_stream.replace("widget_modal") { render partial: "edit_modal" } }
+        format.html { redirect_to edit_widget_path(@widget), alert: "Es muss mindestens einen Owner geben." }
+      end
+      return
+    end
+
     respond_to do |format|
       if @widget.update(widget_params.except(:data_source_id, :transformer_config))
         # Aktualisiere die Datenquelle im Transformer
@@ -77,8 +118,33 @@ class WidgetsController < ApplicationController
           end
         end
 
+        # Aktualisiere Zugriffsrechte
+        ActiveRecord::Base.transaction do
+          # Bestehende Rollen aktualisieren oder entfernen
+          @widget.user_widget_roles.each do |uwr|
+            new_role = user_roles[uwr.user_id.to_s]
+            if new_role.blank?
+              uwr.destroy!
+            elsif uwr.role != new_role
+              uwr.update!(role: new_role)
+            end
+          end
+
+          # Neue Rollen hinzufügen
+          user_roles.each do |user_id, role|
+            next if role.blank?
+            next if @widget.user_widget_roles.exists?(user_id: user_id)
+            @widget.user_widget_roles.create!(user_id: user_id, role: role)
+          end
+        end
+
         format.turbo_stream do
-          @widgets = Widget.all
+          @widget.reload  # Widget neu laden, um die aktualisierten Daten zu zeigen
+          @owned_widgets = Widget.owned_by(current_user).order(created_at: :desc)
+          @shared_widgets = Widget.shared_with(current_user).order(created_at: :desc)
+          @public_widgets = Widget.where(is_public: true)
+                                   .where.not(id: (@owned_widgets.pluck(:id) + @shared_widgets.pluck(:id)))
+                                   .order(created_at: :desc)
           render :crud_success
         end
         format.html { redirect_to @widget, notice: "Widget wurde erfolgreich aktualisiert.", status: :see_other }
@@ -96,6 +162,17 @@ class WidgetsController < ApplicationController
     @widget.destroy!
 
     respond_to do |format|
+      format.turbo_stream do
+        @owned_widgets = Widget.owned_by(current_user).order(created_at: :desc)
+        @shared_widgets = Widget.shared_with(current_user).order(created_at: :desc)
+        @public_widgets = Widget.where(is_public: true)
+                                 .where.not(id: (@owned_widgets.pluck(:id) + @shared_widgets.pluck(:id)))
+                                 .order(created_at: :desc)
+        render turbo_stream: [
+          turbo_stream.update("widgets_list") { render partial: "widgets/index_content" },
+          turbo_stream.replace("widget_modal", "")
+        ]
+      end
       format.html { redirect_to widgets_path, notice: "Widget was successfully destroyed.", status: :see_other }
       format.json { head :no_content }
     end
@@ -107,11 +184,17 @@ class WidgetsController < ApplicationController
       @widget = Widget.find(params.expect(:id))
     end
 
+    def authorize_owner!
+      unless @widget.can_edit?(current_user)
+        redirect_to widgets_path, alert: "Sie haben keine Berechtigung, dieses Widget zu bearbeiten."
+      end
+    end
+
     # Only allow a list of trusted parameters through.
     def widget_params
       params.expect(widget: [ 
         :name, :description, :widget_type, :color, :is_public, :data_source_id,
-        :time_range_value, :time_range_unit, :data_limit, :group_by, :aggregate_function
+        :time_range_value, :time_range_unit, :data_limit, :group_by, :aggregate_function, :unit
       ])
     end
 

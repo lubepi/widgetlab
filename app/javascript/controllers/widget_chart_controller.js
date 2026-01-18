@@ -6,7 +6,9 @@ export default class extends Controller {
   static values = {
     type: String,      // "line", "bar", "pie", etc.
     data: Object,      // Die Chart-Daten
-    color: String      // Die Widget-Farbe
+    color: String,     // Die Widget-Farbe
+    unit: String,      // Die Einheit (optional)
+    name: String       // Der Widget-Name
   }
 
   connect() {
@@ -16,11 +18,26 @@ export default class extends Controller {
       return
     }
     this.createChart()
+    
+    // Chart bei Theme-Änderung neu erstellen
+    this.observer = new MutationObserver(() => {
+      if (this.chart) {
+        this.chart.destroy()
+        this.createChart()
+      }
+    })
+    this.observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-bs-theme']
+    })
   }
 
   disconnect() {
     if (this.chart) {
       this.chart.destroy()
+    }
+    if (this.observer) {
+      this.observer.disconnect()
     }
   }
 
@@ -66,12 +83,53 @@ export default class extends Controller {
   }
 
   getChartOptions() {
+    const unit = this.hasUnitValue ? this.unitValue : ''
+    const widgetName = this.hasNameValue ? this.nameValue : ''
+    const isDark = document.documentElement.getAttribute('data-bs-theme') === 'dark'
+    const textColor = isDark ? '#dee2e6' : '#212529'
+    const gridColor = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'
+    
     const baseOptions = {
       responsive: true,
       maintainAspectRatio: false,
       plugins: {
+        title: {
+          display: this.typeValue !== 'pie' && widgetName,
+          text: widgetName,
+          color: textColor,
+          font: {
+            size: 14,
+            weight: 'bold'
+          },
+          padding: {
+            top: 5,
+            bottom: 10
+          }
+        },
         legend: {
-          display: this.typeValue === 'pie'
+          display: this.typeValue === 'pie',
+          labels: {
+            color: textColor
+          }
+        },
+        tooltip: {
+          callbacks: {
+            label: function(context) {
+              let label = context.dataset.label || ''
+              if (label) {
+                label += ': '
+              }
+              if (context.parsed.y !== null) {
+                label += context.parsed.y
+              } else if (context.parsed !== null) {
+                label += context.parsed
+              }
+              if (unit) {
+                label += ' ' + unit
+              }
+              return label
+            }
+          }
         }
       }
     }
@@ -79,8 +137,43 @@ export default class extends Controller {
     // Spezielle Optionen für verschiedene Chart-Typen
     if (this.typeValue !== 'pie') {
       baseOptions.scales = {
+        x: {
+          display: true,
+          title: {
+            display: false
+          },
+          ticks: {
+            maxTicksLimit: 8,
+            color: textColor
+          },
+          grid: {
+            color: gridColor
+          }
+        },
         y: {
-          beginAtZero: false
+          display: true,
+          beginAtZero: false,
+          title: {
+            display: unit ? true : false,
+            text: unit || '',
+            color: textColor,
+            font: {
+              size: 11
+            }
+          },
+          ticks: {
+            color: textColor,
+            callback: function(value) {
+              // Runde auf maximal 2 Dezimalstellen, entferne trailing zeros
+              if (typeof value === 'number') {
+                return Number(value.toFixed(2))
+              }
+              return value
+            }
+          },
+          grid: {
+            color: gridColor
+          }
         }
       }
     }

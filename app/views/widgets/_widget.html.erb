@@ -1,30 +1,38 @@
-<div id="<%= dom_id widget %>" class="widget-container h-100 d-flex align-items-center justify-content-center">
+<div id="<%= dom_id widget %>" class="widget-container h-100 w-100 d-flex align-items-center justify-content-center overflow-hidden">
   <% if widget.widget_type.blank? %>
     <!-- Fehlendes Widget Type -->
     <div class="text-center p-4 w-100 text-muted">
       <i class="bi bi-exclamation-triangle fs-1"></i>
       <div class="mt-2">Widget-Typ nicht gesetzt</div>
     </div>
+  <% elsif widget.data_source.present? && !widget.has_data_source_access?(current_user) %>
+    <!-- Kein Zugriff auf Datenquelle -->
+    <div class="text-center p-4 w-100 text-muted">
+      <i class="bi bi-lock fs-1"></i>
+      <div class="mt-2">Zugriff auf Datenquelle nicht verfügbar</div>
+    </div>
   <% elsif widget.widget_type == 'value' %>
     <!-- Value Widget: Zeigt einzelnen Wert -->
-    <div class="text-center p-4 w-100">
-      <div class="display-4 fw-bold" style="color: <%= widget.color || '#0d6efd' %>;">
-        <%= widget_current_value(widget) %>
-      </div>
-      <div class="text-muted mt-2 small">
+    <div class="text-center p-3 w-100 overflow-hidden d-flex flex-column justify-content-center h-100">
+      <div class="fw-bold mb-3 text-truncate" style="font-size: 14px;">
         <%= widget.name %>
+      </div>
+      <div class="display-4 fw-bold text-truncate" style="color: <%= widget.color || '#0d6efd' %>;">
+        <%= widget_current_value(widget) %><% if widget.unit.present? %><span class="fs-4 ms-2"><%= widget.unit %></span><% end %>
       </div>
     </div>
   <% else %>
     <!-- Chart Widget: Zeigt Diagramm -->
     <% chart_data = prepare_chart_data(widget) %>
-    <div class="w-100 p-3" style="height: 200px;">
+    <div class="w-100 h-100 overflow-hidden">
       <canvas 
         data-controller="widget-chart"
         data-widget-chart-type-value="<%= widget.widget_type %>"
         data-widget-chart-data-value='<%= chart_data.to_json %>'
         data-widget-chart-color-value="<%= widget.color || '#0d6efd' %>"
-        style="max-height: 100%;">
+        data-widget-chart-unit-value="<%= widget.unit %>"
+        data-widget-chart-name-value="<%= widget.name %>"
+        style="max-height: 100%; max-width: 100%;">
       </canvas>
     </div>
   <% end %>

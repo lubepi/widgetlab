@@ -1,0 +1,87 @@
+<%= turbo_frame_tag "widget_modal" do %>
+  <div class="modal fade show" id="editWidgetAccessModal" tabindex="-1" style="display: block;" data-controller="modal">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">
+            <i class="bi bi-shield-lock me-2"></i>
+            Zugriffsrechte verwalten
+          </h5>
+        </div>
+        <div class="modal-body">
+          <%= form_with(url: access_widget_path(@widget), method: :patch, id: "widget_access_form") do %>
+            <div class="mb-3">
+              <div class="form-text">
+                Widget: <strong><%= @widget.name %></strong>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <div class="form-check">
+                <%= check_box_tag 'widget[is_public]', '1', @widget.is_public, class: "form-check-input" %>
+                <%= label_tag 'widget[is_public]', "Öffentlich sichtbar", class: "form-check-label" %>
+              </div>
+              <div class="form-text">Wenn aktiviert, ist das Widget für alle Benutzer sichtbar.</div>
+            </div>
+
+            <div class="mb-3">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <label class="form-label mb-0">Benutzer & Rollen</label>
+                <div class="small text-muted">
+                  <span class="badge bg-info me-1">Viewer</span> Nur anschauen
+                  <span class="badge bg-primary mx-1">Owner</span> Vollzugriff
+                </div>
+              </div>
+              
+              <div class="card" data-controller="member-picker" data-action="change->member-picker#updateCount">
+                <div class="card-body">
+                  <div class="row g-2 align-items-center mb-2">
+                    <div class="col-sm">
+                      <input type="search" class="form-control" placeholder="Suchen (E-Mail oder Name)…" data-member-picker-target="query" data-action="input->member-picker#filter">
+                    </div>
+                  </div>
+
+                  <div class="small text-muted mb-2" data-member-picker-target="count"></div>
+
+                  <div class="border rounded p-2" style="max-height: 400px; overflow: auto;">
+                    <% @users.each do |user| %>
+                      <% current_role = @user_widget_roles[user.id]&.role %>
+                      <div class="d-flex align-items-center justify-content-between mb-2 p-2 border-bottom" data-member-picker-target="item" data-search="<%= user.email %> <%= user.first_name %> <%= user.last_name %>">
+                        <div class="d-flex align-items-center flex-grow-1">
+                          <div class="rounded-circle bg-secondary bg-opacity-10 d-flex align-items-center justify-content-center me-2" style="width: 32px; height: 32px; flex-shrink: 0;">
+                            <i class="bi bi-person text-secondary"></i>
+                          </div>
+                          <div>
+                            <div class="fw-medium"><%= user.first_name %> <%= user.last_name %></div>
+                            <small class="text-muted"><%= user.email %></small>
+                          </div>
+                        </div>
+                        <div style="min-width: 150px;">
+                          <select name="access[user_roles][<%= user.id %>]" class="form-select form-select-sm" data-member-picker-target="checkbox">
+                            <option value="">Kein Zugriff</option>
+                            <% @roles.each do |role| %>
+                              <option value="<%= role %>" <%= 'selected' if current_role == role %>>
+                                <%= role.capitalize %>
+                              </option>
+                            <% end %>
+                          </select>
+                        </div>
+                      </div>
+                    <% end %>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+        <div class="modal-footer">
+          <%= link_to "Abbrechen", edit_widget_path(@widget), class: "btn btn-secondary", data: { turbo_frame: "widget_modal" } %>
+          <button type="submit" class="btn btn-primary" form="widget_access_form">
+            <i class="bi bi-check-lg me-1"></i>
+            Speichern
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

@@ -1,5 +1,5 @@
 class DataSourcesController < ApplicationController
-  before_action :set_data_source, only: %i[ show edit update destroy ]
+  before_action :set_data_source, only: %i[ show edit update destroy latest_response ]
 
   # GET /data_sources or /data_sources.json
   def index
@@ -143,6 +143,20 @@ class DataSourcesController < ApplicationController
         )
       end
       format.html { redirect_to data_sources_path, notice: "Alle Datenquellen wurden gestartet." }
+    end
+  end
+
+  # GET /data_sources/:id/latest_response
+  def latest_response
+    latest_value = @data_source.latest_value
+    
+    if latest_value
+      render json: {
+        value: latest_value.value,
+        stored_at: latest_value.stored_at.strftime("%d.%m.%Y %H:%M:%S")
+      }
+    else
+      render json: { error: "Keine Daten verfügbar" }, status: :not_found
     end
   end
 

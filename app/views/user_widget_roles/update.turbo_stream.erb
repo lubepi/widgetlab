@@ -3,5 +3,5 @@
 <% end %>
 
 <%= turbo_stream.replace "widget_modal" do %>
-  <%= render partial: "widgets/show_modal" %>
+  <%= render partial: "widgets/show_modal", locals: { widget: @widget } %>
 <% end %>

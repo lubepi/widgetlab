@@ -1,59 +1,203 @@
-<div class="modal fade show" id="widgetShowModal" tabindex="-1" aria-labelledby="widgetShowModalLabel" aria-modal="true" role="dialog" style="display: block;">
-  <div class="modal-dialog modal-lg modal-dialog-scrollable">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="widgetShowModalLabel"><%= @widget.name %></h5>
-        <%= link_to "", widgets_path, class: "btn-close", aria: { label: "Close" }, data: { turbo_frame: "_top" } %>
-      </div>
+<%= turbo_frame_tag "widget_modal" do %>
+  <div class="modal fade show" id="widgetShowModal" tabindex="-1" aria-labelledby="widgetShowModalLabel" aria-modal="true" role="dialog" style="display: block;">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="widgetShowModalLabel"><%= @widget.name %></h5>
+          <button type="button" class="btn-close" onclick="document.getElementById('widget_modal').innerHTML = ''"></button>
+        </div>
       <div class="modal-body">
-        <div class="mb-4">
-          <div class="card">
-            <div class="card-body" style="min-height: 300px;">
+        <% if @widget.description.present? %>
+          <div class="mb-3">
+            <p class="text-muted"><%= @widget.description %></p>
+          </div>
+        <% end %>
+
+        <div class="card">
+          <div class="card-body p-0">
+            <div style="height: 400px; padding: 1rem;">
               <%= render @widget %>
             </div>
           </div>
         </div>
 
-        <% if @widget.description.present? %>
-          <div class="mb-3">
-            <strong>Beschreibung:</strong>
-            <p class="text-muted"><%= @widget.description %></p>
-          </div>
-        <% end %>
+        <!-- Widget-Informationen -->
+        <div class="mt-4">
+          <h6 class="mb-3">Informationen</h6>
+          
+          <div class="row g-3">
+            <!-- Ersteller -->
+            <div class="col-md-6">
+              <div class="d-flex align-items-center gap-2">
+                <i class="bi bi-person-circle text-muted"></i>
+                <div>
+                  <small class="text-muted d-block">Ersteller</small>
+                  <span><%= @widget.owner.email %></span>
+                </div>
+              </div>
+            </div>
 
-        <div class="row">
-          <div class="col-md-6">
-            <strong>Typ:</strong> <%= @widget.widget_type&.titleize || 'Nicht gesetzt' %>
-          </div>
-          <div class="col-md-6">
-            <strong>Datenquelle:</strong> 
-            <% if @widget.widget_data_source_transformer&.data_source %>
-              <%= @widget.widget_data_source_transformer.data_source.name %>
-            <% else %>
-              <span class="text-muted">Keine</span>
+            <!-- Widget-Typ -->
+            <div class="col-md-6">
+              <div class="d-flex align-items-center gap-2">
+                <i class="bi bi-diagram-3 text-muted"></i>
+                <div>
+                  <small class="text-muted d-block">Typ</small>
+                  <span><%= @widget.widget_type.titleize %></span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Datenquelle -->
+            <div class="col-md-6">
+              <div class="d-flex align-items-center gap-2">
+                <i class="bi bi-database text-muted"></i>
+                <div>
+                  <small class="text-muted d-block">Datenquelle</small>
+                  <span><%= @widget.widget_data_source_transformer&.data_source&.name || 'Keine' %></span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Sichtbarkeit -->
+            <div class="col-md-6">
+              <div class="d-flex align-items-center gap-2">
+                <i class="bi bi-<%= @widget.is_public? ? 'globe' : 'lock' %> text-muted"></i>
+                <div>
+                  <small class="text-muted d-block">Sichtbarkeit</small>
+                  <span><%= @widget.is_public? ? 'Öffentlich' : 'Privat' %></span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Einheit -->
+            <% if @widget.unit.present? %>
+              <div class="col-md-6">
+                <div class="d-flex align-items-center gap-2">
+                  <i class="bi bi-rulers text-muted"></i>
+                  <div>
+                    <small class="text-muted d-block">Einheit</small>
+                    <span><%= @widget.unit %></span>
+                  </div>
+                </div>
+              </div>
             <% end %>
-          </div>
-        </div>
 
-        <div class="row mt-2">
-          <div class="col-md-6">
-            <strong>Zeitbereich:</strong> <%= @widget.time_range_value %> <%= I18n.t("time_units.#{@widget.time_range_unit}", default: @widget.time_range_unit) %>
+            <!-- Farbe -->
+            <div class="col-md-6">
+              <div class="d-flex align-items-center gap-2">
+                <div style="width: 24px; height: 24px; border-radius: 4px; background-color: <%= @widget.color || '#0d6efd' %>; border: 1px solid var(--bs-border-color);"></div>
+                <div>
+                  <small class="text-muted d-block">Farbe</small>
+                  <span><%= @widget.color || '#0d6efd' %></span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Zeitbereich -->
+            <div class="col-md-6">
+              <div class="d-flex align-items-center gap-2">
+                <i class="bi bi-clock-history text-muted"></i>
+                <div>
+                  <small class="text-muted d-block">Zeitbereich</small>
+                  <span><%= @widget.time_range_value %> <%= I18n.t("time_units.#{@widget.time_range_unit}", default: @widget.time_range_unit) %></span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Gruppierung -->
+            <div class="col-md-6">
+              <div class="d-flex align-items-center gap-2">
+                <i class="bi bi-bar-chart text-muted"></i>
+                <div>
+                  <small class="text-muted d-block">Gruppierung</small>
+                  <span><%= I18n.t("group_by.#{@widget.group_by}", default: @widget.group_by) %></span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Aggregation -->
+            <div class="col-md-6">
+              <div class="d-flex align-items-center gap-2">
+                <i class="bi bi-calculator text-muted"></i>
+                <div>
+                  <small class="text-muted d-block">Aggregation</small>
+                  <span><%= I18n.t("aggregate.#{@widget.aggregate_function}", default: @widget.aggregate_function) %></span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Max. Datenpunkte -->
+            <div class="col-md-6">
+              <div class="d-flex align-items-center gap-2">
+                <i class="bi bi-hash text-muted"></i>
+                <div>
+                  <small class="text-muted d-block">Max. Datenpunkte</small>
+                  <span><%= @widget.data_limit %></span>
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="col-md-6">
-            <strong>Öffentlich:</strong> <%= @widget.is_public? ? 'Ja' : 'Nein' %>
-          </div>
+
+          <!-- Transformation (falls konfiguriert) -->
+          <% if @widget.widget_data_source_transformer&.config.present? %>
+            <% config = @widget.widget_data_source_transformer.config %>
+            <% has_transformation = config['json_path'].present? || config['multiply'].present? || config['add'].present? || config['round'].present? || config['format'].present? %>
+            
+            <% if has_transformation %>
+              <div class="mt-4">
+                <h6 class="mb-2">Daten-Transformation</h6>
+                <div class="bg-body-secondary rounded p-3">
+                  <% if config['json_path'].present? %>
+                    <div class="mb-2">
+                      <small class="text-muted">JSON-Pfad:</small>
+                      <code class="ms-2"><%= config['json_path'] %></code>
+                    </div>
+                  <% end %>
+                  <% if config['multiply'].present? %>
+                    <div class="mb-2">
+                      <small class="text-muted">Multiplikator:</small>
+                      <span class="ms-2"><%= config['multiply'] %></span>
+                    </div>
+                  <% end %>
+                  <% if config['add'].present? %>
+                    <div class="mb-2">
+                      <small class="text-muted">Addition:</small>
+                      <span class="ms-2"><%= config['add'] %></span>
+                    </div>
+                  <% end %>
+                  <% if config['round'].present? %>
+                    <div class="mb-2">
+                      <small class="text-muted">Dezimalstellen:</small>
+                      <span class="ms-2"><%= config['round'] %></span>
+                    </div>
+                  <% end %>
+                  <% if config['format'].present? %>
+                    <div class="mb-2">
+                      <small class="text-muted">Format:</small>
+                      <span class="ms-2"><%= config['format'].titleize %></span>
+                    </div>
+                  <% end %>
+                </div>
+              </div>
+            <% end %>
+          <% end %>
         </div>
       </div>
       <div class="modal-footer">
-        <%= link_to "Bearbeiten", edit_widget_path(@widget), 
-            class: "btn btn-primary",
-            data: { turbo_frame: "widget_modal" } %>
-        <%= button_to "Löschen", @widget, method: :delete, 
-            class: "btn btn-danger", 
-            data: { turbo_confirm: "Möchten Sie dieses Widget wirklich löschen?" } %>
-        <%= link_to "Schließen", widgets_path, class: "btn btn-secondary", data: { turbo_frame: "_top" } %>
+        <%= button_tag type: "button", class: "btn btn-success me-auto", onclick: "alert('Dashboard-Auswahl wird noch implementiert')" do %>
+          <i class="bi bi-plus-circle me-1"></i>
+          Hinzufügen
+        <% end %>
+        <% if @widget.can_edit?(current_user) %>
+          <%= link_to "Bearbeiten", edit_widget_path(@widget), 
+              class: "btn btn-primary",
+              data: { turbo_frame: "widget_modal" } %>
+        <% end %>
+        <button type="button" class="btn btn-secondary" onclick="document.getElementById('widget_modal').innerHTML = ''">Schließen</button>
       </div>
     </div>
   </div>
 </div>
 <div class="modal-backdrop fade show"></div>
+<% end %>

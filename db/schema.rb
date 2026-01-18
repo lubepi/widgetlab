@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_01_12_132000) do
+ActiveRecord::Schema[8.1].define(version: 2026_01_16_134707) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -142,6 +142,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_12_132000) do
     t.string "name"
     t.string "time_range_unit", default: "hours", comment: "Einheit: minutes, hours, days, weeks, months"
     t.integer "time_range_value", default: 24, comment: "Wert für den Zeitbereich (z.B. 24 für 24 Stunden)"
+    t.string "unit"
     t.datetime "updated_at", null: false
     t.integer "widget_type"
   end

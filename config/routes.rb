@@ -17,11 +17,17 @@ Rails.application.routes.draw do
       post :stop_subscription
       get :whitelist, to: "data_source_whitelists#edit"
       patch :whitelist, to: "data_source_whitelists#update"
+      get :latest_response
     end
   end
   resources :dashboard_widgets
   resources :user_widget_roles
-  resources :widgets
+  resources :widgets do
+    member do
+      get :access, to: "user_widget_roles#edit"
+      patch :access, to: "user_widget_roles#update"
+    end
+  end
   resources :user_group_roles
   resources :user_groups, only: %i[index show new create edit update destroy]
   resources :dashboard_user_roles

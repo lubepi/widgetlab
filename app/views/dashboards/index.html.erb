@@ -1,65 +1,66 @@
 <% content_for :title, "Dashboards" %>
 
-<div class="d-flex justify-content-between align-items-center mb-4">
-  <h1 class="mb-0">
-    <i class="bi bi-speedometer2 me-2"></i>
-    Dashboards
-  </h1>
-  <%= link_to new_dashboard_path, class: "btn btn-primary" do %>
-    <i class="bi bi-plus-lg me-1"></i>
-    Neues Dashboard
+<div class="container-fluid py-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="mb-0">
+      <i class="bi bi-speedometer2 me-2"></i>
+      Dashboards
+    </h1>
+    <%= link_to new_dashboard_path, class: "btn btn-primary" do %>
+      <i class="bi bi-plus-circle"></i> Neues Dashboard
+    <% end %>
+  </div>
+
+  <% if @owned_dashboards.empty? && @shared_dashboards.empty? && @public_dashboards.empty? %>
+    <div class="card">
+      <div class="card-body text-center py-5">
+        <i class="bi bi-speedometer2 display-1 text-muted mb-3"></i>
+        <h4 class="text-muted">Noch keine Dashboards vorhanden</h4>
+        <p class="text-muted mb-4">Erstelle dein erstes Dashboard, um loszulegen.</p>
+        <%= link_to new_dashboard_path, class: "btn btn-primary" do %>
+          <i class="bi bi-plus-lg me-1"></i>
+          Dashboard erstellen
+        <% end %>
+      </div>
+    </div>
+  <% else %>
+    <%# Meine Dashboards (Owner) %>
+    <% unless @owned_dashboards.empty? %>
+      <h5 class="mb-3">
+        <i class="bi bi-person-fill me-2"></i>
+        Meine Dashboards
+      </h5>
+      <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mb-5">
+        <% @owned_dashboards.each do |dashboard| %>
+          <%= render partial: "dashboards/dashboard_card", locals: { dashboard: dashboard, role: "owner" } %>
+        <% end %>
+      </div>
+    <% end %>
+
+    <%# Mit mir geteilt %>
+    <% unless @shared_dashboards.empty? %>
+      <h5 class="mb-3">
+        <i class="bi bi-people-fill me-2"></i>
+        Mit mir geteilt
+      </h5>
+      <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mb-5">
+        <% @shared_dashboards.each do |dashboard| %>
+          <%= render partial: "dashboards/dashboard_card", locals: { dashboard: dashboard, role: dashboard.role_for(current_user) } %>
+        <% end %>
+      </div>
+    <% end %>
+
+    <%# Öffentliche Dashboards %>
+    <% unless @public_dashboards.empty? %>
+      <h5 class="mb-3">
+        <i class="bi bi-globe me-2"></i>
+        Öffentliche Dashboards
+      </h5>
+      <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        <% @public_dashboards.each do |dashboard| %>
+          <%= render partial: "dashboards/dashboard_card", locals: { dashboard: dashboard, role: nil } %>
+        <% end %>
+      </div>
+    <% end %>
   <% end %>
 </div>
-
-<% if @owned_dashboards.empty? && @shared_dashboards.empty? && @public_dashboards.empty? %>
-  <div class="card">
-    <div class="card-body text-center py-5">
-      <i class="bi bi-speedometer2 display-1 text-muted mb-3"></i>
-      <h4 class="text-muted">Noch keine Dashboards vorhanden</h4>
-      <p class="text-muted mb-4">Erstelle dein erstes Dashboard, um loszulegen.</p>
-      <%= link_to new_dashboard_path, class: "btn btn-primary" do %>
-        <i class="bi bi-plus-lg me-1"></i>
-        Dashboard erstellen
-      <% end %>
-    </div>
-  </div>
-<% else %>
-  <%# Meine Dashboards (Owner) %>
-  <% unless @owned_dashboards.empty? %>
-    <h5 class="mb-3">
-      <i class="bi bi-person-fill me-2"></i>
-      Meine Dashboards
-    </h5>
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mb-5">
-      <% @owned_dashboards.each do |dashboard| %>
-        <%= render partial: "dashboards/dashboard_card", locals: { dashboard: dashboard, role: "owner" } %>
-      <% end %>
-    </div>
-  <% end %>
-
-  <%# Mit mir geteilt %>
-  <% unless @shared_dashboards.empty? %>
-    <h5 class="mb-3">
-      <i class="bi bi-people-fill me-2"></i>
-      Mit mir geteilt
-    </h5>
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mb-5">
-      <% @shared_dashboards.each do |dashboard| %>
-        <%= render partial: "dashboards/dashboard_card", locals: { dashboard: dashboard, role: dashboard.role_for(current_user) } %>
-      <% end %>
-    </div>
-  <% end %>
-
-  <%# Öffentliche Dashboards %>
-  <% unless @public_dashboards.empty? %>
-    <h5 class="mb-3">
-      <i class="bi bi-globe me-2"></i>
-      Öffentliche Dashboards
-    </h5>
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-      <% @public_dashboards.each do |dashboard| %>
-        <%= render partial: "dashboards/dashboard_card", locals: { dashboard: dashboard, role: nil } %>
-      <% end %>
-    </div>
-  <% end %>
-<% end %>

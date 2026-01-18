@@ -1,20 +1,24 @@
-<div class="modal fade show" id="editWidgetModal" tabindex="-1" aria-labelledby="editWidgetModalLabel" style="display: block;" aria-modal="true" role="dialog">
-  <div class="modal-dialog modal-xl modal-dialog-scrollable">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="editWidgetModalLabel">Widget bearbeiten</h5>
-        <%= link_to "", widgets_path, class: "btn-close", aria: { label: "Close" }, data: { turbo_frame: "_top" } %>
-      </div>
-      <div class="modal-body">
-        <%= form_with(model: @widget, id: "edit_widget_form_#{@widget.id}") do |form| %>
-          <%= render "widgets/form_fields", form: form, widget: @widget %>
-        <% end %>
-      </div>
-      <div class="modal-footer">
-        <%= link_to "Abbrechen", widgets_path, class: "btn btn-secondary", data: { turbo_frame: "_top" } %>
-        <button type="submit" class="btn btn-primary" form="<%= "edit_widget_form_#{@widget.id}" %>">Speichern</button>
+<%= turbo_frame_tag "widget_modal" do %>
+  <div class="modal fade show" id="editWidgetModal" tabindex="-1" aria-labelledby="editWidgetModalLabel" style="display: block;" aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editWidgetModalLabel">Widget bearbeiten</h5>
+        </div>
+        <div class="modal-body">
+          <%= form_with(model: @widget, id: "edit_widget_form_#{@widget.id}") do |form| %>
+            <%= render "widgets/form_fields", form: form, widget: @widget %>
+          <% end %>
+        </div>
+        <div class="modal-footer">
+          <%= link_to "Abbrechen", widget_path(@widget), class: "btn btn-secondary", data: { turbo_frame: "widget_modal" } %>
+          <%= button_to "Löschen", @widget, method: :delete, 
+              class: "btn btn-danger me-auto", 
+              data: { turbo_confirm: "Möchten Sie dieses Widget wirklich löschen?" } %>
+          <button type="submit" class="btn btn-primary" form="<%= "edit_widget_form_#{@widget.id}" %>">Speichern</button>
+        </div>
       </div>
     </div>
   </div>
-</div>
-<div class="modal-backdrop fade show"></div>
+  <div class="modal-backdrop fade show"></div>
+<% end %>

@@ -74,6 +74,10 @@ module WidgetsHelper
         group_by: (widget.group_by || 'hour').to_sym,
         aggregate: (widget.aggregate_function || 'avg').to_sym
       ) || []
+      
+      # Begrenze die Anzahl der Datenpunkte basierend auf data_limit
+      limit = widget.data_limit || 100
+      data_points = data_points.last(limit) if data_points.size > limit
     rescue => e
       Rails.logger.error "Error with aggregated_data: #{e.message}"
       data_points = []

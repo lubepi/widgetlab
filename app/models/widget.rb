@@ -9,16 +9,87 @@ class Widget < ApplicationRecord
   has_one :widget_data_source_transformer, dependent: :destroy
   has_one :data_source, through: :widget_data_source_transformer
 
-  enum :widget_type, { value: 0, line: 1, bar: 2, column: 3, pie: 4 }
+  enum :widget_type, { value: 0, line: 1, bar: 2, column: 3 }
 
   TIME_RANGE_UNITS = %w[minutes hours days weeks months].freeze
-  GROUP_BY_OPTIONS = %w[minute hour day week].freeze
+  GROUP_BY_OPTIONS = %w[minute hour day week month].freeze
   AGGREGATE_FUNCTIONS = %w[avg min max sum count].freeze
 
   validates :name, presence: true
+  validates :widget_type, presence: true
   validates :time_range_unit, inclusion: { in: TIME_RANGE_UNITS }, allow_nil: true
   validates :group_by, inclusion: { in: GROUP_BY_OPTIONS }, allow_nil: true
   validates :aggregate_function, inclusion: { in: AGGREGATE_FUNCTIONS }, allow_nil: true
+
+  # Widgets die dem User gehören (owner)
+  scope :owned_by, ->(user) {
+    joins(:user_widget_roles)
+      .where(user_widget_roles: { user_id: user.id, role: :owner })
+  }
+
+  # Widgets die mit dem User geteilt wurden (viewer, aber nicht owner)
+  scope :shared_with, ->(user) {
+    joins(:user_widget_roles)
+      .where(user_widget_roles: { user_id: user.id, role: :viewer })
+  }
+
+  # Alle Widgets auf die der User Zugriff hat
+  scope :accessible_by, ->(user) {
+    left_outer_joins(:user_widget_roles)
+      .where("widgets.is_public = TRUE OR user_widget_roles.user_id = ?", user.id)
+      .distinct
+  }
+
+  # Berechtigungen
+  def owner?(user)
+    return false if user.nil?
+    user_widget_roles.exists?(user: user, role: :owner)
+  end
+
+  def viewer?(user)
+    return false if user.nil?
+    user_widget_roles.exists?(user: user, role: :viewer)
+  end
+
+  def can_view?(user)
+    return true if is_public
+    return false if user.nil?
+    owner?(user) || viewer?(user)
+  end
+
+  def can_edit?(user)
+    return false if user.nil?
+    owner?(user)
+  end
+
+  def has_data_source_access?(user)
+    return false if data_source.nil?
+    return true if data_source.is_public
+    return false if user.nil?
+    
+    group_ids = user.user_groups.pluck(:id)
+    data_source.data_source_whitelists.exists?(
+      whitelistable_type: 'User', whitelistable_id: user.id
+    ) || data_source.data_source_whitelists.exists?(
+      whitelistable_type: 'UserGroup', whitelistable_id: group_ids
+    )
+  end
+
+  def add_owner(user)
+    user_widget_roles.find_or_create_by!(user: user) do |role|
+      role.role = :owner
+    end
+  end
+
+  def add_viewer(user)
+    user_widget_roles.find_or_create_by!(user: user) do |role|
+      role.role = :viewer
+    end
+  end
+
+  def owner
+    user_widget_roles.find_by(role: :owner)&.user
+  end
 
   # Berechnet die Start-Zeit basierend auf time_range_value und time_range_unit
   def time_range_start
