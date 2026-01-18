@@ -4,7 +4,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="widgetShowModalLabel"><%= @widget.name %></h5>
-          <button type="button" class="btn-close" onclick="document.getElementById('widget_modal').innerHTML = ''"></button>
+          <button type="button" class="btn-close" onclick="document.getElementById('widget_modal').innerHTML = ''; document.querySelectorAll('.modal-backdrop').forEach(b => b.remove()); document.body.classList.remove('modal-open'); document.body.style.overflow = ''; document.body.style.paddingRight = '';"></button>
         </div>
       <div class="modal-body">
         <% if @widget.description.present? %>
@@ -194,7 +194,7 @@
               class: "btn btn-primary",
               data: { turbo_frame: "widget_modal" } %>
         <% end %>
-        <button type="button" class="btn btn-secondary" onclick="document.getElementById('widget_modal').innerHTML = ''">Schließen</button>
+        <button type="button" class="btn btn-secondary" onclick="document.getElementById('widget_modal').innerHTML = ''; document.querySelectorAll('.modal-backdrop').forEach(b => b.remove()); document.body.classList.remove('modal-open'); document.body.style.overflow = ''; document.body.style.paddingRight = '';">Schließen</button>
       </div>
     </div>
   </div>

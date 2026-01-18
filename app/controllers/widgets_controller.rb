@@ -15,16 +15,14 @@ class WidgetsController < ApplicationController
 
   # GET /widgets/1 or /widgets/1.json
   def show
-    respond_to do |format|
-      format.html
-      format.turbo_stream
-    end
+    render partial: "show_modal", layout: false
   end
 
   # GET /widgets/new
   def new
     @widget = Widget.new
     @data_sources = DataSource.accessible_for(current_user)
+    render partial: "new_modal", layout: false
   end
 
   # GET /widgets/1/edit
@@ -71,10 +69,11 @@ class WidgetsController < ApplicationController
         end
 
         format.turbo_stream do
-          @widgets = Widget.left_joins(:user_widget_roles)
-                           .where("widgets.is_public = ? OR user_widget_roles.user_id = ?", true, current_user.id)
-                           .distinct
-                           .order(created_at: :desc)
+          @owned_widgets = Widget.owned_by(current_user).order(created_at: :desc)
+          @shared_widgets = Widget.shared_with(current_user).order(created_at: :desc)
+          @public_widgets = Widget.where(is_public: true)
+                                   .where.not(id: (@owned_widgets.pluck(:id) + @shared_widgets.pluck(:id)))
+                                   .order(created_at: :desc)
           render :crud_success
         end
         format.html { redirect_to @widget, notice: "Widget wurde erfolgreich erstellt." }
@@ -168,10 +167,6 @@ class WidgetsController < ApplicationController
         @public_widgets = Widget.where(is_public: true)
                                  .where.not(id: (@owned_widgets.pluck(:id) + @shared_widgets.pluck(:id)))
                                  .order(created_at: :desc)
-        render turbo_stream: [
-          turbo_stream.update("widgets_list") { render partial: "widgets/index_content" },
-          turbo_stream.replace("widget_modal", "")
-        ]
       end
       format.html { redirect_to widgets_path, notice: "Widget was successfully destroyed.", status: :see_other }
       format.json { head :no_content }

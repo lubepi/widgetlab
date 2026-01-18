@@ -1,7 +1,6 @@
-<%= turbo_frame_tag "widgets_grid" do %>
-  <div id="widgets" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); gap: 1.5rem;">
-    <% widgets.each do |widget| %>
-      <%= link_to widget_path(widget), class: "text-decoration-none", data: { turbo_frame: "widget_modal" } do %>
+<div id="widgets" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); gap: 1.5rem;">
+  <% widgets.each do |widget| %>
+    <%= link_to widget_path(widget), class: "text-decoration-none", data: { turbo_frame: "widget_modal" } do %>
         <div class="card h-100 position-relative" style="cursor: pointer; transition: transform 0.15s, box-shadow 0.15s;" 
              onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.15)';" 
              onmouseout="this.style.transform='none'; this.style.boxShadow='none';">
@@ -66,4 +65,3 @@
       <% end %>
     <% end %>
   </div>
-<% end %>

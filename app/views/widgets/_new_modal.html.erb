@@ -1,0 +1,35 @@
+<%= turbo_frame_tag "widget_modal" do %>
+  <div class="modal fade show" tabindex="-1" style="display: block;">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Neues Widget erstellen</h5>
+          <button type="button" class="btn-close" aria-label="Close"
+                  onclick="document.getElementById('widget_modal').innerHTML = ''; 
+                          document.querySelectorAll('.modal-backdrop').forEach(b => b.remove()); 
+                          document.body.classList.remove('modal-open'); 
+                          document.body.style.overflow = ''; 
+                          document.body.style.paddingRight = '';"></button>
+        </div>
+        <div class="modal-body">
+          <%= form_with(model: @widget, id: "new_widget_form") do |form| %>
+            <%= render "widgets/form_fields", form: form, widget: @widget %>
+          <% end %>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary"
+                  onclick="document.getElementById('widget_modal').innerHTML = ''; 
+                          document.querySelectorAll('.modal-backdrop').forEach(b => b.remove()); 
+                          document.body.classList.remove('modal-open'); 
+                          document.body.style.overflow = ''; 
+                          document.body.style.paddingRight = '';">
+            Abbrechen
+          </button>
+          <button type="submit" class="btn btn-primary" form="new_widget_form">Erstellen</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="modal-backdrop fade show"></div>
+<% end %>
