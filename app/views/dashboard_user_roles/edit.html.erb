@@ -5,25 +5,25 @@
         <div class="modal-header">
           <h5 class="modal-title">
             <i class="bi bi-shield-lock me-2"></i>
-            Zugriffsrechte verwalten
+            <%= t('dashboard_user_roles.edit.title') %>
           </h5>
-          <%= link_to "", @dashboard, class: "btn-close", aria: { label: "Close" }, data: { turbo_frame: "_top" } %>
+          <%= link_to "", @dashboard, class: "btn-close", aria: { label: t('common.buttons.close') }, data: { turbo_frame: "_top" } %>
         </div>
         <div class="modal-body">
           <%= form_with(url: access_dashboard_path(@dashboard), method: :patch, id: "dashboard_access_form", data: { turbo_frame: "_top" }) do %>
             <div class="mb-3">
               <div class="form-text">
-                Dashboard: <strong><%= @dashboard.name %></strong>
+                <%= t('dashboard_user_roles.edit.dashboard_label') %> <strong><%= @dashboard.name %></strong>
               </div>
             </div>
 
             <div class="mb-3">
               <div class="d-flex justify-content-between align-items-center mb-2">
-                <label class="form-label mb-0">Benutzer & Rollen</label>
+                <label class="form-label mb-0"><%= t('dashboard_user_roles.edit.users_label') %></label>
                 <div class="small text-muted">
-                  <span class="badge bg-secondary me-1">Viewer</span> Nur anschauen
-                  <span class="badge bg-primary mx-1">Editor</span> Bearbeiten
-                  <span class="badge bg-warning text-dark mx-1">Owner</span> Vollzugriff
+                  <span class="badge bg-secondary me-1"><%= t('dashboard_user_roles.edit.viewer_badge') %></span> <%= t('dashboard_user_roles.edit.viewer_desc') %>
+                  <span class="badge bg-primary mx-1"><%= t('dashboard_user_roles.edit.editor_badge') %></span> <%= t('dashboard_user_roles.edit.editor_desc') %>
+                  <span class="badge bg-warning text-dark mx-1"><%= t('dashboard_user_roles.edit.owner_badge') %></span> <%= t('dashboard_user_roles.edit.owner_desc') %>
                 </div>
               </div>
               
@@ -31,7 +31,7 @@
                 <div class="card-body">
                   <div class="row g-2 align-items-center mb-2">
                     <div class="col-sm">
-                      <input type="search" class="form-control" placeholder="Suchen (E-Mail oder Name)…" data-member-picker-target="query" data-action="input->member-picker#filter">
+                      <input type="search" class="form-control" placeholder="<%= t('dashboard_user_roles.edit.search_users_placeholder') %>" data-member-picker-target="query" data-action="input->member-picker#filter">
                     </div>
                   </div>
 
@@ -52,10 +52,10 @@
                         </div>
                         <div style="min-width: 150px;">
                           <select name="access[user_roles][<%= user.id %>]" class="form-select form-select-sm" data-member-picker-target="checkbox">
-                            <option value="">Kein Zugriff</option>
+                            <option value=""><%= t('dashboard_user_roles.edit.no_access') %></option>
                             <% @roles.each do |role| %>
                               <option value="<%= role %>" <%= 'selected' if current_role == role %>>
-                                <%= role.capitalize %>
+                                <%= t("dashboards.roles.#{role}", default: role.capitalize) %>
                               </option>
                             <% end %>
                           </select>
@@ -69,11 +69,11 @@
 
             <div class="mb-3">
               <div class="d-flex justify-content-between align-items-center mb-2">
-                <label class="form-label mb-0">Gruppen & Rollen</label>
+                <label class="form-label mb-0"><%= t('dashboard_user_roles.edit.groups_label') %></label>
                 <div class="small text-muted">
-                  <span class="badge bg-secondary me-1">Viewer</span> Nur anschauen
-                  <span class="badge bg-primary mx-1">Editor</span> Bearbeiten
-                  <span class="badge bg-warning text-dark mx-1">Owner</span> Vollzugriff
+                  <span class="badge bg-secondary me-1"><%= t('dashboard_user_roles.edit.viewer_badge') %></span> <%= t('dashboard_user_roles.edit.viewer_desc') %>
+                  <span class="badge bg-primary mx-1"><%= t('dashboard_user_roles.edit.editor_badge') %></span> <%= t('dashboard_user_roles.edit.editor_desc') %>
+                  <span class="badge bg-warning text-dark mx-1"><%= t('dashboard_user_roles.edit.owner_badge') %></span> <%= t('dashboard_user_roles.edit.owner_desc') %>
                 </div>
               </div>
               
@@ -81,7 +81,7 @@
                 <div class="card-body">
                   <div class="row g-2 align-items-center mb-2">
                     <div class="col-sm">
-                      <input type="search" class="form-control" placeholder="Suchen (Gruppenname)…" data-member-picker-target="query" data-action="input->member-picker#filter">
+                      <input type="search" class="form-control" placeholder="<%= t('dashboard_user_roles.edit.search_groups_placeholder') %>" data-member-picker-target="query" data-action="input->member-picker#filter">
                     </div>
                   </div>
 
@@ -97,15 +97,15 @@
                           </div>
                           <div>
                             <div class="fw-medium"><%= group.name %></div>
-                            <small class="text-muted"><%= group.members.count %> Mitglied<%= group.members.count == 1 ? '' : 'er' %></small>
+                            <small class="text-muted"><%= t('dashboard_user_roles.edit.member', count: group.members.count) %></small>
                           </div>
                         </div>
                         <div style="min-width: 150px;">
                           <select name="access[group_roles][<%= group.id %>]" class="form-select form-select-sm" data-member-picker-target="checkbox">
-                            <option value="">Kein Zugriff</option>
+                            <option value=""><%= t('dashboard_user_roles.edit.no_access') %></option>
                             <% @roles.each do |role| %>
                               <option value="<%= role %>" <%= 'selected' if current_role == role %>>
-                                <%= role.capitalize %>
+                                <%= t("dashboards.roles.#{role}", default: role.capitalize) %>
                               </option>
                             <% end %>
                           </select>
@@ -119,17 +119,15 @@
 
             <div class="alert alert-info small">
               <i class="bi bi-info-circle me-1"></i>
-              <strong>Viewer:</strong> Kann das Dashboard anschauen |
-              <strong>Editor:</strong> Kann Widgets bearbeiten |
-              <strong>Owner:</strong> Vollzugriff inkl. Löschen und Zugriffsrechte verwalten
+              <%= t('dashboard_user_roles.edit.info') %>
             </div>
           <% end %>
         </div>
         <div class="modal-footer">
-          <%= link_to "Abbrechen", @dashboard, class: "btn btn-secondary", data: { turbo_frame: "_top" } %>
+          <%= link_to t('common.buttons.cancel'), @dashboard, class: "btn btn-secondary", data: { turbo_frame: "_top" } %>
           <button type="submit" class="btn btn-primary" form="dashboard_access_form">
             <i class="bi bi-check-lg me-1"></i>
-            Speichern
+            <%= t('common.buttons.save') %>
           </button>
         </div>
       </div>

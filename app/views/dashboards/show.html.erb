@@ -7,7 +7,9 @@
      data-controller="dashboard-grid"
      data-dashboard-grid-columns-value="<%= @dashboard.columns || 12 %>"
      data-dashboard-grid-edit-mode-value="false"
-     data-dashboard-grid-update-url-value="<%= update_positions_dashboard_dashboard_widgets_path(@dashboard) %>">
+     data-dashboard-grid-update-url-value="<%= update_positions_dashboard_dashboard_widgets_path(@dashboard) %>"
+     data-view-text="<%= t('dashboards.show.edit_mode.view') %>"
+     data-edit-text="<%= t('dashboards.show.edit_mode.edit') %>">
   
   <div id="flash-messages"></div>
   

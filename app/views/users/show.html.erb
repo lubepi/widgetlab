@@ -3,48 +3,48 @@
     <div class="modal-dialog modal-lg modal-dialog-scrollable">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="showUserModalLabel">Benutzer</h5>
-          <%= link_to "", users_path, class: "btn-close", aria: { label: "Close" }, data: { turbo_frame: "_top" } %>
+          <h5 class="modal-title" id="showUserModalLabel"><%= t('users.show.title') %></h5>
+          <%= link_to "", users_path, class: "btn-close", aria: { label: t('common.buttons.close') }, data: { turbo_frame: "_top" } %>
         </div>
         <div class="modal-body">
           <dl class="row mb-0">
-            <dt class="col-sm-4">Vorname</dt>
+            <dt class="col-sm-4"><%= t('users.show.first_name') %></dt>
             <dd class="col-sm-8"><%= @user.first_name %></dd>
 
-            <dt class="col-sm-4">Nachname</dt>
+            <dt class="col-sm-4"><%= t('users.show.last_name') %></dt>
             <dd class="col-sm-8"><%= @user.last_name %></dd>
 
-            <dt class="col-sm-4">Email</dt>
+            <dt class="col-sm-4"><%= t('users.show.email') %></dt>
             <dd class="col-sm-8"><%= @user.email %></dd>
 
-            <dt class="col-sm-4">Sub</dt>
+            <dt class="col-sm-4"><%= t('users.show.sub') %></dt>
             <dd class="col-sm-8"><%= @user.sub %></dd>
 
-            <dt class="col-sm-4">Gruppen</dt>
+            <dt class="col-sm-4"><%= t('users.show.groups') %></dt>
             <dd class="col-sm-8">
               <% if @user.user_groups.any? %>
                 <% @user.user_groups.order(:name).each do |group| %>
                   <%= link_to group.name, user_group_path(group), class: "badge text-bg-secondary text-decoration-none me-1", data: { turbo_frame: "_top" } %>
                 <% end %>
               <% else %>
-                <span class="text-muted">Keine</span>
+                <span class="text-muted"><%= t('common.labels.none') %></span>
               <% end %>
             </dd>
 
-            <dt class="col-sm-4">Datenquellen</dt>
+            <dt class="col-sm-4"><%= t('users.show.data_sources') %></dt>
             <dd class="col-sm-8">
               <% if @accessible_data_sources.any? %>
                 <% @accessible_data_sources.each do |data_source| %>
                   <span class="badge text-bg-light border me-1"><%= data_source.name %></span>
                 <% end %>
               <% else %>
-                <span class="text-muted">Keine</span>
+                <span class="text-muted"><%= t('common.labels.none') %></span>
               <% end %>
             </dd>
           </dl>
         </div>
         <div class="modal-footer">
-          <%= link_to "Schließen", users_path, class: "btn btn-secondary", data: { turbo_frame: "_top" } %>
+          <%= link_to t('common.buttons.close'), users_path, class: "btn btn-secondary", data: { turbo_frame: "_top" } %>
         </div>
       </div>
     </div>
