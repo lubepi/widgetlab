@@ -31,7 +31,7 @@ class DashboardsController < ApplicationController
       if @dashboard.save
         # Ersteller wird automatisch Owner
         @dashboard.dashboard_user_roles.create!(user: current_user, role: :owner)
-        format.html { redirect_to @dashboard, notice: "Dashboard wurde erfolgreich erstellt." }
+        format.html { redirect_to @dashboard, notice: t('dashboards.flash.created') }
         format.json { render :show, status: :created, location: @dashboard }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -44,7 +44,7 @@ class DashboardsController < ApplicationController
   def update
     respond_to do |format|
       if @dashboard.update(dashboard_params)
-        format.html { redirect_to @dashboard, notice: "Dashboard was successfully updated.", status: :see_other }
+        format.html { redirect_to @dashboard, notice: t('dashboards.flash.updated'), status: :see_other }
         format.json { render :show, status: :ok, location: @dashboard }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -58,7 +58,7 @@ class DashboardsController < ApplicationController
     @dashboard.destroy!
 
     respond_to do |format|
-      format.html { redirect_to dashboards_path, notice: "Dashboard was successfully destroyed.", status: :see_other }
+      format.html { redirect_to dashboards_path, notice: t('dashboards.flash.destroyed'), status: :see_other }
       format.json { head :no_content }
     end
   end

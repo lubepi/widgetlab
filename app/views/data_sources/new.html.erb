@@ -1,11 +1,11 @@
-<% content_for :title, "New data source" %>
+<% content_for :title, t('data_sources.new.title') %>
 
-<h1>New data source</h1>
+<h1><%= t('data_sources.new.title') %></h1>
 
 <%= render "form", data_source: @data_source %>
 
 <br>
 
 <div>
-  <%= link_to "Back to data sources", data_sources_path %>
+  <%= link_to t('data_sources.new.back'), data_sources_path %>
 </div>

@@ -2,10 +2,10 @@
   <div class="card">
     <div class="card-body text-center py-5">
       <i class="bi bi-grid display-1 text-muted mb-3"></i>
-      <h4 class="text-muted">Noch keine Widgets vorhanden</h4>
-      <p class="text-muted mb-4">Erstelle dein erstes Widget, um loszulegen.</p>
+      <h4 class="text-muted"><%= t('widgets.index.empty_state.title') %></h4>
+      <p class="text-muted mb-4"><%= t('widgets.index.empty_state.description') %></p>
       <%= link_to new_widget_path, data: { turbo_frame: "widget_modal" }, class: "btn btn-primary" do %>
-        <i class="bi bi-plus-circle"></i> Widget erstellen
+        <i class="bi bi-plus-circle"></i> <%= t('widgets.index.empty_state.button') %>
       <% end %>
     </div>
   </div>
@@ -14,7 +14,7 @@
   <% unless @owned_widgets.empty? %>
     <h5 class="mb-3">
       <i class="bi bi-person-fill me-2"></i>
-      Meine Widgets
+      <%= t('widgets.index.sections.my_widgets') %>
     </h5>
     <%= render "widgets/widgets_grid", widgets: @owned_widgets %>
     <div class="mb-5"></div>
@@ -24,7 +24,7 @@
   <% unless @shared_widgets.empty? %>
     <h5 class="mb-3">
       <i class="bi bi-people-fill me-2"></i>
-      Mit mir geteilt
+      <%= t('widgets.index.sections.shared_with_me') %>
     </h5>
     <%= render "widgets/widgets_grid", widgets: @shared_widgets %>
     <div class="mb-5"></div>
@@ -34,7 +34,7 @@
   <% unless @public_widgets.empty? %>
     <h5 class="mb-3">
       <i class="bi bi-globe me-2"></i>
-      Öffentliche Widgets
+      <%= t('widgets.index.sections.public_widgets') %>
     </h5>
     <%= render "widgets/widgets_grid", widgets: @public_widgets %>
   <% end %>

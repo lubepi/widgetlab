@@ -10,7 +10,7 @@
         <div class="modal-header">
           <h5 class="modal-title">
             <i class="bi bi-speedometer2 me-2"></i>
-            "<%= @widget.name %>" zu Dashboard hinzufügen
+            <%= t('widgets.add_to_dashboard.title', widget: @widget.name) %>
           </h5>
           <%= link_to "", widget_path(@widget), class: "btn-close", aria: { label: "Close" }, data: { turbo_frame: "widget_modal" } %>
         </div>
@@ -18,17 +18,17 @@
           <% if @available_dashboards.empty? %>
             <div class="text-center py-5">
               <i class="bi bi-speedometer2 display-1 text-muted mb-3"></i>
-              <h4 class="text-muted">Keine Dashboards verfügbar</h4>
+              <h4 class="text-muted"><%= t('widgets.add_to_dashboard.empty_state.title') %></h4>
               <p class="text-muted mb-4">
-                Das Widget ist bereits in allen Ihren Dashboards vorhanden oder Sie haben noch keine Dashboards erstellt.
+                <%= t('widgets.add_to_dashboard.empty_state.description') %>
               </p>
               <%= link_to new_dashboard_path, class: "btn btn-primary", data: { turbo_frame: "widget_modal" } do %>
                 <i class="bi bi-plus-circle me-1"></i>
-                Neues Dashboard erstellen
+                <%= t('widgets.add_to_dashboard.empty_state.button') %>
               <% end %>
             </div>
           <% else %>
-            <p class="text-muted mb-4">Wähle ein Dashboard aus, zu dem das Widget hinzugefügt werden soll.</p>
+            <p class="text-muted mb-4"><%= t('widgets.add_to_dashboard.description') %></p>
             
             <div class="list-group">
               <% @available_dashboards.each do |dashboard| %>
@@ -44,9 +44,9 @@
                       <h6 class="mb-0"><%= dashboard.name %></h6>
                       <small class="text-muted">
                         <%= dashboard.widgets.count %> Widget<%= dashboard.widgets.count == 1 ? '' : 's' %> · 
-                        <%= dashboard.columns || 12 %> Spalten
+                        <%= dashboard.columns || 12 %> <%= t('common.labels.columns') %>
                         <% if dashboard.is_public %>
-                          · <span class="text-success"><i class="bi bi-globe"></i> Öffentlich</span>
+                          · <span class="text-success"><i class="bi bi-globe"></i> <%= t('common.badges.public') %></span>
                         <% end %>
                       </small>
                     </div>
@@ -66,7 +66,7 @@
         </div>
         <div class="modal-footer">
           <%= link_to widget_path(@widget), class: "btn btn-secondary", data: { turbo_frame: "widget_modal" } do %>
-            Zurück
+            <%= t('common.buttons.back') %>
           <% end %>
         </div>
       </div>

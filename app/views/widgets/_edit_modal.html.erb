@@ -3,7 +3,7 @@
     <div class="modal-dialog modal-xl modal-dialog-scrollable">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="editWidgetModalLabel">Widget bearbeiten</h5>
+          <h5 class="modal-title" id="editWidgetModalLabel"><%= t('widgets.edit.title') %></h5>
         </div>
         <div class="modal-body">
           <%= form_with(model: @widget, id: "edit_widget_form_#{@widget.id}") do |form| %>
@@ -11,11 +11,11 @@
           <% end %>
         </div>
         <div class="modal-footer">
-          <%= link_to "Abbrechen", widget_path(@widget), class: "btn btn-secondary", data: { turbo_frame: "widget_modal" } %>
-          <%= button_to "Löschen", @widget, method: :delete, 
+          <%= link_to t('common.buttons.cancel'), widget_path(@widget), class: "btn btn-secondary", data: { turbo_frame: "widget_modal" } %>
+          <%= button_to t('common.buttons.delete'), @widget, method: :delete, 
               class: "btn btn-danger me-auto", 
-              data: { turbo_confirm: "Möchten Sie dieses Widget wirklich löschen?" } %>
-          <button type="submit" class="btn btn-primary" form="<%= "edit_widget_form_#{@widget.id}" %>">Speichern</button>
+              data: { turbo_confirm: t('widgets.edit.confirm_delete') } %>
+          <button type="submit" class="btn btn-primary" form="<%= "edit_widget_form_#{@widget.id}" %>"><%= t('common.buttons.save') %></button>
         </div>
       </div>
     </div>

@@ -2,9 +2,9 @@
   <table class="table table-hover">
     <thead>
       <tr>
-        <th>Name</th>
-        <th>Mitglieder</th>
-        <th class="text-end">Aktionen</th>
+        <th><%= t('user_groups.table.headers.name') %></th>
+        <th><%= t('user_groups.table.headers.members') %></th>
+        <th class="text-end"><%= t('user_groups.table.headers.actions') %></th>
       </tr>
     </thead>
     <tbody>
@@ -17,7 +17,7 @@
               <div class="btn-group" role="group">
                 <%= link_to edit_user_group_path(user_group),
                     class: "btn btn-sm btn-outline-secondary",
-                    title: "Bearbeiten",
+                    title: t('user_groups.table.actions.edit'),
                     data: {
                       turbo_frame: "modal",
                       turbo_method: :get
@@ -26,11 +26,11 @@
                 <% end %>
                 <button type="button"
                         class="btn btn-sm btn-outline-danger"
-                        title="Löschen"
+                        title="<%= t('user_groups.table.actions.delete') %>"
                         data-action="confirm-delete#open"
                         data-delete-url="<%= user_group_path(user_group) %>"
-                        data-delete-title="Gruppe löschen"
-                        data-delete-message="Soll die Gruppe '<%= user_group.name %>' wirklich gelöscht werden?">
+                        data-delete-title="<%= t('user_groups.table.confirm_delete.title') %>"
+                        data-delete-message="<%= t('user_groups.table.confirm_delete.message', name: user_group.name) %>">
                   <i class="bi bi-trash"></i>
                 </button>
               </div>
@@ -40,7 +40,7 @@
       <% else %>
         <tr>
           <td colspan="3" class="text-center text-muted py-4">
-            Keine Gruppen vorhanden. Erstellen Sie eine neue Gruppe.
+            <%= t('user_groups.table.empty_state') %>
           </td>
         </tr>
       <% end %>

@@ -2,10 +2,10 @@
   <table class="table table-hover">
     <thead>
       <tr>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Sub</th>
-        <th class="text-end">Aktionen</th>
+        <th><%= t('users.table.headers.name') %></th>
+        <th><%= t('users.table.headers.email') %></th>
+        <th><%= t('users.table.headers.sub') %></th>
+        <th class="text-end"><%= t('users.table.headers.actions') %></th>
       </tr>
     </thead>
     <tbody>
@@ -19,7 +19,7 @@
               <div class="btn-group" role="group">
                 <%= link_to user_path(user),
                     class: "btn btn-sm btn-outline-primary",
-                    title: "Details anzeigen",
+                    title: t('users.table.actions.show'),
                     data: {
                       turbo_frame: "modal",
                       turbo_method: :get
@@ -33,7 +33,7 @@
       <% else %>
         <tr>
           <td colspan="4" class="text-center text-muted py-4">
-            Keine Benutzer vorhanden.
+            <%= t('users.table.empty_state') %>
           </td>
         </tr>
       <% end %>

@@ -1,10 +1,10 @@
-<% content_for :title, "Neues Dashboard" %>
+<% content_for :title, t('dashboards.new.title') %>
 
 <div class="row justify-content-center">
   <div class="col-lg-6 col-md-8">
     <div class="mb-4">
       <%= link_to dashboards_path, class: "btn btn-outline-secondary btn-sm" do %>
-        <i class="bi bi-arrow-left me-1"></i>Zurück
+        <i class="bi bi-arrow-left me-1"></i><%= t('dashboards.new.back') %>
       <% end %>
     </div>
 
@@ -12,7 +12,7 @@
       <div class="card-header">
         <h4 class="mb-0">
           <i class="bi bi-plus-circle me-2"></i>
-          Neues Dashboard erstellen
+          <%= t('dashboards.new.heading') %>
         </h4>
       </div>
       <div class="card-body">

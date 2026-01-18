@@ -76,7 +76,7 @@ class WidgetsController < ApplicationController
                                    .order(created_at: :desc)
           render :crud_success
         end
-        format.html { redirect_to @widget, notice: "Widget wurde erfolgreich erstellt." }
+        format.html { redirect_to @widget, notice: t('widgets.flash.created') }
         format.json { render :show, status: :created, location: @widget }
       else
         @data_sources = DataSource.all
@@ -157,7 +157,7 @@ class WidgetsController < ApplicationController
                                    .order(created_at: :desc)
           render :crud_success
         end
-        format.html { redirect_to @widget, notice: "Widget wurde erfolgreich aktualisiert.", status: :see_other }
+        format.html { redirect_to @widget, notice: t('widgets.flash.updated'), status: :see_other }
         format.json { render :show, status: :ok, location: @widget }
       else
         @data_sources = DataSource.all
@@ -179,7 +179,7 @@ class WidgetsController < ApplicationController
                                  .where.not(id: (@owned_widgets.pluck(:id) + @shared_widgets.pluck(:id)))
                                  .order(created_at: :desc)
       end
-      format.html { redirect_to widgets_path, notice: "Widget was successfully destroyed.", status: :see_other }
+      format.html { redirect_to widgets_path, notice: t('widgets.flash.destroyed'), status: :see_other }
       format.json { head :no_content }
     end
   end
@@ -198,7 +198,7 @@ class WidgetsController < ApplicationController
     
     unless dashboard.can_edit?(current_user)
       respond_to do |format|
-        format.html { redirect_to widgets_path, alert: "Sie haben keine Berechtigung, Widgets zu diesem Dashboard hinzuzufügen." }
+        format.html { redirect_to widgets_path, alert: t('widgets.flash.no_permission_add') }
         format.json { render json: { error: "Unauthorized" }, status: :forbidden }
       end
       return
@@ -216,8 +216,8 @@ class WidgetsController < ApplicationController
     )
 
     respond_to do |format|
-      format.html { redirect_to dashboard_path(dashboard), notice: "Widget wurde zum Dashboard hinzugefügt." }
-      format.turbo_stream { redirect_to dashboard_path(dashboard), notice: "Widget wurde zum Dashboard hinzugefügt." }
+      format.html { redirect_to dashboard_path(dashboard), notice: t('widgets.flash.added_to_dashboard') }
+      format.turbo_stream { redirect_to dashboard_path(dashboard), notice: t('widgets.flash.added_to_dashboard') }
       format.json { render json: dashboard_widget, status: :created }
     end
   end
@@ -230,7 +230,7 @@ class WidgetsController < ApplicationController
 
     def authorize_owner!
       unless @widget.can_edit?(current_user)
-        redirect_to widgets_path, alert: "Sie haben keine Berechtigung, dieses Widget zu bearbeiten."
+        redirect_to widgets_path, alert: t('widgets.flash.no_permission_edit')
       end
     end
 

@@ -40,7 +40,7 @@ class UserGroupsController < ApplicationController
           @user_groups = UserGroup.all
           render :crud_success
         end
-        format.html { redirect_to user_groups_path, notice: "Gruppe wurde erfolgreich erstellt." }
+        format.html { redirect_to user_groups_path, notice: t('user_groups.flash.created') }
         format.json { render :show, status: :created, location: @user_group }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -60,7 +60,7 @@ class UserGroupsController < ApplicationController
           @user_groups = UserGroup.all
           render :crud_success
         end
-        format.html { redirect_to user_groups_path, notice: "Gruppe wurde erfolgreich aktualisiert.", status: :see_other }
+        format.html { redirect_to user_groups_path, notice: t('user_groups.flash.updated'), status: :see_other }
         format.json { render :show, status: :ok, location: @user_group }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -75,7 +75,7 @@ class UserGroupsController < ApplicationController
     @user_group.destroy!
 
     respond_to do |format|
-      format.html { redirect_to user_groups_path, notice: "Gruppe wurde erfolgreich gelöscht.", status: :see_other }
+      format.html { redirect_to user_groups_path, notice: t('user_groups.flash.destroyed'), status: :see_other }
       format.json { head :no_content }
     end
   end

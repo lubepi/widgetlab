@@ -23,5 +23,10 @@ module Widgetlab
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+
+    # i18n Konfiguration
+    config.i18n.available_locales = [:de, :en]
+    config.i18n.default_locale = :de
+    config.i18n.fallbacks = true
   end
 end

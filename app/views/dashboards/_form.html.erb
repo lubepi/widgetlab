@@ -3,7 +3,7 @@
     <div class="alert alert-danger" role="alert">
       <h6 class="alert-heading">
         <i class="bi bi-exclamation-triangle me-2"></i>
-        <%= pluralize(dashboard.errors.count, "Fehler") %> verhindert das Speichern:
+        <%= t('common.errors.prevented_saving', count: dashboard.errors.count) %>
       </h6>
       <ul class="mb-0">
         <% dashboard.errors.each do |error| %>
@@ -14,19 +14,19 @@
   <% end %>
 
   <div class="mb-3">
-    <%= form.label :name, "Name", class: "form-label" %>
-    <%= form.text_field :name, class: "form-control", placeholder: "z.B. Mein Dashboard", required: true %>
-    <div class="form-text">Gib deinem Dashboard einen aussagekräftigen Namen.</div>
+    <%= form.label :name, t('common.labels.name'), class: "form-label" %>
+    <%= form.text_field :name, class: "form-control", placeholder: t('dashboards.form.name_placeholder'), required: true %>
+    <div class="form-text"><%= t('dashboards.form.name_help') %></div>
   </div>
 
   <div class="mb-3">
-    <%= form.label :columns, "Anzahl Spalten", class: "form-label" %>
+    <%= form.label :columns, t('common.labels.columns'), class: "form-label" %>
     <%= form.number_field :columns, class: "form-control", min: 1, max: 12, value: dashboard.columns || 12 %>
-    <div class="form-text">Wie viele Spalten soll das Grid haben? (1-12, empfohlen: 12)</div>
+    <div class="form-text"><%= t('dashboards.form.columns_help') %></div>
   </div>
 
   <div class="mb-3">
-    <%= form.label :icon, "Icon", class: "form-label" %>
+    <%= form.label :icon, t('common.labels.icon'), class: "form-label" %>
     <%= form.hidden_field :icon, id: "dashboard_icon_field" %>
     <div class="d-flex flex-wrap gap-2" id="icon-picker">
       <%
@@ -59,7 +59,7 @@
         </button>
       <% end %>
     </div>
-    <div class="form-text mt-2">Wähle ein Icon für dein Dashboard.</div>
+    <div class="form-text mt-2"><%= t('dashboards.form.icon_help') %></div>
     <script>
       function selectIcon(iconName) {
         document.getElementById('dashboard_icon_field').value = iconName;
@@ -76,12 +76,12 @@
   <div class="mb-4">
     <div class="form-check form-switch">
       <%= form.check_box :is_public, class: "form-check-input", role: "switch" %>
-      <%= form.label :is_public, "Öffentlich zugänglich", class: "form-check-label" %>
+      <%= form.label :is_public, t('dashboards.form.is_public_label'), class: "form-check-label" %>
     </div>
-    <div class="form-text">Öffentliche Dashboards können von allen Nutzern eingesehen werden.</div>
+    <div class="form-text"><%= t('dashboards.form.is_public_help') %></div>
   </div>
 
   <div class="d-grid gap-2">
-    <%= form.submit dashboard.persisted? ? "Dashboard speichern" : "Dashboard erstellen", class: "btn btn-primary" %>
+    <%= form.submit dashboard.persisted? ? t('dashboards.form.submit_update') : t('dashboards.form.submit_create'), class: "btn btn-primary" %>
   </div>
 <% end %>

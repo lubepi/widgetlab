@@ -24,7 +24,7 @@
 
         <!-- Widget-Informationen -->
         <div class="mt-4">
-          <h6 class="mb-3">Informationen</h6>
+          <h6 class="mb-3"><%= t('widgets.show.info') %></h6>
           
           <div class="row g-3">
             <!-- Ersteller -->
@@ -32,7 +32,7 @@
               <div class="d-flex align-items-center gap-2">
                 <i class="bi bi-person-circle text-muted"></i>
                 <div>
-                  <small class="text-muted d-block">Ersteller</small>
+                  <small class="text-muted d-block"><%= t('widgets.show.creator') %></small>
                   <span><%= @widget.owner.email %></span>
                 </div>
               </div>
@@ -43,7 +43,7 @@
               <div class="d-flex align-items-center gap-2">
                 <i class="bi bi-diagram-3 text-muted"></i>
                 <div>
-                  <small class="text-muted d-block">Typ</small>
+                  <small class="text-muted d-block"><%= t('common.labels.type') %></small>
                   <span><%= @widget.widget_type.titleize %></span>
                 </div>
               </div>
@@ -54,8 +54,8 @@
               <div class="d-flex align-items-center gap-2">
                 <i class="bi bi-database text-muted"></i>
                 <div>
-                  <small class="text-muted d-block">Datenquelle</small>
-                  <span><%= @widget.widget_data_source_transformer&.data_source&.name || 'Keine' %></span>
+                  <small class="text-muted d-block"><%= t('widgets.show.data_source') %></small>
+                  <span><%= @widget.widget_data_source_transformer&.data_source&.name || t('common.labels.none') %></span>
                 </div>
               </div>
             </div>
@@ -65,8 +65,8 @@
               <div class="d-flex align-items-center gap-2">
                 <i class="bi bi-<%= @widget.is_public? ? 'globe' : 'lock' %> text-muted"></i>
                 <div>
-                  <small class="text-muted d-block">Sichtbarkeit</small>
-                  <span><%= @widget.is_public? ? 'Öffentlich' : 'Privat' %></span>
+                  <small class="text-muted d-block"><%= t('widgets.show.visibility') %></small>
+                  <span><%= @widget.is_public? ? t('common.badges.public') : t('common.badges.private') %></span>
                 </div>
               </div>
             </div>
@@ -77,7 +77,7 @@
                 <div class="d-flex align-items-center gap-2">
                   <i class="bi bi-rulers text-muted"></i>
                   <div>
-                    <small class="text-muted d-block">Einheit</small>
+                    <small class="text-muted d-block"><%= t('common.labels.unit') %></small>
                     <span><%= @widget.unit %></span>
                   </div>
                 </div>
@@ -89,7 +89,7 @@
               <div class="d-flex align-items-center gap-2">
                 <div style="width: 24px; height: 24px; border-radius: 4px; background-color: <%= @widget.color || '#0d6efd' %>; border: 1px solid var(--bs-border-color);"></div>
                 <div>
-                  <small class="text-muted d-block">Farbe</small>
+                  <small class="text-muted d-block"><%= t('common.labels.color') %></small>
                   <span><%= @widget.color || '#0d6efd' %></span>
                 </div>
               </div>
@@ -100,7 +100,7 @@
               <div class="d-flex align-items-center gap-2">
                 <i class="bi bi-clock-history text-muted"></i>
                 <div>
-                  <small class="text-muted d-block">Zeitbereich</small>
+                  <small class="text-muted d-block"><%= t('widgets.show.time_range') %></small>
                   <span><%= @widget.time_range_value %> <%= I18n.t("time_units.#{@widget.time_range_unit}", default: @widget.time_range_unit) %></span>
                 </div>
               </div>
@@ -111,7 +111,7 @@
               <div class="d-flex align-items-center gap-2">
                 <i class="bi bi-bar-chart text-muted"></i>
                 <div>
-                  <small class="text-muted d-block">Gruppierung</small>
+                  <small class="text-muted d-block"><%= t('widgets.show.grouping') %></small>
                   <span><%= I18n.t("group_by.#{@widget.group_by}", default: @widget.group_by) %></span>
                 </div>
               </div>
@@ -122,7 +122,7 @@
               <div class="d-flex align-items-center gap-2">
                 <i class="bi bi-calculator text-muted"></i>
                 <div>
-                  <small class="text-muted d-block">Aggregation</small>
+                  <small class="text-muted d-block"><%= t('widgets.show.aggregation') %></small>
                   <span><%= I18n.t("aggregate.#{@widget.aggregate_function}", default: @widget.aggregate_function) %></span>
                 </div>
               </div>
@@ -133,7 +133,7 @@
               <div class="d-flex align-items-center gap-2">
                 <i class="bi bi-hash text-muted"></i>
                 <div>
-                  <small class="text-muted d-block">Max. Datenpunkte</small>
+                  <small class="text-muted d-block"><%= t('widgets.show.max_data_points') %></small>
                   <span><%= @widget.data_limit %></span>
                 </div>
               </div>
@@ -147,35 +147,35 @@
             
             <% if has_transformation %>
               <div class="mt-4">
-                <h6 class="mb-2">Daten-Transformation</h6>
+                <h6 class="mb-2"><%= t('widgets.show.transformation') %></h6>
                 <div class="bg-body-secondary rounded p-3">
                   <% if config['json_path'].present? %>
                     <div class="mb-2">
-                      <small class="text-muted">JSON-Pfad:</small>
+                      <small class="text-muted"><%= t('widgets.show.json_path') %></small>
                       <code class="ms-2"><%= config['json_path'] %></code>
                     </div>
                   <% end %>
                   <% if config['multiply'].present? %>
                     <div class="mb-2">
-                      <small class="text-muted">Multiplikator:</small>
+                      <small class="text-muted"><%= t('widgets.show.multiplier') %></small>
                       <span class="ms-2"><%= config['multiply'] %></span>
                     </div>
                   <% end %>
                   <% if config['add'].present? %>
                     <div class="mb-2">
-                      <small class="text-muted">Addition:</small>
+                      <small class="text-muted"><%= t('widgets.show.addition') %></small>
                       <span class="ms-2"><%= config['add'] %></span>
                     </div>
                   <% end %>
                   <% if config['round'].present? %>
                     <div class="mb-2">
-                      <small class="text-muted">Dezimalstellen:</small>
+                      <small class="text-muted"><%= t('widgets.show.decimals') %></small>
                       <span class="ms-2"><%= config['round'] %></span>
                     </div>
                   <% end %>
                   <% if config['format'].present? %>
                     <div class="mb-2">
-                      <small class="text-muted">Format:</small>
+                      <small class="text-muted"><%= t('widgets.show.format') %></small>
                       <span class="ms-2"><%= config['format'].titleize %></span>
                     </div>
                   <% end %>
@@ -190,14 +190,14 @@
             class: "btn btn-success me-auto",
             data: { turbo_frame: "widget_modal" } do %>
           <i class="bi bi-plus-circle me-1"></i>
-          Zu Dashboard hinzufügen
+          <%= t('widgets.show.add_to_dashboard') %>
         <% end %>
         <% if @widget.can_edit?(current_user) %>
-          <%= link_to "Bearbeiten", edit_widget_path(@widget), 
+          <%= link_to t('common.buttons.edit'), edit_widget_path(@widget), 
               class: "btn btn-primary",
               data: { turbo_frame: "widget_modal" } %>
         <% end %>
-        <%= link_to "Schließen", widgets_path, class: "btn btn-secondary", data: { turbo_frame: "_top" } %>
+        <%= link_to t('common.buttons.close'), widgets_path, class: "btn btn-secondary", data: { turbo_frame: "_top" } %>
       </div>
     </div>
   </div>

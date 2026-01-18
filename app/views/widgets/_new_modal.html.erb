@@ -3,7 +3,7 @@
     <div class="modal-dialog modal-xl modal-dialog-scrollable">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">Neues Widget erstellen</h5>
+          <h5 class="modal-title"><%= t('widgets.new.heading') %></h5>
           <button type="button" class="btn-close" aria-label="Close"
                   onclick="document.getElementById('widget_modal').innerHTML = ''; 
                           document.querySelectorAll('.modal-backdrop').forEach(b => b.remove()); 
@@ -23,9 +23,9 @@
                           document.body.classList.remove('modal-open'); 
                           document.body.style.overflow = ''; 
                           document.body.style.paddingRight = '';">
-            Abbrechen
+            <%= t('common.buttons.cancel') %>
           </button>
-          <button type="submit" class="btn btn-primary" form="new_widget_form">Erstellen</button>
+          <button type="submit" class="btn btn-primary" form="new_widget_form"><%= t('common.buttons.create') %></button>
         </div>
       </div>
     </div>

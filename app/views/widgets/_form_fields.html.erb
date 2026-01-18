@@ -1,7 +1,7 @@
 <% if widget.errors.any? %>
   <div class="alert alert-danger" role="alert">
     <h5 class="alert-heading">
-      <%= pluralize(widget.errors.count, "Fehler") %> verhinderte das Speichern des Widgets:
+      <%= t('common.errors.prevented_saving', count: widget.errors.count) %>
     </h5>
     <ul class="mb-0">
       <% widget.errors.each do |error| %>
@@ -12,60 +12,60 @@
 <% end %>
 
 <div class="mb-3">
-  <%= form.label :name, "Name", class: "form-label" %>
-  <%= form.text_field :name, class: "form-control", placeholder: "z.B. Temperatur Sensor", required: true %>
+  <%= form.label :name, t('common.labels.name'), class: "form-label" %>
+  <%= form.text_field :name, class: "form-control", placeholder: t('widgets.form.name_placeholder'), required: true %>
 </div>
 
 <div class="mb-3">
-  <%= form.label :description, "Beschreibung", class: "form-label" %>
-  <%= form.text_area :description, class: "form-control", rows: 3, placeholder: "Optionale Beschreibung des Widgets" %>
+  <%= form.label :description, t('common.labels.description'), class: "form-label" %>
+  <%= form.text_area :description, class: "form-control", rows: 3, placeholder: t('widgets.form.description_placeholder') %>
 </div>
 
 <div class="mb-3">
-  <%= form.label :widget_type, "Widget-Typ", class: "form-label" %>
-  <%= form.select :widget_type, Widget.widget_types.keys.map { |k| [k.titleize, k] }, { prompt: "Bitte wählen..." }, { class: "form-select", required: true } %>
-  <div class="form-text">Value = Einzelwert, Line/Bar/Column/Pie = Diagramme (Chart.js)</div>
+  <%= form.label :widget_type, t('activerecord.attributes.widget.widget_type'), class: "form-label" %>
+  <%= form.select :widget_type, Widget.widget_types.keys.map { |k| [k.titleize, k] }, { prompt: t('widgets.form.widget_type_prompt') }, { class: "form-select", required: true } %>
+  <div class="form-text"><%= t('widgets.form.widget_type_help') %></div>
 </div>
 
 <div class="mb-3">
-  <%= form.label :color, "Farbe", class: "form-label" %>
+  <%= form.label :color, t('common.labels.color'), class: "form-label" %>
   <%= form.color_field :color, class: "form-control form-control-color", value: widget.color || "#0d6efd", style: "width: 60px; height: 40px;" %>
 </div>
 
 <div class="mb-3">
-  <%= form.label :unit, "Einheit", class: "form-label" %>
-  <%= form.text_field :unit, class: "form-control", placeholder: "z.B. °C, €, %, kg" %>
-  <div class="form-text">Optionale Einheit, die bei Werten oder am Chart angezeigt wird</div>
+  <%= form.label :unit, t('common.labels.unit'), class: "form-label" %>
+  <%= form.text_field :unit, class: "form-control", placeholder: t('widgets.form.unit_placeholder') %>
+  <div class="form-text"><%= t('widgets.form.unit_help') %></div>
 </div>
 
 <div data-controller="data-source-preview">
   <div class="mb-3">
-    <%= label_tag 'widget[data_source_id]', "Datenquelle", class: "form-label" %>
+    <%= label_tag 'widget[data_source_id]', t('widgets.form.data_source'), class: "form-label" %>
     <% current_data_source_id = widget.widget_data_source_transformer&.data_source_id %>
     <%= select_tag 'widget[data_source_id]', 
         options_from_collection_for_select(@data_sources || DataSource.all, :id, :name, current_data_source_id),
-        prompt: "Bitte wählen...", 
+        prompt: t('common.prompts.please_select'), 
         class: "form-select",
         required: true,
         data: { 
           data_source_preview_target: "select",
           action: "change->data-source-preview#loadPreview"
         } %>
-    <div class="form-text">Die Datenquelle, von der die Widget-Daten bezogen werden</div>
+    <div class="form-text"><%= t('widgets.form.data_source_help') %></div>
   </div>
 
   <!-- Daten-Transformation -->
   <div class="card mb-3">
     <div class="card-header">
-      Daten-Transformation (optional)
+      <%= t('widgets.form.data_transformation_title') %>
     </div>
     <div class="card-body">
       <p class="text-muted small">
-        Transformiert die Rohdaten der Datenquelle, bevor sie im Widget angezeigt werden.
+        <%= t('widgets.form.data_transformation_help') %>
       </p>
 
       <div class="mb-3 d-none" data-data-source-preview-target="container">
-        <label class="form-label">Letzte Response der Datenquelle</label>
+        <label class="form-label"><%= t('widgets.form.last_response') %></label>
         <div class="border rounded p-2 bg-body-secondary" style="min-height: 150px; height: 150px; overflow-y: auto; font-family: monospace; font-size: 0.875rem; resize: vertical;">
           <pre class="mb-0" data-data-source-preview-target="content"></pre>
         </div>
@@ -75,68 +75,68 @@
       <% current_config = widget.widget_data_source_transformer&.config || {} %>
 
     <div class="mb-3">
-      <%= label_tag 'widget[transformer_config][json_path]', "JSON-Pfad", class: "form-label" %>
+      <%= label_tag 'widget[transformer_config][json_path]', t('widgets.form.json_path'), class: "form-label" %>
       <%= text_field_tag 'widget[transformer_config][json_path]', 
           current_config['json_path'], 
           class: "form-control", 
-          placeholder: "z.B. data.temperature oder items.0.value" %>
+          placeholder: t('widgets.form.json_path_placeholder') %>
       <div class="form-text">
-        Extrahiert einen verschachtelten Wert aus JSON-Daten (mit Punkt-Notation)
+        <%= t('widgets.form.json_path_help') %>
       </div>
     </div>
 
     <div class="row">
       <div class="col-md-4">
         <div class="mb-3">
-          <%= label_tag 'widget[transformer_config][multiply]', "Multiplikator", class: "form-label" %>
+          <%= label_tag 'widget[transformer_config][multiply]', t('widgets.form.multiplier'), class: "form-label" %>
           <%= number_field_tag 'widget[transformer_config][multiply]', 
               current_config['multiply'], 
               class: "form-control", 
               step: 0.01,
-              placeholder: "z.B. 1.8 für Fahrenheit" %>
-          <div class="form-text">Multipliziert den Wert</div>
+              placeholder: t('widgets.form.multiplier_placeholder') %>
+          <div class="form-text"><%= t('widgets.form.multiplier_help') %></div>
         </div>
       </div>
       <div class="col-md-4">
         <div class="mb-3">
-          <%= label_tag 'widget[transformer_config][add]', "Addition", class: "form-label" %>
+          <%= label_tag 'widget[transformer_config][add]', t('widgets.form.addition'), class: "form-label" %>
           <%= number_field_tag 'widget[transformer_config][add]', 
               current_config['add'], 
               class: "form-control", 
               step: 0.01,
-              placeholder: "z.B. 32 für Fahrenheit" %>
-          <div class="form-text">Addiert zum Wert</div>
+              placeholder: t('widgets.form.addition_placeholder') %>
+          <div class="form-text"><%= t('widgets.form.addition_help') %></div>
         </div>
       </div>
       <div class="col-md-4">
         <div class="mb-3">
-          <%= label_tag 'widget[transformer_config][round]', "Dezimalstellen", class: "form-label" %>
+          <%= label_tag 'widget[transformer_config][round]', t('widgets.form.decimal_places'), class: "form-label" %>
           <%= number_field_tag 'widget[transformer_config][round]', 
               current_config['round'], 
               class: "form-control", 
               min: 0, 
               max: 10,
-              placeholder: "z.B. 2" %>
-          <div class="form-text">Rundet auf N Stellen</div>
+              placeholder: t('widgets.form.decimal_places_placeholder') %>
+          <div class="form-text"><%= t('widgets.form.decimal_places_help') %></div>
         </div>
       </div>
     </div>
 
     <div class="mb-3">
-      <%= label_tag 'widget[transformer_config][format]', "Format", class: "form-label" %>
+      <%= label_tag 'widget[transformer_config][format]', t('widgets.form.format'), class: "form-label" %>
       <%= select_tag 'widget[transformer_config][format]', 
           options_for_select(
             [
-              ['Automatisch', ''],
-              ['Zahl (Float)', 'number'],
-              ['Ganzzahl (Integer)', 'integer'],
-              ['Text (String)', 'string'],
-              ['Ja/Nein (Boolean)', 'boolean']
+              [t('widgets.form.format_auto'), ''],
+              [t('widgets.form.format_number'), 'number'],
+              [t('widgets.form.format_integer'), 'integer'],
+              [t('widgets.form.format_string'), 'string'],
+              [t('widgets.form.format_boolean'), 'boolean']
             ], 
             current_config['format']
           ),
           class: "form-select" %>
-      <div class="form-text">Konvertiert den finalen Wert in das gewählte Format</div>
+      <div class="form-text"><%= t('widgets.form.format_help') %></div>
     </div>
   </div>
 </div>
@@ -145,19 +145,19 @@
 <!-- Zeitbereich-Konfiguration -->
 <div class="card mb-3">
   <div class="card-header">
-    Zeitbereich & Datenverarbeitung
+    <%= t('widgets.form.time_range_title') %>
   </div>
   <div class="card-body">
     <div class="row">
       <div class="col-md-6">
         <div class="mb-3">
-          <%= form.label :time_range_value, "Zeitbereich (Wert)", class: "form-label" %>
+          <%= form.label :time_range_value, t('widgets.form.time_range_value'), class: "form-label" %>
           <%= form.number_field :time_range_value, class: "form-control", value: widget.time_range_value || 24, min: 1 %>
         </div>
       </div>
       <div class="col-md-6">
         <div class="mb-3">
-          <%= form.label :time_range_unit, "Zeiteinheit", class: "form-label" %>
+          <%= form.label :time_range_unit, t('widgets.form.time_range_unit'), class: "form-label" %>
           <%= form.select :time_range_unit, 
               Widget::TIME_RANGE_UNITS.map { |u| [I18n.t("time_units.#{u}", default: u), u] }, 
               { selected: widget.time_range_unit || 'hours' }, 
@@ -165,34 +165,34 @@
         </div>
       </div>
     </div>
-    <div class="form-text mb-3">Zeitspanne für Datenabruf (z.B. "24 Stunden" oder "7 Tage")</div>
+    <div class="form-text mb-3"><%= t('widgets.form.time_range_help') %></div>
 
     <div class="row">
       <div class="col-md-4">
         <div class="mb-3">
-          <%= form.label :group_by, "Gruppierung", class: "form-label" %>
+          <%= form.label :group_by, t('widgets.form.grouping'), class: "form-label" %>
           <%= form.select :group_by, 
               Widget::GROUP_BY_OPTIONS.map { |o| [I18n.t("group_by.#{o}", default: o), o] }, 
               { selected: widget.group_by || 'hour' }, 
               { class: "form-select" } %>
-          <div class="form-text">Zeitintervall für Datenpunkte</div>
+          <div class="form-text"><%= t('widgets.form.grouping_help') %></div>
         </div>
       </div>
       <div class="col-md-4">
         <div class="mb-3">
-          <%= form.label :aggregate_function, "Aggregation", class: "form-label" %>
+          <%= form.label :aggregate_function, t('widgets.form.aggregation'), class: "form-label" %>
           <%= form.select :aggregate_function, 
               Widget::AGGREGATE_FUNCTIONS.map { |f| [I18n.t("aggregate.#{f}", default: f), f] }, 
               { selected: widget.aggregate_function || 'avg' }, 
               { class: "form-select" } %>
-          <div class="form-text">Berechnungsmethode</div>
+          <div class="form-text"><%= t('widgets.form.aggregation_help') %></div>
         </div>
       </div>
       <div class="col-md-4">
         <div class="mb-3">
-          <%= form.label :data_limit, "Max. Datenpunkte", class: "form-label" %>
+          <%= form.label :data_limit, t('widgets.form.max_data_points'), class: "form-label" %>
           <%= form.number_field :data_limit, class: "form-control", value: widget.data_limit || 100, min: 10, max: 1000 %>
-          <div class="form-text">Maximale Anzahl</div>
+          <div class="form-text"><%= t('widgets.form.max_data_points_help') %></div>
         </div>
       </div>
     </div>
@@ -202,24 +202,24 @@
 <!-- Zugriffsrechte -->
 <div class="card mb-3">
   <div class="card-header">
-    Zugriffsrechte
+    <%= t('widgets.form.access_rights_title') %>
   </div>
   <div class="card-body">
     <div class="mb-3">
       <div class="form-check">
         <%= form.check_box :is_public, class: "form-check-input", id: "widget_is_public", 
             data: { action: "change->toggle-access-section" } %>
-        <%= form.label :is_public, "Öffentlich sichtbar", class: "form-check-label" %>
+        <%= form.label :is_public, t('widgets.form.public_visible'), class: "form-check-label" %>
       </div>
-      <div class="form-text">Wenn aktiviert, ist das Widget für alle Benutzer sichtbar.</div>
+      <div class="form-text"><%= t('widgets.form.public_visible_help') %></div>
     </div>
 
     <div class="mb-3" id="access-section">
       <div class="d-flex justify-content-between align-items-center mb-2">
-        <label class="form-label mb-0">Benutzer & Rollen</label>
+        <label class="form-label mb-0"><%= t('widgets.form.users_and_roles') %></label>
         <div class="small text-muted">
-          <span class="badge bg-info me-1">Viewer</span> Nur anschauen
-          <span class="badge bg-primary mx-1">Owner</span> Vollzugriff
+          <span class="badge bg-info me-1"><%= t('widgets.roles.viewer') %></span> <%= t('widgets.roles.viewer_description') %>
+          <span class="badge bg-primary mx-1"><%= t('widgets.roles.owner') %></span> <%= t('widgets.roles.owner_description') %>
         </div>
       </div>
       
@@ -227,7 +227,7 @@
         <div class="card-body">
           <div class="row g-2 align-items-center mb-2">
             <div class="col-sm">
-              <input type="search" class="form-control" placeholder="Suchen (E-Mail oder Name)…" data-member-picker-target="query" data-action="input->member-picker#filter">
+              <input type="search" class="form-control" placeholder="<%= t('widgets.form.search_placeholder') %>" data-member-picker-target="query" data-action="input->member-picker#filter">
             </div>
           </div>
 
@@ -249,10 +249,10 @@
                   </div>
                   <div style="min-width: 150px;">
                     <select name="access[user_roles][<%= user.id %>]" class="form-select form-select-sm" data-member-picker-target="checkbox">
-                      <option value="">Kein Zugriff</option>
+                      <option value=""><%= t('widgets.roles.no_access') %></option>
                       <% @roles.each do |role| %>
                         <option value="<%= role %>" <%= 'selected' if current_role == role %>>
-                          <%= role.capitalize %>
+                          <%= t("widgets.roles.#{role}", default: role.capitalize) %>
                         </option>
                       <% end %>
                     </select>
