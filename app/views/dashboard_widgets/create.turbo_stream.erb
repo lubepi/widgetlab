@@ -1,0 +1,15 @@
+<%= turbo_stream.append "dashboard-grid-#{@dashboard_widget.dashboard_id}" do %>
+  <%= render "dashboard_widgets/grid_item", dashboard_widget: @dashboard_widget, widget: @dashboard_widget.widget %>
+<% end %>
+
+<%= turbo_stream.remove "empty-dashboard-state" %>
+
+<%# Modal schließen %>
+<%= turbo_stream.update "modal", "" %>
+
+<%= turbo_stream.prepend "flash-messages" do %>
+  <div class="alert alert-success alert-dismissible fade show" role="alert">
+    Widget wurde hinzugefügt.
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+<% end %>

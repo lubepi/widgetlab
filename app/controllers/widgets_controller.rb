@@ -1,5 +1,5 @@
 class WidgetsController < ApplicationController
-  before_action :set_widget, only: %i[ show edit update destroy ]
+  before_action :set_widget, only: %i[ show edit update destroy add_to_dashboard create_on_dashboard ]
   before_action :authorize_owner!, only: %i[ edit update destroy ]
 
   # GET /widgets or /widgets.json
@@ -184,6 +184,49 @@ class WidgetsController < ApplicationController
     end
   end
 
+  # GET /widgets/:id/add_to_dashboard
+  # Modal zum Auswählen des Ziel-Dashboards
+  def add_to_dashboard
+    @available_dashboards = Dashboard.accessible_by(current_user)
+                                     .where.not(id: @widget.dashboard_ids)
+    
+    respond_to do |format|
+      format.html { render partial: "add_to_dashboard_modal", layout: false }
+      format.turbo_stream
+    end
+  end
+
+  # POST /widgets/:id/add_to_dashboard
+  # Widget zu einem Dashboard hinzufügen
+  def create_on_dashboard
+    dashboard = Dashboard.find(params[:dashboard_id])
+    
+    unless dashboard.can_edit?(current_user)
+      respond_to do |format|
+        format.html { redirect_to widgets_path, alert: "Sie haben keine Berechtigung, Widgets zu diesem Dashboard hinzuzufügen." }
+        format.json { render json: { error: "Unauthorized" }, status: :forbidden }
+      end
+      return
+    end
+
+    # Finde freie Position
+    position = find_free_position(dashboard)
+    
+    dashboard_widget = dashboard.dashboard_widgets.create!(
+      widget: @widget,
+      position_x: position[:x],
+      position_y: position[:y],
+      width: 2,
+      height: 2
+    )
+
+    respond_to do |format|
+      format.html { redirect_to dashboard_path(dashboard), notice: "Widget wurde zum Dashboard hinzugefügt." }
+      format.turbo_stream { redirect_to dashboard_path(dashboard), notice: "Widget wurde zum Dashboard hinzugefügt." }
+      format.json { render json: dashboard_widget, status: :created }
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_widget
@@ -217,5 +260,27 @@ class WidgetsController < ApplicationController
       config['format'] = transformer_config[:format] if transformer_config[:format].present?
       
       config
+    end
+
+    def find_free_position(dashboard)
+      columns = dashboard.columns || 12
+      existing = dashboard.dashboard_widgets.pluck(:position_x, :position_y, :width, :height)
+      
+      # Suche von oben links nach unten rechts nach freiem Platz für 2x2 Widget
+      (0..50).each do |y|
+        (0..(columns - 2)).each do |x|
+          fits = existing.none? do |ex_x, ex_y, ex_w, ex_h|
+            ex_x ||= 0
+            ex_y ||= 0
+            ex_w ||= 1
+            ex_h ||= 1
+            # Prüfe ob es Überlappung gibt
+            !(x + 2 <= ex_x || x >= ex_x + ex_w || y + 2 <= ex_y || y >= ex_y + ex_h)
+          end
+          return { x: x, y: y } if fits
+        end
+      end
+      
+      { x: 0, y: 0 }
     end
 end

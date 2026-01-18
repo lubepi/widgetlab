@@ -26,6 +26,8 @@ Rails.application.routes.draw do
     member do
       get :access, to: "user_widget_roles#edit"
       patch :access, to: "user_widget_roles#update"
+      get :add_to_dashboard # Modal zum Auswählen des Dashboards
+      post :add_to_dashboard, action: :create_on_dashboard # Widget zu Dashboard hinzufügen
     end
   end
   resources :user_group_roles
@@ -35,6 +37,12 @@ Rails.application.routes.draw do
     member do
       get :access, to: "dashboard_user_roles#edit"
       patch :access, to: "dashboard_user_roles#update"
+    end
+    resources :dashboard_widgets, only: [:new, :create], controller: 'dashboard_widgets' do
+      collection do
+        patch :update_positions
+        get :select_widget
+      end
     end
   end
   resources :users, only: %i[index show]

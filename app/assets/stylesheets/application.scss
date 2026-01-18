@@ -99,3 +99,154 @@
   transition: width 150ms ease, max-width 150ms ease, flex-basis 150ms ease;
 }
 
+// ===== Dashboard Grid Styles =====
+
+// Grid Stack Customization
+.grid-stack {
+  background: transparent;
+  min-height: 200px;
+  width: 100%;
+}
+
+.grid-stack-item {
+  transition: none; // Verhindert Animation-Konflikte mit Gridstack
+}
+
+.grid-stack-item-content {
+  background: transparent;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
+}
+
+// Widget Card innerhalb des Grids
+.dashboard-widget-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  transition: box-shadow 0.2s ease;
+}
+
+// Edit Mode Styles
+.grid-stack-item.edit-mode .dashboard-widget-card {
+  box-shadow: 0 0 0 2px var(--bs-primary);
+}
+
+.grid-stack-item.edit-mode .widget-drag-handle {
+  background: linear-gradient(180deg, rgba(var(--bs-primary-rgb), 0.1) 0%, transparent 100%);
+}
+
+// Drag Handle
+.widget-drag-handle {
+  transition: background 0.2s ease;
+}
+
+.widget-drag-handle.drag-enabled {
+  cursor: move;
+}
+
+.widget-drag-handle.drag-enabled:hover {
+  background: rgba(var(--bs-primary-rgb), 0.05);
+}
+
+// Widget Content
+.widget-content {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+// Edit Controls
+.widget-edit-controls {
+  gap: 0.25rem;
+}
+
+// Gridstack Placeholder (beim Dragging)
+.grid-stack-placeholder > .placeholder-content {
+  border: 2px dashed var(--bs-primary);
+  border-radius: 0.5rem;
+  background: rgba(var(--bs-primary-rgb), 0.1);
+}
+
+// Resize Handle Styling
+.grid-stack-item > .ui-resizable-handle {
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.grid-stack-item.edit-mode > .ui-resizable-handle {
+  opacity: 1;
+}
+
+.grid-stack-item.edit-mode > .ui-resizable-se {
+  background: var(--bs-primary);
+  width: 16px;
+  height: 16px;
+  border-radius: 2px;
+  right: 4px;
+  bottom: 4px;
+}
+
+.grid-stack-item.edit-mode > .ui-resizable-e,
+.grid-stack-item.edit-mode > .ui-resizable-w {
+  width: 8px;
+  background: linear-gradient(90deg, transparent, var(--bs-primary), transparent);
+}
+
+.grid-stack-item.edit-mode > .ui-resizable-s {
+  height: 8px;
+  background: linear-gradient(180deg, transparent, var(--bs-primary), transparent);
+}
+
+// Widget Select Card (Modal)
+.widget-select-card:hover {
+  border-color: var(--bs-primary);
+  box-shadow: 0 4px 12px rgba(var(--bs-primary-rgb), 0.15);
+}
+
+// Empty Grid Placeholder
+.grid-stack:empty::after {
+  content: 'Klicke auf "Widget hinzufügen" um Widgets zum Dashboard hinzuzufügen';
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  color: var(--bs-secondary);
+  font-size: 1rem;
+  text-align: center;
+  border: 2px dashed var(--bs-border-color);
+  border-radius: 0.5rem;
+  padding: 2rem;
+}
+
+// Responsive Dashboard Anpassungen
+@media (max-width: 991px) {
+  .dashboard-widget-card .card-header {
+    font-size: 0.9rem;
+  }
+  
+  .widget-edit-controls {
+    .btn-sm {
+      padding: 0.15rem 0.3rem;
+      font-size: 0.75rem;
+    }
+  }
+}
+
+@media (max-width: 767px) {
+  .dashboard-widget-card .card-header h6 {
+    font-size: 0.85rem;
+  }
+  
+  .dashboard-widget-card .badge {
+    font-size: 0.65rem;
+  }
+  
+  // Buttons im Dashboard Header stapeln
+  .d-flex.gap-2 {
+    flex-wrap: wrap;
+  }
+}
+

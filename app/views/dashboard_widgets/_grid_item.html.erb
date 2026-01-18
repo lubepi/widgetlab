@@ -1,0 +1,44 @@
+<%# Grid Item für Gridstack %>
+<% max_width = [dashboard_widget.width || 2, dashboard_widget.dashboard.columns || 12].min %>
+<% max_height = [dashboard_widget.height || 2, 4].min %>
+<div class="grid-stack-item" 
+     id="dashboard_widget_<%= dashboard_widget.id %>"
+     data-dashboard-widget-id="<%= dashboard_widget.id %>"
+     gs-id="<%= dashboard_widget.id %>"
+     gs-x="<%= dashboard_widget.position_x || 0 %>" 
+     gs-y="<%= dashboard_widget.position_y || 0 %>" 
+     gs-w="<%= max_width %>" 
+     gs-h="<%= max_height %>"
+     gs-min-w="1"
+     gs-min-h="1"
+     gs-max-w="<%= dashboard_widget.dashboard.columns || 12 %>"
+     gs-max-h="4">
+  <div class="grid-stack-item-content">
+    <div class="card h-100 dashboard-widget-card <%= dashboard_widget.color.present? ? "border-#{dashboard_widget.color}" : '' %>">
+      <!-- Widget Header mit Drag Handle -->
+      <div class="card-header widget-drag-handle d-flex justify-content-between align-items-center">
+        <h6 class="mb-0 text-truncate">
+          <i class="bi bi-<%= widget_icon_for(widget) %> me-2"></i>
+          <%= widget.name %>
+        </h6>
+        <div class="d-flex align-items-center gap-2">
+          <span class="badge bg-secondary"><%= widget.widget_type.humanize %></span>
+          <!-- Edit Controls (nur im Edit Mode sichtbar) -->
+          <div class="widget-edit-controls" style="display: none;">
+            <button type="button" 
+                    class="btn btn-sm btn-outline-danger"
+                    data-action="click->dashboard-grid#removeWidget"
+                    title="Widget entfernen">
+              <i class="bi bi-x-lg"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Widget Content -->
+      <div class="card-body widget-content overflow-hidden">
+        <%= render widget %>
+      </div>
+    </div>
+  </div>
+</div>

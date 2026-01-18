@@ -21,8 +21,8 @@
 
   <div class="mb-3">
     <%= form.label :columns, "Anzahl Spalten", class: "form-label" %>
-    <%= form.number_field :columns, class: "form-control", min: 1, max: 12, value: dashboard.columns || 3 %>
-    <div class="form-text">Wie viele Spalten soll das Grid haben? (1-12)</div>
+    <%= form.number_field :columns, class: "form-control", min: 1, max: 12, value: dashboard.columns || 12 %>
+    <div class="form-text">Wie viele Spalten soll das Grid haben? (1-12, empfohlen: 12)</div>
   </div>
 
   <div class="mb-3">

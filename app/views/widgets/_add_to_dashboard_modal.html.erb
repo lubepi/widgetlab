@@ -1,0 +1,75 @@
+<%= turbo_frame_tag "widget_modal" do %>
+  <div class="modal-backdrop fade show"></div>
+  <div class="modal fade show" 
+       id="addToDashboardModal" 
+       tabindex="-1" 
+       style="display: block;"
+       data-controller="modal">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">
+            <i class="bi bi-speedometer2 me-2"></i>
+            "<%= @widget.name %>" zu Dashboard hinzufügen
+          </h5>
+          <%= link_to widgets_path, class: "btn-close", "aria-label": "Schließen", data: { turbo_frame: "_top" } %>
+        </div>
+        <div class="modal-body">
+          <% if @available_dashboards.empty? %>
+            <div class="text-center py-5">
+              <i class="bi bi-speedometer2 display-1 text-muted mb-3"></i>
+              <h4 class="text-muted">Keine Dashboards verfügbar</h4>
+              <p class="text-muted mb-4">
+                Das Widget ist bereits in allen Ihren Dashboards vorhanden oder Sie haben noch keine Dashboards erstellt.
+              </p>
+              <%= link_to new_dashboard_path, class: "btn btn-primary", data: { turbo_frame: "_top" } do %>
+                <i class="bi bi-plus-circle me-1"></i>
+                Neues Dashboard erstellen
+              <% end %>
+            </div>
+          <% else %>
+            <p class="text-muted mb-4">Wähle ein Dashboard aus, zu dem das Widget hinzugefügt werden soll.</p>
+            
+            <div class="list-group">
+              <% @available_dashboards.each do |dashboard| %>
+                <%= button_to add_to_dashboard_widget_path(@widget, dashboard_id: dashboard.id), 
+                              method: :post,
+                              class: "list-group-item list-group-item-action d-flex justify-content-between align-items-center",
+                              data: { turbo_frame: "_top" } do %>
+                  <div class="d-flex align-items-center">
+                    <div class="rounded-circle bg-primary bg-opacity-10 d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                      <i class="bi bi-<%= dashboard.icon.presence || 'grid-1x2' %> text-primary"></i>
+                    </div>
+                    <div>
+                      <h6 class="mb-0"><%= dashboard.name %></h6>
+                      <small class="text-muted">
+                        <%= dashboard.widgets.count %> Widget<%= dashboard.widgets.count == 1 ? '' : 's' %> · 
+                        <%= dashboard.columns || 12 %> Spalten
+                        <% if dashboard.is_public %>
+                          · <span class="text-success"><i class="bi bi-globe"></i> Öffentlich</span>
+                        <% end %>
+                      </small>
+                    </div>
+                  </div>
+                  <div>
+                    <% if dashboard.owner?(current_user) %>
+                      <span class="badge bg-primary me-2">Owner</span>
+                    <% elsif dashboard.can_edit?(current_user) %>
+                      <span class="badge bg-info me-2">Editor</span>
+                    <% end %>
+                    <i class="bi bi-chevron-right text-muted"></i>
+                  </div>
+                <% end %>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+        <div class="modal-footer">
+          <%= link_to widgets_path, class: "btn btn-secondary", data: { turbo_frame: "_top" } do %>
+            Abbrechen
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

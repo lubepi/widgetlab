@@ -1,0 +1,81 @@
+<%= turbo_frame_tag "modal" do %>
+  <div class="modal fade show" 
+       id="selectWidgetModal" 
+       tabindex="-1" 
+       style="display: block;"
+       data-controller="modal">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">
+            <i class="bi bi-grid me-2"></i>
+            Widget zu "<%= @dashboard.name %>" hinzufügen
+          </h5>
+          <%= link_to dashboard_path(@dashboard), class: "btn-close", "aria-label": "Schließen" %>
+        </div>
+        <div class="modal-body">
+          <% if @available_widgets.empty? %>
+            <div class="text-center py-5">
+              <i class="bi bi-grid display-1 text-muted mb-3"></i>
+              <h4 class="text-muted">Keine weiteren Widgets verfügbar</h4>
+              <p class="text-muted mb-4">
+                Alle verfügbaren Widgets wurden bereits hinzugefügt oder es gibt noch keine Widgets.
+              </p>
+              <%= link_to widgets_path, class: "btn btn-primary", data: { turbo_frame: "_top" } do %>
+                <i class="bi bi-grid me-1"></i>
+                Zum Widget Store
+              <% end %>
+            </div>
+          <% else %>
+            <p class="text-muted mb-4">Wähle ein Widget aus, um es zum Dashboard "<%= @dashboard.name %>" hinzuzufügen.</p>
+            
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+              <% @available_widgets.each do |widget| %>
+                <div class="col">
+                  <div class="card h-100 widget-select-card" style="cursor: pointer;">
+                    <%= form_with model: [@dashboard, DashboardWidget.new], 
+                                  local: false,
+                                  data: { turbo_frame: "_top" },
+                                  class: "h-100" do |f| %>
+                      <%= f.hidden_field :widget_id, value: widget.id %>
+                      <button type="submit" class="btn p-0 border-0 w-100 h-100 text-start">
+                        <div class="card-body">
+                          <div class="d-flex align-items-start mb-3">
+                            <div class="rounded bg-primary bg-opacity-10 p-2 me-3">
+                              <i class="bi bi-<%= widget_icon_for(widget) %> fs-4 text-primary"></i>
+                            </div>
+                            <div class="flex-grow-1 overflow-hidden">
+                              <h6 class="card-title mb-1 text-truncate"><%= widget.name %></h6>
+                              <span class="badge bg-secondary"><%= widget.widget_type.humanize %></span>
+                            </div>
+                          </div>
+                          
+                          <% if widget.description.present? %>
+                            <p class="card-text text-muted small mb-0" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                              <%= widget.description %>
+                            </p>
+                          <% end %>
+                        </div>
+                        <div class="card-footer bg-transparent border-top-0">
+                          <small class="text-primary">
+                            <i class="bi bi-plus-circle me-1"></i>
+                            Hinzufügen
+                          </small>
+                        </div>
+                      </button>
+                    <% end %>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+        <div class="modal-footer">
+          <%= link_to dashboard_path(@dashboard), class: "btn btn-secondary" do %>
+            Abbrechen
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

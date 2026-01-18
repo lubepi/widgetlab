@@ -111,4 +111,22 @@ module WidgetsHelper
       label: widget.name
     }
   end
+
+  # Gibt das passende Bootstrap Icon für einen Widget-Typ zurück
+  def widget_icon_for(widget)
+    case widget.widget_type
+    when 'value'
+      'hash'
+    when 'line'
+      'graph-up'
+    when 'bar'
+      'bar-chart-fill'
+    when 'column'
+      'bar-chart'
+    when 'pie'
+      'pie-chart-fill'
+    else
+      'grid'
+    end
+  end
 end

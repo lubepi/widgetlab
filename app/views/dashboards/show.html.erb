@@ -1,132 +1,127 @@
 <% content_for :title, @dashboard.name %>
 <% content_for :fullscreen, true %>
 
-<div class="container-fluid py-4">
-  <!-- Dashboard Header -->
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <div class="d-flex align-items-center">
-    <%= link_to dashboards_path, class: "btn btn-outline-secondary btn-sm me-3" do %>
-      <i class="bi bi-arrow-left"></i>
-    <% end %>
-    <div class="d-flex align-items-center">
-      <div class="rounded-circle bg-primary bg-opacity-10 d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px; flex-shrink: 0;">
-        <i class="bi bi-<%= @dashboard.icon.presence || 'grid-1x2' %> fs-5 text-primary"></i>
-      </div>
-      <div>
-        <h1 class="mb-0 h3"><%= @dashboard.name %></h1>
-        <div class="d-flex gap-2 mt-1">
-          <% if @dashboard.is_public %>
-            <span class="badge bg-success"><i class="bi bi-globe me-1"></i>Öffentlich</span>
-          <% else %>
-            <span class="badge bg-secondary"><i class="bi bi-lock me-1"></i>Privat</span>
-          <% end %>
-          <span class="badge bg-info">
-            <i class="bi bi-columns-gap me-1"></i><%= @dashboard.columns || 3 %> Spalten
-          </span>
-        </div>
-      </div>
-    </div>
-  </div>
-  
-  <div class="d-flex gap-2">
-    <!-- Info Dropdown -->
-    <div class="dropdown">
-      <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-        <i class="bi bi-info-circle"></i>
-      </button>
-      <div class="dropdown-menu dropdown-menu-end p-3" style="min-width: 300px;">
-        <h6 class="dropdown-header px-0">Dashboard Informationen</h6>
-        <div class="mb-2">
-          <small class="text-muted d-block">Erstellt</small>
-          <span><%= @dashboard.created_at.strftime("%d.%m.%Y um %H:%M") %></span>
-        </div>
-        <div class="mb-2">
-          <small class="text-muted d-block">Zuletzt bearbeitet</small>
-          <span><%= @dashboard.updated_at.strftime("%d.%m.%Y um %H:%M") %></span>
-        </div>
-        <div>
-          <small class="text-muted d-block">Widgets</small>
-          <span><%= @dashboard.widgets.count %> Widget<%= @dashboard.widgets.count == 1 ? '' : 's' %></span>
-        </div>
-      </div>
-    </div>
-    
-    <% if @dashboard.owner?(current_user) %>
-      <%= link_to access_dashboard_path(@dashboard), class: "btn btn-outline-secondary", data: { turbo_frame: "modal" } do %>
-        <i class="bi bi-shield-lock me-1"></i>Zugriff
-      <% end %>
-      <%= link_to edit_dashboard_path(@dashboard), class: "btn btn-outline-secondary" do %>
-        <i class="bi bi-pencil me-1"></i>Bearbeiten
-      <% end %>
-      <%= button_to dashboard_path(@dashboard), method: :delete, class: "btn btn-outline-danger",
-          data: { turbo_confirm: "Möchtest du das Dashboard '#{@dashboard.name}' wirklich löschen?" } do %>
-        <i class="bi bi-trash me-1"></i>Löschen
-      <% end %>
-    <% elsif @dashboard.can_edit?(current_user) %>
-      <%= link_to edit_dashboard_path(@dashboard), class: "btn btn-outline-secondary" do %>
-        <i class="bi bi-pencil me-1"></i>Bearbeiten
-      <% end %>
-    <% end %>
-  </div>
-</div>
+<%= turbo_frame_tag "modal" %>
 
-<!-- Widgets Grid -->
-<% if @dashboard.dashboard_widgets.empty? %>
-  <div class="card">
-    <div class="card-body text-center py-5">
-      <i class="bi bi-grid-1x2 display-1 text-muted mb-3"></i>
-      <h4 class="text-muted">Noch keine Widgets hinzugefügt</h4>
-      <p class="text-muted mb-4">Füge Widgets hinzu, um dein Dashboard mit Inhalten zu füllen.</p>
-      <%= link_to widgets_path, class: "btn btn-primary" do %>
-        <i class="bi bi-plus-lg me-1"></i>
-        Widgets verwalten
+<div class="container-fluid py-4" 
+     data-controller="dashboard-grid"
+     data-dashboard-grid-columns-value="<%= @dashboard.columns || 12 %>"
+     data-dashboard-grid-edit-mode-value="false"
+     data-dashboard-grid-update-url-value="<%= update_positions_dashboard_dashboard_widgets_path(@dashboard) %>">
+  
+  <div id="flash-messages"></div>
+  
+  <!-- Dashboard Header -->
+  <div class="d-flex flex-column flex-lg-row justify-content-between align-items-start align-items-lg-center mb-4 gap-3">
+    <div class="d-flex align-items-center w-100 w-lg-auto">
+      <%= link_to dashboards_path, class: "btn btn-outline-secondary btn-sm me-3" do %>
+        <i class="bi bi-arrow-left"></i>
       <% end %>
-    </div>
-  </div>
-<% else %>
-  <div class="row" style="--bs-columns: <%= @dashboard.columns || 3 %>;">
-    <% @dashboard.dashboard_widgets.includes(:widget).each do |dashboard_widget| %>
-      <% widget = dashboard_widget.widget %>
-      <div class="col" style="grid-column: span <%= [dashboard_widget.width || 1, @dashboard.columns || 3].min %>;">
-        <div class="card h-100 <%= dashboard_widget.color.present? ? "border-#{dashboard_widget.color}" : '' %>">
-          <div class="card-header d-flex justify-content-between align-items-center">
-            <h6 class="mb-0">
-              <i class="bi bi-graph-up me-2"></i>
-              <%= widget.name %>
-            </h6>
-            <span class="badge bg-secondary"><%= widget.widget_type.humanize %></span>
-          </div>
-          <div class="card-body">
-            <% if widget.data_source.present? %>
-              <% latest = widget.latest_data %>
-              <% if latest %>
-                <div class="text-center">
-                  <div class="display-4 fw-bold text-primary">
-                    <%= latest[:value] %>
-                  </div>
-                  <small class="text-muted">
-                    Aktualisiert: <%= time_ago_in_words(latest[:stored_at]) %> ago
-                  </small>
-                </div>
-              <% else %>
-                <p class="text-muted text-center mb-0">Keine Daten verfügbar</p>
-              <% end %>
+      <div class="d-flex align-items-center flex-grow-1 overflow-hidden">
+        <div class="rounded-circle bg-primary bg-opacity-10 d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px; flex-shrink: 0;">
+          <i class="bi bi-<%= @dashboard.icon.presence || 'grid-1x2' %> fs-5 text-primary"></i>
+        </div>
+        <div class="overflow-hidden">
+          <h1 class="mb-0 h3 text-truncate"><%= @dashboard.name %></h1>
+          <div class="d-flex gap-2 mt-1 flex-wrap">
+            <% if @dashboard.is_public %>
+              <span class="badge bg-success"><i class="bi bi-globe me-1 d-none d-sm-inline"></i>Öffentlich</span>
             <% else %>
-              <p class="text-muted text-center mb-0">
-                <i class="bi bi-exclamation-circle me-1"></i>
-                Keine Datenquelle konfiguriert
-              </p>
+              <span class="badge bg-secondary"><i class="bi bi-lock me-1 d-none d-sm-inline"></i>Privat</span>
             <% end %>
-          </div>
-          <div class="card-footer bg-transparent">
-            <small class="text-muted">
-              Position: (<%= dashboard_widget.position_x || 0 %>, <%= dashboard_widget.position_y || 0 %>) | 
-              Größe: <%= dashboard_widget.width || 1 %> × <%= dashboard_widget.height || 1 %>
-            </small>
+            <span class="badge bg-info">
+              <i class="bi bi-columns-gap me-1 d-none d-sm-inline"></i><%= @dashboard.columns || 12 %> Spalten
+            </span>
           </div>
         </div>
       </div>
+    </div>
+  
+    <div class="d-flex gap-2 flex-wrap w-100 w-lg-auto justify-content-end">
+      <!-- Info Dropdown -->
+      <div class="dropdown d-none d-md-block">
+        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <i class="bi bi-info-circle"></i>
+        </button>
+        <div class="dropdown-menu dropdown-menu-end p-3" style="min-width: 300px;">
+          <h6 class="dropdown-header px-0">Dashboard Informationen</h6>
+          <div class="mb-2">
+            <small class="text-muted d-block">Erstellt</small>
+            <span><%= @dashboard.created_at.strftime("%d.%m.%Y um %H:%M") %></span>
+          </div>
+          <div class="mb-2">
+            <small class="text-muted d-block">Zuletzt bearbeitet</small>
+            <span><%= @dashboard.updated_at.strftime("%d.%m.%Y um %H:%M") %></span>
+          </div>
+          <div>
+            <small class="text-muted d-block">Widgets</small>
+            <span><%= @dashboard.widgets.count %> Widget<%= @dashboard.widgets.count == 1 ? '' : 's' %></span>
+          </div>
+        </div>
+      </div>
+
+      <% if @dashboard.can_edit?(current_user) %>
+        <!-- Edit/View Mode Toggle Button -->
+        <button type="button" 
+                class="btn btn-outline-primary flex-shrink-0"
+                data-dashboard-grid-target="modeToggle"
+                data-action="click->dashboard-grid#toggleMode">
+          <i class="bi bi-pencil me-1"></i>
+          <span class="d-none d-sm-inline">Bearbeiten</span>
+        </button>
+
+        <!-- Add Widget Button (nur im Edit Mode sichtbar) -->
+        <%= link_to select_widget_dashboard_dashboard_widgets_path(@dashboard), 
+                    class: "btn btn-success flex-shrink-0",
+                    style: "display: none;",
+                    data: { 
+                      turbo_frame: "modal",
+                      dashboard_grid_target: "addWidgetBtn"
+                    } do %>
+          <i class="bi bi-plus-lg me-1"></i>
+          <span class="d-none d-sm-inline">Widget hinzufügen</span>
+        <% end %>
       <% end %>
+      
+      <% if @dashboard.owner?(current_user) %>
+        <%= link_to access_dashboard_path(@dashboard), class: "btn btn-outline-secondary d-none d-lg-inline-flex", data: { turbo_frame: "modal" } do %>
+          <i class="bi bi-shield-lock me-1"></i><span class="d-none d-xl-inline">Zugriff</span>
+        <% end %>
+        <%= link_to edit_dashboard_path(@dashboard), class: "btn btn-outline-secondary d-none d-md-inline-flex" do %>
+          <i class="bi bi-gear me-1"></i><span class="d-none d-xl-inline">Einstellungen</span>
+        <% end %>
+        <%= button_to dashboard_path(@dashboard), method: :delete, class: "btn btn-outline-danger d-none d-md-inline-flex",
+            data: { turbo_confirm: "Möchtest du das Dashboard '#{@dashboard.name}' wirklich löschen?" } do %>
+          <i class="bi bi-trash"></i>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- Widgets Grid -->
+  <% if @dashboard.dashboard_widgets.empty? %>
+    <div class="card" id="empty-dashboard-state">
+      <div class="card-body text-center py-5">
+        <i class="bi bi-grid-1x2 display-1 text-muted mb-3"></i>
+        <h4 class="text-muted">Noch keine Widgets hinzugefügt</h4>
+        <p class="text-muted mb-4">Wechsle in den Bearbeitungsmodus, um Widgets hinzuzufügen.</p>
+        <% if @dashboard.can_edit?(current_user) %>
+          <button type="button" 
+                  class="btn btn-primary"
+                  data-action="click->dashboard-grid#toggleMode">
+            <i class="bi bi-pencil me-1"></i>
+            Bearbeiten starten
+          </button>
+        <% end %>
+      </div>
     </div>
   <% end %>
+
+  <div class="grid-stack" 
+       data-dashboard-grid-target="grid"
+       id="dashboard-grid-<%= @dashboard.id %>">
+    <% @dashboard.dashboard_widgets.includes(:widget).order(:position_y, :position_x).each do |dashboard_widget| %>
+      <%= render "dashboard_widgets/grid_item", dashboard_widget: dashboard_widget, widget: dashboard_widget.widget %>
+    <% end %>
+  </div>
 </div>

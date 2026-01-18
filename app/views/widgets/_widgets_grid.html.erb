@@ -1,67 +1,69 @@
-<div id="widgets" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); gap: 1.5rem;">
+<div id="widgets" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
   <% widgets.each do |widget| %>
-    <%= link_to widget_path(widget), class: "text-decoration-none", data: { turbo_frame: "widget_modal" } do %>
-        <div class="card h-100 position-relative" style="cursor: pointer; transition: transform 0.15s, box-shadow 0.15s;" 
-             onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.15)';" 
-             onmouseout="this.style.transform='none'; this.style.boxShadow='none';">
-          <div class="card-body">
-            <div class="d-flex align-items-start mb-3">
-              <div class="flex-grow-1 overflow-hidden me-2">
-                <h5 class="card-title mb-0 text-body text-truncate"><%= widget.name %></h5>
-                <% if widget.owner.present? %>
-                  <small class="text-muted d-block" style="font-size: 0.7rem;">
-                    <i class="bi bi-person me-1"></i><%= widget.owner.email %>
-                  </small>
-                <% end %>
-              </div>
-              <button type="button" 
-                      class="btn btn-primary rounded-circle flex-shrink-0" 
-                      style="width: 36px; height: 36px; padding: 0; display: flex; align-items: center; justify-content: center;"
-                      onclick="event.stopPropagation(); event.preventDefault(); alert('Widget zum Dashboard hinzufügen - Funktion wird später implementiert'); return false;"
-                      title="Zum Dashboard hinzufügen">
-                <i class="bi bi-plus-lg"></i>
-              </button>
-            </div>
-            
-            <div class="bg-body-secondary rounded overflow-hidden" style="height: 180px;">
-              <%= render widget %>
-            </div>
-            
-            <% if widget.description.present? %>
-              <div class="mt-3">
-                <small class="text-muted" style="font-size: 0.75rem; line-height: 1.2; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
-                  <%= widget.description %>
+    <div class="col">
+      <div class="card h-100 position-relative" style="cursor: pointer; transition: transform 0.15s, box-shadow 0.15s;" 
+           onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.15)';" 
+           onmouseout="this.style.transform='none'; this.style.boxShadow='none';"
+           onclick="window.Turbo.visit('<%= widget_path(widget) %>', { frame: 'widget_modal' })">
+        <div class="card-body">
+          <div class="d-flex align-items-start mb-3">
+            <div class="flex-grow-1 overflow-hidden me-2">
+              <h5 class="card-title mb-0 text-body text-truncate"><%= widget.name %></h5>
+              <% if widget.owner.present? %>
+                <small class="text-muted d-block" style="font-size: 0.7rem;">
+                  <i class="bi bi-person me-1"></i><%= widget.owner.email %>
                 </small>
-              </div>
-            <% end %>
-            
-            <div class="d-flex gap-2 flex-wrap mt-3">
-              <% if widget.owner?(current_user) %>
-                <span class="badge bg-primary">
-                  <i class="bi bi-star-fill me-1"></i>Owner
-                </span>
-              <% elsif widget.viewer?(current_user) %>
-                <span class="badge bg-info">
-                  <i class="bi bi-eye-fill me-1"></i>Viewer
-                </span>
-              <% end %>
-              <% if widget.is_public %>
-                <span class="badge bg-success">
-                  <i class="bi bi-globe me-1"></i>Öffentlich
-                </span>
-              <% else %>
-                <span class="badge bg-secondary">
-                  <i class="bi bi-lock me-1"></i>Privat
-                </span>
-              <% end %>
-              <% if widget.data_source.present? %>
-                <span class="badge bg-info text-truncate" style="max-width: 150px;">
-                  <i class="bi bi-database me-1"></i><%= widget.data_source.name %>
-                </span>
               <% end %>
             </div>
+            <%= link_to add_to_dashboard_widget_path(widget), 
+                        class: "btn btn-primary rounded-circle flex-shrink-0 position-relative",
+                        style: "width: 36px; height: 36px; padding: 0; display: flex; align-items: center; justify-content: center; z-index: 2;",
+                        title: "Zum Dashboard hinzufügen",
+                        data: { turbo_frame: "widget_modal" },
+                        onclick: "event.stopPropagation();" do %>
+              <i class="bi bi-plus-lg"></i>
+            <% end %>
+          </div>
+          
+          <div class="bg-body-secondary rounded overflow-hidden" style="height: 180px;">
+            <%= render widget %>
+          </div>
+          
+          <% if widget.description.present? %>
+            <div class="mt-3">
+              <small class="text-muted" style="font-size: 0.75rem; line-height: 1.2; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                <%= widget.description %>
+              </small>
+            </div>
+          <% end %>
+          
+          <div class="d-flex gap-2 flex-wrap mt-3">
+            <% if widget.owner?(current_user) %>
+              <span class="badge bg-primary">
+                <i class="bi bi-star-fill me-1"></i>Owner
+              </span>
+            <% elsif widget.viewer?(current_user) %>
+              <span class="badge bg-info">
+                <i class="bi bi-eye-fill me-1"></i>Viewer
+              </span>
+            <% end %>
+            <% if widget.is_public %>
+              <span class="badge bg-success">
+                <i class="bi bi-globe me-1"></i>Öffentlich
+              </span>
+            <% else %>
+              <span class="badge bg-secondary">
+                <i class="bi bi-lock me-1"></i>Privat
+              </span>
+            <% end %>
+            <% if widget.data_source.present? %>
+              <span class="badge bg-info text-truncate" style="max-width: 150px;">
+                <i class="bi bi-database me-1"></i><%= widget.data_source.name %>
+              </span>
+            <% end %>
           </div>
         </div>
-      <% end %>
-    <% end %>
-  </div>
+      </div>
+    </div>
+  <% end %>
+</div>
