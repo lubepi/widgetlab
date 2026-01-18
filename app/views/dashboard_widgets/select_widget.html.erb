@@ -11,7 +11,6 @@
             <i class="bi bi-grid me-2"></i>
             Widget zu "<%= @dashboard.name %>" hinzufügen
           </h5>
-          <%= link_to dashboard_path(@dashboard), class: "btn-close", "aria-label": "Schließen" %>
         </div>
         <div class="modal-body">
           <% if @available_widgets.empty? %>

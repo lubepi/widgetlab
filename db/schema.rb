@@ -10,9 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_01_16_134707) do
+ActiveRecord::Schema[8.1].define(version: 2026_01_18_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "dashboard_group_roles", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.bigint "dashboard_id", null: false
+    t.integer "role"
+    t.datetime "updated_at", null: false
+    t.bigint "user_group_id", null: false
+    t.index ["dashboard_id"], name: "index_dashboard_group_roles_on_dashboard_id"
+    t.index ["user_group_id"], name: "index_dashboard_group_roles_on_user_group_id"
+  end
 
   create_table "dashboard_user_roles", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -147,6 +157,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_16_134707) do
     t.integer "widget_type"
   end
 
+  add_foreign_key "dashboard_group_roles", "dashboards"
+  add_foreign_key "dashboard_group_roles", "user_groups"
   add_foreign_key "dashboard_user_roles", "dashboards"
   add_foreign_key "dashboard_user_roles", "users"
   add_foreign_key "dashboard_widgets", "dashboards"
