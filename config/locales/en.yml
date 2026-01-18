@@ -242,6 +242,9 @@ en:
       add_widget: "Add Widget"
       access: "Access"
       settings: "Settings"
+      edit_mode:
+        view: "View"
+        edit: "Edit"
       empty_state:
         title: "No widgets added yet"
         description: "Switch to edit mode to add widgets."
