@@ -188,14 +188,14 @@
       <div class="modal-footer">
         <%= link_to add_to_dashboard_widget_path(@widget), 
             class: "btn btn-success me-auto",
-            data: { turbo_frame: "widget_modal", turbo_prefetch: false } do %>
+            data: { turbo_frame: "widget_modal" } do %>
           <i class="bi bi-plus-circle me-1"></i>
           <%= t('widgets.show.add_to_dashboard') %>
         <% end %>
         <% if @widget.can_edit?(current_user) %>
           <%= link_to t('common.buttons.edit'), edit_widget_path(@widget), 
               class: "btn btn-primary",
-              data: { turbo_frame: "widget_modal", turbo_prefetch: false } %>
+              data: { turbo_frame: "widget_modal" } %>
         <% end %>
         <button type="button" class="btn btn-secondary"
                 onclick="document.getElementById('widget_modal').innerHTML = '';">
