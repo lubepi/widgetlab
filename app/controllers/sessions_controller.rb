@@ -29,6 +29,7 @@ class SessionsController < ApplicationController
     # Nur User-ID in der Session speichern (Tokens sind zu groß für Cookie-Sessions)
     session[:user_id] = user.id
     session[:keycloak_roles] = extract_keycloak_roles(auth_hash)
+    session[:locale] = extract_keycloak_locale(auth_hash) || session[:locale]
 
     redirect_to root_path, notice: t('sessions.flash.signed_in')
   end
@@ -78,6 +79,27 @@ class SessionsController < ApplicationController
     groups = claims["groups"] || claims[:groups] || []
 
     Array(realm_roles).concat(Array(groups)).map(&:to_s).map(&:downcase).uniq
+  end
+
+  def extract_keycloak_locale(auth_hash)
+    access_token = auth_hash&.credentials&.token
+    id_token = auth_hash&.credentials&.id_token
+
+    claims = jwt_claims(id_token)
+    claims = jwt_claims(access_token) if claims.blank?
+
+    if claims.blank?
+      raw_info = auth_hash&.extra&.raw_info
+      claims = raw_info.respond_to?(:to_h) ? raw_info.to_h : {}
+    end
+
+    raw_locale = claims["locale"] || claims[:locale] || claims["lang"] || claims[:lang]
+    locale = raw_locale.to_s.strip.downcase
+    locale = locale.split(/[-_]/).first.to_s if locale.include?("-") || locale.include?("_")
+    locale_sym = locale.presence&.to_sym
+
+    return nil unless locale_sym
+    I18n.available_locales.include?(locale_sym) ? locale_sym : nil
   end
 
   def jwt_claims(token)

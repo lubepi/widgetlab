@@ -11,7 +11,7 @@ class ApplicationController < ActionController::Base
   # Authentifizierung für alle Controller
   before_action :authenticate_user!
 
-  helper_method :current_user, :user_signed_in?, :keycloak_roles, :has_role?, :admin?
+  helper_method :current_user, :user_signed_in?, :keycloak_roles, :has_role?, :admin?, :keycloak_account_url
 
   private
 
@@ -53,5 +53,10 @@ class ApplicationController < ActionController::Base
         format.json { render json: { error: t('sessions.flash.not_authenticated') }, status: :unauthorized }
       end
     end
+  end
+
+  def keycloak_account_url
+    issuer = ENV.fetch("KEYCLOAK_ISSUER") { "http://localhost:8080/realms/widgetlab" }
+    "#{issuer.to_s.chomp('/')}/account"
   end
 end

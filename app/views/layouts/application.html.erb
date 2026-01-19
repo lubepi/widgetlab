@@ -124,38 +124,21 @@
               </button>
             </div>
 
-            <%# Sprachumschalter %>
-            <div class="pb-3 w-100">
-              <div class="dropdown">
-                <button class="btn btn-sm btn-outline-secondary w-100 dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  <i class="bi bi-globe me-2"></i>
-                  <span class="sidebar-label d-none d-sm-inline"><%= I18n.locale == :de ? 'DE' : 'EN' %></span>
-                </button>
-                <ul class="dropdown-menu dropdown-menu-end">
-                  <li>
-                    <%= button_to update_locale_path(locale: :de), method: :patch, class: "dropdown-item #{'active' if I18n.locale == :de}", data: { turbo: false } do %>
-                      <i class="bi bi-check2 me-2 <%= 'invisible' unless I18n.locale == :de %>"></i><%= t('layouts.application.language.de') %>
-                    <% end %>
-                  </li>
-                  <li>
-                    <%= button_to update_locale_path(locale: :en), method: :patch, class: "dropdown-item #{'active' if I18n.locale == :en}", data: { turbo: false } do %>
-                      <i class="bi bi-check2 me-2 <%= 'invisible' unless I18n.locale == :en %>"></i><%= t('layouts.application.language.en') %>
-                    <% end %>
-                  </li>
-                </ul>
-              </div>
-            </div>
-
-            <div class="pb-3 w-100">
+            <div class="w-100">
               <% if user_signed_in? %>
-                <div class="d-flex align-items-center justify-content-between w-100 px-3 sidebar-footer">
+                <div class="d-flex align-items-center justify-content-between w-100 sidebar-footer">
                   <div class="text-truncate me-2 sidebar-footer-label">
                     <div class="fw-semibold"><%= [current_user&.first_name, current_user&.last_name].compact.join(" ") %></div>
                     <div class="small text-secondary"><%= current_user&.email %></div>
                   </div>
-                  <%= link_to logout_path, class: "btn btn-sm btn-outline-secondary sidebar-logout-btn", data: { turbo: false } do %>
-                    <i class="bi bi-box-arrow-right"></i>
-                  <% end %>
+                  <div class="d-flex align-items-center gap-2">
+                    <%= link_to keycloak_account_url, class: "btn btn-sm btn-outline-secondary", data: { turbo: false }, allow_other_host: true do %>
+                      <i class="bi bi-person-gear"></i>
+                    <% end %>
+                    <%= link_to logout_path, class: "btn btn-sm btn-outline-secondary sidebar-logout-btn", data: { turbo: false } do %>
+                      <i class="bi bi-box-arrow-right"></i>
+                    <% end %>
+                  </div>
                 </div>
               <% end %>
             </div>
