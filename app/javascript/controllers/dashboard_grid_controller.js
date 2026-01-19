@@ -104,12 +104,12 @@ export default class extends Controller {
       
       if (this.editModeValue) {
         if (icon) icon.className = 'bi bi-eye me-1'
-        if (text) text.textContent = 'Anzeigen'
+        if (text) text.textContent = this.element.dataset.viewText || 'View'
         this.modeToggleTarget.classList.remove('btn-outline-primary')
         this.modeToggleTarget.classList.add('btn-primary')
       } else {
         if (icon) icon.className = 'bi bi-pencil me-1'
-        if (text) text.textContent = 'Bearbeiten'
+        if (text) text.textContent = this.element.dataset.editText || 'Edit'
         this.modeToggleTarget.classList.remove('btn-primary')
         this.modeToggleTarget.classList.add('btn-outline-primary')
       }

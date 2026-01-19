@@ -3,28 +3,28 @@
     <div class="modal-dialog modal-lg modal-dialog-scrollable">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="editDataSourceWhitelistModalLabel">Whitelist bearbeiten</h5>
-          <%= link_to "", data_sources_path, class: "btn-close", aria: { label: "Close" }, data: { turbo_frame: "_top" } %>
+          <h5 class="modal-title" id="editDataSourceWhitelistModalLabel"><%= t('data_source_whitelists.edit.title') %></h5>
+          <%= link_to "", data_sources_path, class: "btn-close", aria: { label: t('common.buttons.close') }, data: { turbo_frame: "_top" } %>
         </div>
         <div class="modal-body">
           <%= form_with(url: whitelist_data_source_path(@data_source, format: :turbo_stream), method: :patch, id: "edit_data_source_whitelist_form_#{@data_source.id}", data: { turbo_frame: "_top", controller: "data-source-whitelist", data_source_whitelist_group_members_value: @group_member_info.to_json }) do %>
             <div class="mb-4">
-              <div class="form-text">Datenquelle: <strong><%= @data_source.name %></strong></div>
+              <div class="form-text"><%= t('data_source_whitelists.edit.data_source_label') %> <strong><%= @data_source.name %></strong></div>
             </div>
 
             <div data-data-source-whitelist-target="hiddenContainer"></div>
 
             <div class="mb-4">
-              <label class="form-label">Benutzer</label>
+              <label class="form-label"><%= t('data_source_whitelists.edit.users_label') %></label>
               <div class="card" data-controller="member-picker" data-action="change->member-picker#updateCount">
                 <div class="card-body">
                   <div class="row g-2 align-items-center mb-2">
                     <div class="col-sm">
-                      <input type="search" class="form-control" placeholder="Suchen (E-Mail)…" data-member-picker-target="query" data-action="input->member-picker#filter">
+                      <input type="search" class="form-control" placeholder="<%= t('data_source_whitelists.edit.users_search_placeholder') %>" data-member-picker-target="query" data-action="input->member-picker#filter">
                     </div>
                     <div class="col-sm-auto">
-                      <button type="button" class="btn btn-outline-secondary" data-action="member-picker#toggleAll" data-member-picker-checked-param="true">Alle</button>
-                      <button type="button" class="btn btn-outline-secondary" data-action="member-picker#toggleAll" data-member-picker-checked-param="false">Keine</button>
+                      <button type="button" class="btn btn-outline-secondary" data-action="member-picker#toggleAll" data-member-picker-checked-param="true"><%= t('common.buttons.all') %></button>
+                      <button type="button" class="btn btn-outline-secondary" data-action="member-picker#toggleAll" data-member-picker-checked-param="false"><%= t('common.buttons.none') %></button>
                     </div>
                   </div>
 
@@ -44,16 +44,16 @@
             </div>
 
             <div class="mb-4">
-              <label class="form-label">Gruppen</label>
+              <label class="form-label"><%= t('data_source_whitelists.edit.groups_label') %></label>
               <div class="card" data-controller="member-picker" data-action="change->member-picker#updateCount">
                 <div class="card-body">
                   <div class="row g-2 align-items-center mb-2">
                     <div class="col-sm">
-                      <input type="search" class="form-control" placeholder="Suchen (Name)…" data-member-picker-target="query" data-action="input->member-picker#filter">
+                      <input type="search" class="form-control" placeholder="<%= t('data_source_whitelists.edit.groups_search_placeholder') %>" data-member-picker-target="query" data-action="input->member-picker#filter">
                     </div>
                     <div class="col-sm-auto">
-                      <button type="button" class="btn btn-outline-secondary" data-action="member-picker#toggleAll" data-member-picker-checked-param="true">Alle</button>
-                      <button type="button" class="btn btn-outline-secondary" data-action="member-picker#toggleAll" data-member-picker-checked-param="false">Keine</button>
+                      <button type="button" class="btn btn-outline-secondary" data-action="member-picker#toggleAll" data-member-picker-checked-param="true"><%= t('common.buttons.all') %></button>
+                      <button type="button" class="btn btn-outline-secondary" data-action="member-picker#toggleAll" data-member-picker-checked-param="false"><%= t('common.buttons.none') %></button>
                     </div>
                   </div>
 
@@ -73,8 +73,8 @@
           <% end %>
         </div>
         <div class="modal-footer">
-          <%= link_to "Abbrechen", data_sources_path, class: "btn btn-secondary", data: { turbo_frame: "_top" } %>
-          <button type="submit" class="btn btn-primary" form="<%= "edit_data_source_whitelist_form_#{@data_source.id}" %>">Speichern</button>
+          <%= link_to t('common.buttons.cancel'), data_sources_path, class: "btn btn-secondary", data: { turbo_frame: "_top" } %>
+          <button type="submit" class="btn btn-primary" form="<%= "edit_data_source_whitelist_form_#{@data_source.id}" %>"><%= t('common.buttons.save') %></button>
         </div>
       </div>
     </div>

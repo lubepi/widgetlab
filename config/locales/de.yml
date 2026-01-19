@@ -242,6 +242,9 @@ de:
       add_widget: "Widget hinzufügen"
       access: "Zugriff"
       settings: "Einstellungen"
+      edit_mode:
+        view: "Anzeigen"
+        edit: "Bearbeiten"
       empty_state:
         title: "Noch keine Widgets hinzugefügt"
         description: "Wechsle in den Bearbeitungsmodus, um Widgets hinzuzufügen."
