@@ -1,0 +1,3 @@
+Jannis Kröger: Datenquellen Verwaltung inkl. JSON/MQTT Jobs, Keycloak-Integration und User-Verwaltung, Gruppen-Verwaltung, "Adminbereich"
+Lukas Piel: Implementierung der gesamten Widget-Funktionalität samt Widget Store mit Verarbeitung der durch die Datenquellen zur Verfügung gestellten Daten.
+Alexander Claus: Dashboard mit Integration der Widgets, i18n, Model- und Controller-Tests 
