@@ -4,7 +4,8 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="widgetShowModalLabel"><%= @widget.name %></h5>
-          <%= link_to "", widgets_path, class: "btn-close", aria: { label: "Close" }, data: { turbo_frame: "_top" } %>
+          <button type="button" class="btn-close" aria-label="Close"
+                  onclick="document.getElementById('widget_modal').innerHTML = '';"></button>
         </div>
       <div class="modal-body">
         <% if @widget.description.present? %>
@@ -187,19 +188,21 @@
       <div class="modal-footer">
         <%= link_to add_to_dashboard_widget_path(@widget), 
             class: "btn btn-success me-auto",
-            data: { turbo_frame: "widget_modal" } do %>
+            data: { turbo_frame: "widget_modal", turbo_prefetch: false } do %>
           <i class="bi bi-plus-circle me-1"></i>
           <%= t('widgets.show.add_to_dashboard') %>
         <% end %>
         <% if @widget.can_edit?(current_user) %>
           <%= link_to t('common.buttons.edit'), edit_widget_path(@widget), 
               class: "btn btn-primary",
-              data: { turbo_frame: "widget_modal" } %>
+              data: { turbo_frame: "widget_modal", turbo_prefetch: false } %>
         <% end %>
-        <%= link_to t('common.buttons.close'), widgets_path, class: "btn btn-secondary", data: { turbo_frame: "_top" } %>
+        <button type="button" class="btn btn-secondary"
+                onclick="document.getElementById('widget_modal').innerHTML = '';">
+          <%= t('common.buttons.close') %>
+        </button>
       </div>
     </div>
   </div>
 </div>
-<div class="modal-backdrop fade show"></div>
 <% end %>
