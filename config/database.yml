@@ -17,5 +17,3 @@ test:
 production:
   <<: *default
   database: widgetlab_production
-  username: widgetlab
-  password: <%= ENV["WIDGETLAB_DATABASE_PASSWORD"] %>

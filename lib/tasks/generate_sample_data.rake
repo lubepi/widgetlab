@@ -1,9 +1,14 @@
 # frozen_string_literal: true
 
 namespace :data do
-  desc "Generate sample data for data sources (IDs 1, 3, 4) for the last 30 days"
+  desc "Generate sample data for data sources (IDs 1, 3, 4, 5) for the last 30 days"
   task generate_samples: :environment do
-    puts "Deleting existing data from DataSourceStorage..."
+    user = User.find(1)
+    
+    puts "Creating data sources for user #{user.id}..."
+    create_data_sources(user)
+
+    puts "\nDeleting existing data from DataSourceStorage..."
     deleted_count = DataSourceStorage.delete_all
     puts "  Deleted #{deleted_count} records."
 
@@ -26,6 +31,95 @@ namespace :data do
     generate_room_sensor_data(5, days_back, end_time)
 
     puts "\nDone! Sample data generated for the last #{days_back} days."
+  end
+
+  def create_data_sources(user)
+    # ID 1: CoinGecko Crypto API
+    unless DataSource.exists?(id: 1)
+      DataSource.create!(
+        id: 1,
+        name: "CoinGecko Simple Price API (Bitcoin, Ethereum, Tether in USD & EUR)",
+        source_type: :json_api,
+        creator: user,
+        is_public: true,
+        config: {
+          url: "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,tether&vs_currencies=usd,eur",
+          method: "get",
+          timeout: 30,
+          interval: 300,
+          auto_subscribe: false
+        }
+      )
+      puts "  Created DataSource ID 1: CoinGecko API"
+    else
+      puts "  DataSource ID 1 already exists"
+    end
+
+    # ID 3: OpenMeteo Weather API
+    unless DataSource.exists?(id: 3)
+      DataSource.create!(
+        id: 3,
+        name: "OpenMeteo (Wiesbaden)",
+        source_type: :json_api,
+        creator: user,
+        is_public: true,
+        config: {
+          url: "https://api.open-meteo.com/v1/forecast?latitude=50.0826&longitude=8.2416&current_weather=true",
+          method: "get",
+          timeout: 30,
+          interval: 300,
+          auto_subscribe: false
+        }
+      )
+      puts "  Created DataSource ID 3: OpenMeteo API"
+    else
+      puts "  DataSource ID 3 already exists"
+    end
+
+    # ID 4: Frankfurter Currency API
+    unless DataSource.exists?(id: 4)
+      DataSource.create!(
+        id: 4,
+        name: "EZB Wechselkurse EUR/USD (Frankfurter API)",
+        source_type: :json_api,
+        creator: user,
+        is_public: true,
+        config: {
+          url: "https://api.frankfurter.app/latest?from=EUR&to=USD",
+          method: "get",
+          timeout: 30,
+          interval: 300,
+          auto_subscribe: false
+        }
+      )
+      puts "  Created DataSource ID 4: Frankfurter API"
+    else
+      puts "  DataSource ID 4 already exists"
+    end
+
+    # ID 5: MQTT Room Sensor
+    unless DataSource.exists?(id: 5)
+      DataSource.create!(
+        id: 5,
+        name: "Raum C201 (Thermo- & Hygrometer)",
+        source_type: :mqtt,
+        creator: user,
+        is_public: false,
+        config: {
+          host: "localhost",
+          port: 1883,
+          topic: "sensors/c201",
+          qos: 0,
+          keep_alive: 15,
+          parse_json: true,
+          clean_session: false,
+          use_ssl: false
+        }
+      )
+      puts "  Created DataSource ID 5: MQTT Room Sensor"
+    else
+      puts "  DataSource ID 5 already exists"
+    end
   end
 
   def generate_crypto_data(data_source_id, days_back, end_time)
