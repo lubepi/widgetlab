@@ -1,12 +1,14 @@
 # frozen_string_literal: true
 
 namespace :data do
-  desc "Generate sample data for data sources (IDs 1, 3, 4, 5) for the last 30 days"
+  desc "Generate sample data for data sources (IDs 1, 3, 4, 5) for the last 30 days. Set INCLUDE_MQTT=true to include MQTT data source."
   task generate_samples: :environment do
     user = User.find(1)
+    include_mqtt = ENV["INCLUDE_MQTT"].to_s.downcase == "true"
     
     puts "Creating data sources for user #{user.id}..."
-    create_data_sources(user)
+    puts "MQTT data source: #{include_mqtt ? 'enabled' : 'disabled'}"
+    create_data_sources(user, include_mqtt: include_mqtt)
 
     puts "\nDeleting existing data from DataSourceStorage..."
     deleted_count = DataSourceStorage.delete_all
@@ -28,12 +30,14 @@ namespace :data do
     generate_currency_data(4, days_back, end_time)
 
     # ID 5: Raum C201 Thermo- & Hygrometer (MQTT)
-    generate_room_sensor_data(5, days_back, end_time)
+    if include_mqtt
+      generate_room_sensor_data(5, days_back, end_time)
+    end
 
     puts "\nDone! Sample data generated for the last #{days_back} days."
   end
 
-  def create_data_sources(user)
+  def create_data_sources(user, include_mqtt: false)
     # ID 1: CoinGecko Crypto API
     unless DataSource.exists?(id: 1)
       DataSource.create!(
@@ -97,28 +101,32 @@ namespace :data do
       puts "  DataSource ID 4 already exists"
     end
 
-    # ID 5: MQTT Room Sensor
-    unless DataSource.exists?(id: 5)
-      DataSource.create!(
-        id: 5,
-        name: "Raum C201 (Thermo- & Hygrometer)",
-        source_type: :mqtt,
-        creator: user,
-        is_public: false,
-        config: {
-          host: "localhost",
-          port: 1883,
-          topic: "sensors/c201",
-          qos: 0,
-          keep_alive: 15,
-          parse_json: true,
-          clean_session: false,
-          use_ssl: false
-        }
-      )
-      puts "  Created DataSource ID 5: MQTT Room Sensor"
+    # ID 5: MQTT Room Sensor (optional)
+    if include_mqtt
+      unless DataSource.exists?(id: 5)
+        DataSource.create!(
+          id: 5,
+          name: "Raum C201 (Thermo- & Hygrometer)",
+          source_type: :mqtt,
+          creator: user,
+          is_public: false,
+          config: {
+            host: "localhost",
+            port: 1883,
+            topic: "sensors/c201",
+            qos: 0,
+            keep_alive: 15,
+            parse_json: true,
+            clean_session: false,
+            use_ssl: false
+          }
+        )
+        puts "  Created DataSource ID 5: MQTT Room Sensor"
+      else
+        puts "  DataSource ID 5 already exists"
+      end
     else
-      puts "  DataSource ID 5 already exists"
+      puts "  Skipping MQTT DataSource (set INCLUDE_MQTT=true to enable)"
     end
   end
 
