@@ -1,5 +1,30 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
+alice_owns_alice_widget:
+  widget: alice_widget
+  user: alice
+  role: 1
+
+alice_owns_public_widget:
+  widget: public_widget
+  user: alice
+  role: 1
+
+bob_owns_bob_widget:
+  widget: bob_widget
+  user: bob
+  role: 1
+
+bob_owns_shared_widget:
+  widget: shared_widget
+  user: bob
+  role: 1
+
+alice_views_shared_widget:
+  widget: shared_widget
+  user: alice
+  role: 0
+
 one:
   widget: one
   user: one

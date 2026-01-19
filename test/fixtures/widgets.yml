@@ -1,15 +1,77 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  name: MyString
-  description: MyString
-  type: 1
-  color: MyString
+alice_widget:
+  name: Alice's Temperature Widget
+  description: Shows temperature data
+  widget_type: 1
+  color: '#FF5733'
   is_public: false
+  time_range_value: 24
+  time_range_unit: hours
+  group_by: hour
+  aggregate_function: avg
+  data_limit: 100
+  unit: '°C'
+
+public_widget:
+  name: Public Weather Widget
+  description: Shows public weather data
+  widget_type: 2
+  color: '#33FF57'
+  is_public: true
+  time_range_value: 7
+  time_range_unit: days
+  group_by: day
+  aggregate_function: avg
+  data_limit: 50
+  unit: '%'
+
+bob_widget:
+  name: Bob's Value Widget
+  description: Shows a single value
+  widget_type: 0
+  color: '#3357FF'
+  is_public: false
+  time_range_value: 1
+  time_range_unit: hours
+  group_by: minute
+  aggregate_function: avg
+  data_limit: 10
+  unit: 'kWh'
+
+shared_widget:
+  name: Shared Humidity Widget
+  description: Shared humidity readings
+  widget_type: 3
+  color: '#FF33FF'
+  is_public: false
+  time_range_value: 48
+  time_range_unit: hours
+  group_by: hour
+  aggregate_function: max
+  data_limit: 200
+  unit: '%'
+
+one:
+  name: Widget One
+  description: Description One
+  widget_type: 1
+  color: '#000000'
+  is_public: false
+  time_range_value: 24
+  time_range_unit: hours
+  group_by: hour
+  aggregate_function: avg
+  data_limit: 100
 
 two:
-  name: MyString
-  description: MyString
-  type: 1
-  color: MyString
+  name: Widget Two
+  description: Description Two
+  widget_type: 2
+  color: '#FFFFFF'
   is_public: false
+  time_range_value: 24
+  time_range_unit: hours
+  group_by: hour
+  aggregate_function: avg
+  data_limit: 100

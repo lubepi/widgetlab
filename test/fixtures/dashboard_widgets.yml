@@ -1,19 +1,37 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  dashboard: one
-  widget: one
-  width: 1
-  height: 1
-  position_x: 1
-  position_y: 1
-  color: MyString
+alice_widget_on_alice_dashboard:
+  dashboard: alice_dashboard
+  widget: alice_widget
+  position_x: 0
+  position_y: 0
+  width: 2
+  height: 2
+  color: '#FF5733'
 
-two:
-  dashboard: two
-  widget: two
+public_widget_on_public_dashboard:
+  dashboard: public_dashboard
+  widget: public_widget
+  position_x: 0
+  position_y: 0
+  width: 3
+  height: 2
+  color: '#33FF57'
+
+bob_widget_on_bob_dashboard:
+  dashboard: bob_dashboard
+  widget: bob_widget
+  position_x: 1
+  position_y: 0
   width: 1
   height: 1
-  position_x: 1
-  position_y: 1
-  color: MyString
+  color: '#3357FF'
+
+shared_widget_on_shared_dashboard:
+  dashboard: shared_dashboard
+  widget: shared_widget
+  position_x: 0
+  position_y: 0
+  width: 2
+  height: 2
+  color: '#FF33FF'

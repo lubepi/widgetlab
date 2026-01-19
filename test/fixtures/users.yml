@@ -1,13 +1,37 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
+admin:
+  first_name: Admin
+  last_name: User
+  email: admin@example.com
+  sub: admin-keycloak-sub
+
+alice:
+  first_name: Alice
+  last_name: Smith
+  email: alice@example.com
+  sub: alice-keycloak-sub
+
+bob:
+  first_name: Bob
+  last_name: Jones
+  email: bob@example.com
+  sub: bob-keycloak-sub
+
+charlie:
+  first_name: Charlie
+  last_name: Brown
+  email: charlie@example.com
+  sub: charlie-keycloak-sub
+
 one:
-  first_name: MyString
-  last_name: MyString
-  email: MyString
-  sub: MyString
+  first_name: Test
+  last_name: One
+  email: one@example.com
+  sub: one-sub
 
 two:
-  first_name: MyString
-  last_name: MyString
-  email: MyString
-  sub: MyString
+  first_name: Test
+  last_name: Two
+  email: two@example.com
+  sub: two-sub

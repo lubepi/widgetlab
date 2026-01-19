@@ -1,11 +1,31 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  group: one
-  user: one
+alice_owns_developers:
+  user_group: developers
+  user: alice
+  role: 2
+
+bob_member_developers:
+  user_group: developers
+  user: bob
+  role: 0
+
+charlie_editor_developers:
+  user_group: developers
+  user: charlie
   role: 1
 
-two:
-  group: two
-  user: two
-  role: 1
+bob_owns_managers:
+  user_group: managers
+  user: bob
+  role: 2
+
+alice_member_managers:
+  user_group: managers
+  user: alice
+  role: 0
+
+admin_owns_analysts:
+  user_group: analysts
+  user: admin
+  role: 2

@@ -1,11 +1,32 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  widget: one
-  data_source: one
-  config: 
+alice_widget_transformer:
+  widget: alice_widget
+  data_source: public_api
+  config:
+    json_path: temperature
+    multiply: 1.0
+    round: 2
 
-two:
-  widget: two
-  data_source: two
-  config: 
+public_widget_transformer:
+  widget: public_widget
+  data_source: public_api
+  config:
+    json_path: humidity
+    format: number
+
+bob_widget_transformer:
+  widget: bob_widget
+  data_source: whitelisted_api
+  config:
+    json_path: data.value
+    multiply: 0.001
+    round: 3
+
+shared_widget_transformer:
+  widget: shared_widget
+  data_source: private_mqtt
+  config:
+    json_path: temp
+    add: 0
+    round: 1

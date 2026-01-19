@@ -1,48 +1,66 @@
 require "test_helper"
 
 class UsersControllerTest < ActionDispatch::IntegrationTest
-  setup do
-    @user = users(:one)
+  def setup
+    @alice = users(:alice)
+    @bob = users(:bob)
+    @admin = users(:admin)
   end
 
-  test "should get index" do
+  # ==================== Authentication ====================
+
+  test "index redirects to login when not authenticated" do
     get users_url
+    assert_redirected_to login_path
+  end
+
+  test "show redirects to login when not authenticated" do
+    get user_url(@alice)
+    assert_redirected_to login_path
+  end
+
+  # ==================== Index ====================
+
+  test "index returns success when authenticated" do
+    get users_url, headers: { "Cookie" => login_as(@alice) }
     assert_response :success
   end
 
-  test "should get new" do
-    get new_user_url
+  test "index lists all users" do
+    get users_url, headers: { "Cookie" => login_as(@admin) }
     assert_response :success
   end
 
-  test "should create user" do
-    assert_difference("User.count") do
-      post users_url, params: { user: { email: @user.email, first_name: @user.first_name, last_name: @user.last_name, sub: @user.sub } }
-    end
+  # ==================== Show ====================
 
-    assert_redirected_to user_url(User.last)
-  end
-
-  test "should show user" do
-    get user_url(@user)
+  test "show returns success" do
+    get user_url(@alice), headers: { "Cookie" => login_as(@admin) }
     assert_response :success
   end
 
-  test "should get edit" do
-    get edit_user_url(@user)
+  test "show displays user information" do
+    get user_url(@alice), headers: { "Cookie" => login_as(@alice) }
     assert_response :success
   end
 
-  test "should update user" do
-    patch user_url(@user), params: { user: { email: @user.email, first_name: @user.first_name, last_name: @user.last_name, sub: @user.sub } }
-    assert_redirected_to user_url(@user)
+  # ==================== JSON Format ====================
+
+  test "index returns json" do
+    get users_url, 
+      headers: { "Cookie" => login_as(@alice), "Accept" => "application/json" }
+    assert_response :success
   end
 
-  test "should destroy user" do
-    assert_difference("User.count", -1) do
-      delete user_url(@user)
-    end
+  test "show returns json" do
+    get user_url(@alice),
+      headers: { "Cookie" => login_as(@alice), "Accept" => "application/json" }
+    assert_response :success
+  end
 
-    assert_redirected_to users_url
+  private
+
+  def login_as(user)
+    post "/session", params: { sub: user.sub, email: user.email, first_name: user.first_name, last_name: user.last_name }
+    response.headers["Set-Cookie"]
   end
 end

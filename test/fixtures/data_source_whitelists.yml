@@ -1,11 +1,11 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  data_source: one
-  whitelistable: one
-  whitelistable_type: Whitelistable
+alice_whitelist_api:
+  data_source: whitelisted_api
+  whitelistable_type: User
+  whitelistable_id: <%= ActiveRecord::FixtureSet.identify(:alice) %>
 
-two:
-  data_source: two
-  whitelistable: two
-  whitelistable_type: Whitelistable
+developers_whitelist_mqtt:
+  data_source: private_mqtt
+  whitelistable_type: UserGroup
+  whitelistable_id: <%= ActiveRecord::FixtureSet.identify(:developers) %>

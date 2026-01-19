@@ -1,11 +1,41 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
+alice_owns_alice_dashboard:
+  dashboard: alice_dashboard
+  user: alice
+  role: 2
+
+alice_owns_public_dashboard:
+  dashboard: public_dashboard
+  user: alice
+  role: 2
+
+bob_owns_bob_dashboard:
+  dashboard: bob_dashboard
+  user: bob
+  role: 2
+
+bob_owns_shared_dashboard:
+  dashboard: shared_dashboard
+  user: bob
+  role: 2
+
+alice_views_shared_dashboard:
+  dashboard: shared_dashboard
+  user: alice
+  role: 0
+
+charlie_edits_shared_dashboard:
+  dashboard: shared_dashboard
+  user: charlie
+  role: 1
+
 one:
   dashboard: one
   user: one
-  role: 1
+  role: 2
 
 two:
   dashboard: two
   user: two
-  role: 1
+  role: 2
