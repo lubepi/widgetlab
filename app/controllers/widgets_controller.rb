@@ -24,7 +24,8 @@ class WidgetsController < ApplicationController
     @data_sources = DataSource.accessible_for(current_user)
     @users = User.order(:email)
     @roles = UserWidgetRole.roles.keys
-    @user_widget_roles = {}  # Leeres Hash für neues Widget
+    # Ersteller ist standardmäßig Owner
+    @user_widget_roles = { current_user.id => Struct.new(:role).new('owner') }
     render partial: "new_modal", layout: false
   end
 
@@ -91,24 +92,20 @@ class WidgetsController < ApplicationController
 
   # PATCH/PUT /widgets/1 or /widgets/1.json
   def update
-    # Validiere Zugriffsrechte nur wenn Widget nicht öffentlich ist
-    is_public = params.dig(:widget, :is_public) == "1"
+    # Validiere Zugriffsrechte - es muss immer mindestens einen Owner geben
+    user_roles = params.dig(:access, :user_roles) || {}
+    future_owner_count = user_roles.values.count { |role| role == 'owner' }
     
-    unless is_public
-      user_roles = params.dig(:access, :user_roles) || {}
-      future_owner_count = user_roles.values.count { |role| role == 'owner' }
+    if future_owner_count == 0
+      # Lade notwendige Variablen für edit_modal
+      @data_sources = DataSource.accessible_for(current_user)
+      @users = User.order(:email)
+      @roles = UserWidgetRole.roles.keys
+      @user_widget_roles = @widget.user_widget_roles.includes(:user).index_by(&:user_id)
       
-      if future_owner_count == 0
-        # Lade notwendige Variablen für edit_modal
-        @data_sources = DataSource.accessible_for(current_user)
-        @users = User.order(:email)
-        @roles = UserWidgetRole.roles.keys
-        @user_widget_roles = @widget.user_widget_roles.includes(:user).index_by(&:user_id)
-        
-        flash.now[:alert] = "Es muss mindestens einen Owner geben."
-        render partial: "edit_modal", layout: false
-        return
-      end
+      flash.now[:alert] = "Es muss mindestens einen Owner geben."
+      render partial: "edit_modal", layout: false
+      return
     end
 
     respond_to do |format|
@@ -128,26 +125,23 @@ class WidgetsController < ApplicationController
           end
         end
 
-        # Aktualisiere Zugriffsrechte nur wenn Widget nicht öffentlich ist
-        unless is_public
-          user_roles = params.dig(:access, :user_roles) || {}
-          ActiveRecord::Base.transaction do
-            # Bestehende Rollen aktualisieren oder entfernen
-            @widget.user_widget_roles.each do |uwr|
-              new_role = user_roles[uwr.user_id.to_s]
-              if new_role.blank?
-                uwr.destroy!
-              elsif uwr.role != new_role
-                uwr.update!(role: new_role)
-              end
+        # Aktualisiere Zugriffsrechte
+        ActiveRecord::Base.transaction do
+          # Bestehende Rollen aktualisieren oder entfernen
+          @widget.user_widget_roles.each do |uwr|
+            new_role = user_roles[uwr.user_id.to_s]
+            if new_role.blank?
+              uwr.destroy!
+            elsif uwr.role != new_role
+              uwr.update!(role: new_role)
             end
+          end
 
-            # Neue Rollen hinzufügen
-            user_roles.each do |user_id, role|
-              next if role.blank?
-              next if @widget.user_widget_roles.exists?(user_id: user_id)
-              @widget.user_widget_roles.create!(user_id: user_id, role: role)
-            end
+          # Neue Rollen hinzufügen
+          user_roles.each do |user_id, role|
+            next if role.blank?
+            next if @widget.user_widget_roles.exists?(user_id: user_id)
+            @widget.user_widget_roles.create!(user_id: user_id, role: role)
           end
         end
 
