@@ -76,6 +76,7 @@ class WidgetDataSourceTransformerTest < ActiveSupport::TestCase
   test "transform with format string converts to string" do
     transformer = WidgetDataSourceTransformer.new(config: { format: "string" })
     result = transformer.transform(42)
+    # When input is integer-like float (42.0), it gets converted to "42"
     assert_equal "42", result
   end
 

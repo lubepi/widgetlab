@@ -16,14 +16,15 @@ end
 
 class ActionDispatch::IntegrationTest
   # Helper method to sign in a user for controller tests
-  def sign_in(user)
-    post login_path, params: {}, headers: {}
-    session[:user_id] = user.id
-  end
-
-  # Alternative: set session directly in setup
-  def sign_in_as(user)
-    session[:user_id] = user.id
+  # Returns the session cookie to be used in subsequent requests
+  def login_as(user)
+    post "/test_session", params: { 
+      sub: user.sub, 
+      email: user.email, 
+      first_name: user.first_name, 
+      last_name: user.last_name 
+    }
+    response.headers["Set-Cookie"]
   end
 end
 

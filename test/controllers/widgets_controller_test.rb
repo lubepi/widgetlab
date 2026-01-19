@@ -120,11 +120,4 @@ class WidgetsControllerTest < ActionDispatch::IntegrationTest
       delete widget_url(@alice_widget), headers: { "Cookie" => login_as(@bob) }
     end
   end
-
-  private
-
-  def login_as(user)
-    post "/session", params: { sub: user.sub, email: user.email, first_name: user.first_name, last_name: user.last_name }
-    response.headers["Set-Cookie"]
-  end
 end

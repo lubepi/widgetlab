@@ -16,7 +16,8 @@ private_mqtt:
   name: Alice's MQTT Sensor
   source_type: 1
   config:
-    broker: mqtt://localhost:1883
+    host: localhost
+    port: 1883
     topic: sensors/temperature
     auto_subscribe: true
   is_public: false
@@ -60,7 +61,8 @@ two:
   name: Source Two
   source_type: 1
   config:
-    broker: mqtt://localhost:1883
+    host: localhost
+    port: 1883
     topic: test/topic
   is_public: false
   status: 0

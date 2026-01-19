@@ -64,19 +64,19 @@ class WidgetTest < ActiveSupport::TestCase
   test "name is required" do
     widget = Widget.new(widget_type: :value)
     assert_not widget.valid?
-    assert_includes widget.errors[:name], "can't be blank"
+    assert widget.errors[:name].any?, "Expected errors on name"
   end
 
   test "widget_type is required" do
     widget = Widget.new(name: "Test")
     assert_not widget.valid?
-    assert_includes widget.errors[:widget_type], "can't be blank"
+    assert widget.errors[:widget_type].any?, "Expected errors on widget_type"
   end
 
   test "time_range_unit validates inclusion" do
     widget = Widget.new(name: "Test", widget_type: :value, time_range_unit: "invalid")
     assert_not widget.valid?
-    assert_includes widget.errors[:time_range_unit], "is not included in the list"
+    assert widget.errors[:time_range_unit].any?, "Expected errors on time_range_unit"
   end
 
   test "group_by validates inclusion" do

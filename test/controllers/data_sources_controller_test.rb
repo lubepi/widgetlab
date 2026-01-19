@@ -114,11 +114,4 @@ class DataSourcesControllerTest < ActionDispatch::IntegrationTest
     get config_fields_data_sources_url(type: "mqtt"), headers: { "Cookie" => login_as(@alice) }
     assert_response :success
   end
-
-  private
-
-  def login_as(user)
-    post "/session", params: { sub: user.sub, email: user.email, first_name: user.first_name, last_name: user.last_name }
-    response.headers["Set-Cookie"]
-  end
 end

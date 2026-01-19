@@ -100,11 +100,4 @@ class UserGroupsControllerTest < ActionDispatch::IntegrationTest
       headers: { "Cookie" => login_as(@alice), "Accept" => "application/json" }
     assert_response :created
   end
-
-  private
-
-  def login_as(user)
-    post "/session", params: { sub: user.sub, email: user.email, first_name: user.first_name, last_name: user.last_name }
-    response.headers["Set-Cookie"]
-  end
 end
