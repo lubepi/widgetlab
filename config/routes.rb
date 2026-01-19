@@ -8,9 +8,14 @@ Rails.application.routes.draw do
   get "/login", to: "sessions#new", as: :login
   match "/logout", to: "sessions#destroy", as: :logout, via: [:get, :delete]
 
+  # Test-only route for session creation (only available in test environment)
+  if Rails.env.test?
+    post "/test_session", to: "sessions#test_create"
+  end
+
   resources :data_source_whitelists
   resources :widget_data_source_transformers
-  resources :data_sources, only: %i[index show create edit update destroy] do
+  resources :data_sources, only: %i[index show new create edit update destroy] do
     collection do
       get :config_fields
       post :start_all_subscriptions

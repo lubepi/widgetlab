@@ -79,9 +79,16 @@ class WidgetDataSourceTransformer < ApplicationRecord
     when "integer"
       value.to_i
     when "string"
-      value.to_s
+      # Handle floats that are actually integers (42.0 -> "42")
+      if value.is_a?(Float) && value == value.to_i
+        value.to_i.to_s
+      else
+        value.to_s
+      end
     when "boolean"
-      ActiveModel::Type::Boolean.new.cast(value)
+      # Convert 0/0.0 to integer first to ensure consistent boolean conversion
+      normalized_value = value.is_a?(Float) && value == value.to_i ? value.to_i : value
+      ActiveModel::Type::Boolean.new.cast(normalized_value)
     else
       value
     end

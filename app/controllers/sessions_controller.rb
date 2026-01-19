@@ -1,7 +1,22 @@
 require "json/jwt"
 
 class SessionsController < ApplicationController
-  skip_before_action :authenticate_user!, only: [ :new, :create, :failure ]
+  skip_before_action :authenticate_user!, only: [ :new, :create, :failure, :test_create ]
+
+  # Test-only action for creating sessions in tests
+  def test_create
+    raise "Only available in test environment" unless Rails.env.test?
+    
+    user = User.find_or_create_by!(sub: params[:sub]) do |u|
+      u.email = params[:email]
+      u.first_name = params[:first_name]
+      u.last_name = params[:last_name]
+    end
+    
+    session[:user_id] = user.id
+    session[:locale] = :en  # Use English locale in tests
+    head :ok
+  end
 
   def new
     redirect_to "/auth/keycloak"

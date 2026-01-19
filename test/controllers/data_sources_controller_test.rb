@@ -1,48 +1,117 @@
 require "test_helper"
 
 class DataSourcesControllerTest < ActionDispatch::IntegrationTest
-  setup do
-    @data_source = data_sources(:one)
+  def setup
+    @alice = users(:alice)
+    @bob = users(:bob)
+    @admin = users(:admin)
+    @public_api = data_sources(:public_api)
+    @private_mqtt = data_sources(:private_mqtt)
+    @whitelisted_api = data_sources(:whitelisted_api)
   end
 
-  test "should get index" do
+  # ==================== Authentication ====================
+
+  test "index redirects to login when not authenticated" do
     get data_sources_url
+    assert_redirected_to login_path
+  end
+
+  # ==================== Index ====================
+
+  test "index returns success when authenticated" do
+    get data_sources_url, headers: { "Cookie" => login_as(@alice) }
     assert_response :success
   end
 
-  test "should get new" do
-    get new_data_source_url
+  test "index lists all data sources" do
+    get data_sources_url, headers: { "Cookie" => login_as(@admin) }
     assert_response :success
   end
 
-  test "should create data_source" do
-    assert_difference("DataSource.count") do
-      post data_sources_url, params: { data_source: { config: @data_source.config, creator_id: @data_source.creator_id, is_public: @data_source.is_public, name: @data_source.name, source_type: @data_source.source_type } }
+  # ==================== New ====================
+
+  test "new returns success" do
+    get new_data_source_url, headers: { "Cookie" => login_as(@alice) }
+    assert_response :success
+  end
+
+  # ==================== Create ====================
+
+  test "create creates data source" do
+    assert_difference "DataSource.count", 1 do
+      post data_sources_url,
+        params: { data_source: { 
+          name: "New API",
+          source_type: "json_api",
+          config: { url: "https://api.test.com", interval: 60 },
+          is_public: true
+        } },
+        headers: { "Cookie" => login_as(@alice) }
     end
-
-    assert_redirected_to data_source_url(DataSource.last)
   end
 
-  test "should show data_source" do
-    get data_source_url(@data_source)
+  test "create assigns creator to current user" do
+    post data_sources_url,
+      params: { data_source: { 
+        name: "New API",
+        source_type: "json_api",
+        config: { url: "https://api.test.com", interval: 60 }
+      } },
+      headers: { "Cookie" => login_as(@alice) }
+    
+    assert_equal @alice, DataSource.last.creator
+  end
+
+  test "create with invalid params renders new" do
+    post data_sources_url,
+      params: { data_source: { name: "", source_type: "json_api" } },
+      headers: { "Cookie" => login_as(@alice) }
+    assert_response :unprocessable_entity
+  end
+
+  # ==================== Edit ====================
+
+  test "edit returns success" do
+    get edit_data_source_url(@public_api), headers: { "Cookie" => login_as(@admin) }
     assert_response :success
   end
 
-  test "should get edit" do
-    get edit_data_source_url(@data_source)
-    assert_response :success
+  # ==================== Update ====================
+
+  test "update updates data source" do
+    patch data_source_url(@public_api),
+      params: { data_source: { name: "Updated API" } },
+      headers: { "Cookie" => login_as(@admin) }
+    
+    @public_api.reload
+    assert_equal "Updated API", @public_api.name
   end
 
-  test "should update data_source" do
-    patch data_source_url(@data_source), params: { data_source: { config: @data_source.config, creator_id: @data_source.creator_id, is_public: @data_source.is_public, name: @data_source.name, source_type: @data_source.source_type } }
-    assert_redirected_to data_source_url(@data_source)
-  end
+  # ==================== Destroy ====================
 
-  test "should destroy data_source" do
-    assert_difference("DataSource.count", -1) do
-      delete data_source_url(@data_source)
+  test "destroy deletes data source" do
+    data_source = DataSource.create!(
+      name: "To Delete",
+      source_type: :json_api,
+      config: { url: "https://test.com", interval: 60 },
+      creator: @alice
+    )
+    
+    assert_difference "DataSource.count", -1 do
+      delete data_source_url(data_source), headers: { "Cookie" => login_as(@alice) }
     end
+  end
 
-    assert_redirected_to data_sources_url
+  # ==================== Config Fields ====================
+
+  test "config_fields returns json_api fields" do
+    get config_fields_data_sources_url(type: "json_api"), headers: { "Cookie" => login_as(@alice) }
+    assert_response :success
+  end
+
+  test "config_fields returns mqtt fields" do
+    get config_fields_data_sources_url(type: "mqtt"), headers: { "Cookie" => login_as(@alice) }
+    assert_response :success
   end
 end

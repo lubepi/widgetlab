@@ -1,15 +1,68 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
+public_api:
+  creator: admin
+  name: Public Weather API
+  source_type: 0
+  config:
+    url: https://api.example.com/weather
+    interval: 60
+    auto_subscribe: true
+  is_public: true
+  status: 1
+
+private_mqtt:
+  creator: alice
+  name: Alice's MQTT Sensor
+  source_type: 1
+  config:
+    host: localhost
+    port: 1883
+    topic: sensors/temperature
+    auto_subscribe: true
+  is_public: false
+  status: 1
+
+whitelisted_api:
+  creator: bob
+  name: Team API
+  source_type: 0
+  config:
+    url: https://api.example.com/team
+    interval: 120
+    auto_subscribe: false
+  is_public: false
+  status: 0
+
+error_source:
+  creator: admin
+  name: Broken API
+  source_type: 0
+  config:
+    url: https://api.broken.com/data
+    interval: 60
+    auto_subscribe: false
+  is_public: false
+  status: 2
+  last_error: "Connection refused"
+
 one:
   creator: one
-  name: MyString
-  source_type: 1
-  config: 
+  name: Source One
+  source_type: 0
+  config:
+    url: https://api.example.com/one
+    interval: 60
   is_public: false
+  status: 0
 
 two:
   creator: two
-  name: MyString
+  name: Source Two
   source_type: 1
-  config: 
+  config:
+    host: localhost
+    port: 1883
+    topic: test/topic
   is_public: false
+  status: 0

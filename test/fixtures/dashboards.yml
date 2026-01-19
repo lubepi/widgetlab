@@ -1,13 +1,37 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
+alice_dashboard:
+  name: Alice's Dashboard
+  columns: 3
+  is_public: false
+  icon: chart-line
+
+public_dashboard:
+  name: Public Dashboard
+  columns: 2
+  is_public: true
+  icon: globe
+
+bob_dashboard:
+  name: Bob's Dashboard
+  columns: 4
+  is_public: false
+  icon: chart-bar
+
+shared_dashboard:
+  name: Shared Dashboard
+  columns: 3
+  is_public: false
+  icon: users
+
 one:
-  name: MyString
+  name: Dashboard One
   columns: 1
   is_public: false
-  icon: MyString
+  icon: icon1
 
 two:
-  name: MyString
-  columns: 1
+  name: Dashboard Two
+  columns: 2
   is_public: false
-  icon: MyString
+  icon: icon2

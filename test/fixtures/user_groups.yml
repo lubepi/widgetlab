@@ -1,7 +1,16 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
+developers:
+  name: Developers
+
+managers:
+  name: Managers
+
+analysts:
+  name: Data Analysts
+
 one:
-  name: MyString
+  name: Group One
 
 two:
-  name: MyString
+  name: Group Two

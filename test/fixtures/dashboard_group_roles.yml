@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+# Developers group has viewer access to shared_dashboard
+developers_view_shared_dashboard:
+  dashboard: shared_dashboard
+  user_group: developers
+  role: 0  # viewer
+
+# Managers group has editor access to public_dashboard
+managers_edit_public_dashboard:
+  dashboard: public_dashboard
+  user_group: managers
+  role: 1  # editor
