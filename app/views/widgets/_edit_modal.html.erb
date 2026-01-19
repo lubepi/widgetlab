@@ -1,5 +1,5 @@
 <%= turbo_frame_tag "widget_modal" do %>
-  <div class="modal fade show" id="editWidgetModal" tabindex="-1" aria-labelledby="editWidgetModalLabel" style="display: block;" aria-modal="true" role="dialog">
+  <div class="modal fade show" id="editWidgetModal" tabindex="-1" aria-labelledby="editWidgetModalLabel" style="display: block;" aria-modal="true" role="dialog" data-controller="modal">
     <div class="modal-dialog modal-xl modal-dialog-scrollable">
       <div class="modal-content">
         <div class="modal-header">
@@ -14,11 +14,11 @@
           <%= link_to t('common.buttons.cancel'), widget_path(@widget), class: "btn btn-secondary", data: { turbo_frame: "widget_modal" } %>
           <%= button_to t('common.buttons.delete'), @widget, method: :delete, 
               class: "btn btn-danger me-auto", 
+              form: { data: { turbo_frame: "_top" } },
               data: { turbo_confirm: t('widgets.edit.confirm_delete') } %>
           <button type="submit" class="btn btn-primary" form="<%= "edit_widget_form_#{@widget.id}" %>"><%= t('common.buttons.save') %></button>
         </div>
       </div>
     </div>
   </div>
-  <div class="modal-backdrop fade show"></div>
 <% end %>

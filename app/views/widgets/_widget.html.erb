@@ -17,7 +17,7 @@
       <div class="fw-bold mb-3 text-truncate" style="font-size: 14px;">
         <%= widget.name %>
       </div>
-      <div class="display-4 fw-bold text-truncate" style="color: <%= widget.color || '#0d6efd' %>;">
+      <div class="display-4 fw-bold" style="color: <%= widget.color || '#0d6efd' %>; word-break: break-all; overflow-wrap: anywhere; overflow: hidden; max-height: 100%; line-height: 1.2;">
         <%= widget_current_value(widget) %><% if widget.unit.present? %><span class="fs-4 ms-2"><%= widget.unit %></span><% end %>
       </div>
     </div>

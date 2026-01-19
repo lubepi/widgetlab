@@ -3,12 +3,3 @@
 <% end %>
 
 <%= turbo_stream.update "widget_modal", "" %>
-
-<%= turbo_stream.append "body" do %>
-  <script>
-    document.querySelectorAll('.modal-backdrop').forEach(b => b.remove());
-    document.body.classList.remove('modal-open');
-    document.body.style.overflow = '';
-    document.body.style.paddingRight = '';
-  </script>
-<% end %>

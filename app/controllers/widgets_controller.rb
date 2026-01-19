@@ -22,6 +22,9 @@ class WidgetsController < ApplicationController
   def new
     @widget = Widget.new
     @data_sources = DataSource.accessible_for(current_user)
+    @users = User.order(:email)
+    @roles = UserWidgetRole.roles.keys
+    @user_widget_roles = {}  # Leeres Hash für neues Widget
     render partial: "new_modal", layout: false
   end
 

@@ -1,15 +1,11 @@
 <%= turbo_frame_tag "widget_modal" do %>
-  <div class="modal fade show" tabindex="-1" style="display: block;">
+  <div class="modal fade show" tabindex="-1" style="display: block;" data-controller="modal">
     <div class="modal-dialog modal-xl modal-dialog-scrollable">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title"><%= t('widgets.new.heading') %></h5>
           <button type="button" class="btn-close" aria-label="Close"
-                  onclick="document.getElementById('widget_modal').innerHTML = ''; 
-                          document.querySelectorAll('.modal-backdrop').forEach(b => b.remove()); 
-                          document.body.classList.remove('modal-open'); 
-                          document.body.style.overflow = ''; 
-                          document.body.style.paddingRight = '';"></button>
+                  onclick="document.getElementById('widget_modal').innerHTML = '';"></button>
         </div>
         <div class="modal-body">
           <%= form_with(model: @widget, id: "new_widget_form") do |form| %>
@@ -18,11 +14,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary"
-                  onclick="document.getElementById('widget_modal').innerHTML = ''; 
-                          document.querySelectorAll('.modal-backdrop').forEach(b => b.remove()); 
-                          document.body.classList.remove('modal-open'); 
-                          document.body.style.overflow = ''; 
-                          document.body.style.paddingRight = '';">
+                  onclick="document.getElementById('widget_modal').innerHTML = '';">
             <%= t('common.buttons.cancel') %>
           </button>
           <button type="submit" class="btn btn-primary" form="new_widget_form"><%= t('common.buttons.create') %></button>
@@ -30,6 +22,4 @@
       </div>
     </div>
   </div>
-  
-  <div class="modal-backdrop fade show"></div>
 <% end %>
