@@ -97,13 +97,14 @@ module WidgetsHelper
     end
     
     # Formatiere Zeit-Labels basierend auf group_by
-    time_format = case widget.group_by
-                  when 'minute' then "%H:%M"
-                  when 'hour' then "%H:%M"
-                  when 'day' then "%d.%m"
-                  when 'week' then "KW %U"
-                  else "%H:%M"
-                  end
+    time_format = widget.time_label_format.presence || case widget.group_by
+                                                       when 'minute' then "%H:%M"
+                                                       when 'hour' then "%d.%m %H:%M"
+                                                       when 'day' then "%d.%m"
+                                                       when 'week' then "KW %U"
+                                                       when 'month' then "%m.%Y"
+                                                       else "%d.%m %H:%M"
+                                                       end
     
     {
       labels: data_points.map { |d| d[:stored_at].strftime(time_format) },

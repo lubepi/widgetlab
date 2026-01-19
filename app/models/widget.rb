@@ -20,6 +20,7 @@ class Widget < ApplicationRecord
   validates :time_range_unit, inclusion: { in: TIME_RANGE_UNITS }, allow_nil: true
   validates :group_by, inclusion: { in: GROUP_BY_OPTIONS }, allow_nil: true
   validates :aggregate_function, inclusion: { in: AGGREGATE_FUNCTIONS }, allow_nil: true
+  validates :time_label_format, length: { maximum: 64 }, allow_nil: true
 
   # Widgets die dem User gehören (owner)
   scope :owned_by, ->(user) {
@@ -195,6 +196,8 @@ class Widget < ApplicationRecord
         storage.stored_at.beginning_of_day
       when :week
         storage.stored_at.beginning_of_week
+      when :month
+        storage.stored_at.beginning_of_month
       else
         storage.stored_at.beginning_of_hour
       end

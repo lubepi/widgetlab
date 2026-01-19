@@ -241,7 +241,7 @@ class WidgetsController < ApplicationController
     def widget_params
       params.expect(widget: [ 
         :name, :description, :widget_type, :color, :is_public, :data_source_id,
-        :time_range_value, :time_range_unit, :data_limit, :group_by, :aggregate_function, :unit
+        :time_range_value, :time_range_unit, :data_limit, :group_by, :aggregate_function, :unit, :time_label_format
       ])
     end
 

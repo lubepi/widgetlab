@@ -196,6 +196,12 @@
         </div>
       </div>
     </div>
+
+    <div class="mb-3">
+      <%= form.label :time_label_format, t('widgets.form.time_label_format'), class: "form-label" %>
+      <%= form.text_field :time_label_format, class: "form-control", placeholder: t('widgets.form.time_label_format_placeholder') %>
+      <div class="form-text"><%= t('widgets.form.time_label_format_help') %></div>
+    </div>
   </div>
 </div>
 

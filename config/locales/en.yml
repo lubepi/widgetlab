@@ -76,6 +76,7 @@ en:
     hour: "Hour"
     day: "Day"
     week: "Week"
+    month: "Month"
   
   # Aggregation
   aggregate:
@@ -400,13 +401,17 @@ en:
       grouping_help: "Time interval for data points"
       aggregation: "Aggregation"
       aggregation_help: "Calculation method"
-      max_data_points: "Max. Data Points"
-      max_data_points_help: "Maximum number"
+      max_data_points: "Max. data points"
+      max_data_points_help: "Maximum count"
+
+      time_label_format: "Date format (chart)"
+      time_label_format_placeholder: "e.g. %Y-%m-%d %H:%M"
+      time_label_format_help: "Optional strftime format for the X axis. Leave empty = default per grouping."
       
       # Access Rights
       access_rights_title: "Access Rights"
       public_visible: "Publicly visible"
-      public_visible_help: "When enabled, the widget is visible to all users."
+      public_visible_help: "If enabled, the widget is visible to all users."
       users_and_roles: "Users & Roles"
       search_placeholder: "Search (Email or Name)…"
       

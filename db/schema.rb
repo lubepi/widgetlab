@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_01_18_120000) do
+ActiveRecord::Schema[8.1].define(version: 2026_01_19_103300) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -150,6 +150,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_18_120000) do
     t.string "group_by", default: "hour", comment: "Gruppierung: minute, hour, day, week"
     t.boolean "is_public"
     t.string "name"
+    t.string "time_label_format", comment: "strftime Format für Zeit-Labels im Chart (z.B. %d.%m %H:%M)"
     t.string "time_range_unit", default: "hours", comment: "Einheit: minutes, hours, days, weeks, months"
     t.integer "time_range_value", default: 24, comment: "Wert für den Zeitbereich (z.B. 24 für 24 Stunden)"
     t.string "unit"

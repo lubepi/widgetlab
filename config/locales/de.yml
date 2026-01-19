@@ -76,6 +76,7 @@ de:
     hour: "Stunde"
     day: "Tag"
     week: "Woche"
+    month: "Monat"
   
   # Aggregation
   aggregate:
@@ -402,6 +403,10 @@ de:
       aggregation_help: "Berechnungsmethode"
       max_data_points: "Max. Datenpunkte"
       max_data_points_help: "Maximale Anzahl"
+
+      time_label_format: "Datumsformat (Chart)"
+      time_label_format_placeholder: "z.B. %d.%m %H:%M"
+      time_label_format_help: "Optionales strftime-Format für die X-Achse. Leer lassen = Standard je Gruppierung."
       
       # Zugriffsrechte
       access_rights_title: "Zugriffsrechte"
