@@ -115,9 +115,8 @@
 .grid-stack-item-content {
   background: transparent;
   border-radius: 0.5rem;
-  overflow: hidden;
-  height: 100%;
-  width: 100%;
+  inset: 0; // Positionierung innerhalb des grid-stack-item
+  margin: 0.5rem; // Abstand zwischen Widgets
 }
 
 // Widget Card innerhalb des Grids
@@ -125,12 +124,12 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  transition: box-shadow 0.2s ease;
+  overflow: hidden;
 }
 
 // Edit Mode Styles
 .grid-stack-item.edit-mode .dashboard-widget-card {
-  box-shadow: 0 0 0 2px var(--bs-primary);
+  border: 2px solid var(--bs-primary);
 }
 
 .grid-stack-item.edit-mode .widget-drag-handle {
@@ -182,22 +181,22 @@
 
 .grid-stack-item.edit-mode > .ui-resizable-se {
   background: var(--bs-primary);
-  width: 16px;
-  height: 16px;
+  background-image: none;
+  width: 12px;
+  height: 12px;
   border-radius: 2px;
-  right: 4px;
-  bottom: 4px;
+  right: calc(0.5rem - 4px);
+  bottom: calc(0.5rem - 4px);
 }
 
-.grid-stack-item.edit-mode > .ui-resizable-e,
-.grid-stack-item.edit-mode > .ui-resizable-w {
-  width: 8px;
-  background: linear-gradient(90deg, transparent, var(--bs-primary), transparent);
-}
-
-.grid-stack-item.edit-mode > .ui-resizable-s {
-  height: 8px;
-  background: linear-gradient(180deg, transparent, var(--bs-primary), transparent);
+.grid-stack-item > .ui-resizable-e,
+.grid-stack-item > .ui-resizable-w,
+.grid-stack-item > .ui-resizable-s,
+.grid-stack-item > .ui-resizable-sw,
+.grid-stack-item > .ui-resizable-nw,
+.grid-stack-item > .ui-resizable-ne,
+.grid-stack-item > .ui-resizable-n {
+  display: none !important;
 }
 
 // Widget Select Card (Modal)

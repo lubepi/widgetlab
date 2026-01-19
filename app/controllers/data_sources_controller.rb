@@ -183,6 +183,13 @@ class DataSourcesController < ApplicationController
       ).tap do |whitelisted|
         # Convert JSON strings to hashes for headers, query_params, and body
         if whitelisted[:config].present?
+          # Normalize checkbox values (Rails form sends "true"/"false" strings)
+          [:clean_session, :parse_json, :use_ssl].each do |key|
+            if whitelisted[:config].key?(key)
+              whitelisted[:config][key] = ActiveModel::Type::Boolean.new.cast(whitelisted[:config][key])
+            end
+          end
+
           [:headers, :query_params].each do |key|
             if whitelisted[:config][key].is_a?(String) && whitelisted[:config][key].present?
               begin

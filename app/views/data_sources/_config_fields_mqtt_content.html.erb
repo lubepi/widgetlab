@@ -51,7 +51,7 @@
   <div class="col-md-4 mb-3 d-flex align-items-end">
     <div class="form-check">
       <input type="hidden" name="data_source[config][parse_json]" value="false">
-      <input type="checkbox" name="data_source[config][parse_json]" id="data_source_config_parse_json" value="true" <%= 'checked' if config.key?(:parse_json) ? config[:parse_json] : true %> class="form-check-input">
+      <input type="checkbox" name="data_source[config][parse_json]" id="data_source_config_parse_json" value="true" <%= 'checked' if config.key?(:parse_json) ? ActiveModel::Type::Boolean.new.cast(config[:parse_json]) : true %> class="form-check-input">
       <label for="data_source_config_parse_json" class="form-check-label"><%= t('data_sources.config_mqtt.parse_json_label') %></label>
     </div>
   </div>
@@ -60,7 +60,7 @@
 <div class="mb-3">
   <div class="form-check">
     <input type="hidden" name="data_source[config][clean_session]" value="false">
-    <input type="checkbox" name="data_source[config][clean_session]" id="data_source_config_clean_session" value="true" <%= 'checked' if config.key?(:clean_session) ? config[:clean_session] : true %> class="form-check-input">
+    <input type="checkbox" name="data_source[config][clean_session]" id="data_source_config_clean_session" value="true" <%= 'checked' if config.key?(:clean_session) ? ActiveModel::Type::Boolean.new.cast(config[:clean_session]) : true %> class="form-check-input">
     <label for="data_source_config_clean_session" class="form-check-label"><%= t('data_sources.config_mqtt.clean_session_label') %></label>
     <div class="form-text"><%= t('data_sources.config_mqtt.clean_session_help') %></div>
   </div>
@@ -72,7 +72,7 @@
     <div class="mb-3">
       <div class="form-check">
         <input type="hidden" name="data_source[config][use_ssl]" value="false">
-        <input type="checkbox" name="data_source[config][use_ssl]" id="data_source_config_use_ssl" value="true" <%= 'checked' if config[:use_ssl] %> class="form-check-input">
+        <input type="checkbox" name="data_source[config][use_ssl]" id="data_source_config_use_ssl" value="true" <%= 'checked' if ActiveModel::Type::Boolean.new.cast(config[:use_ssl]) %> class="form-check-input">
         <label for="data_source_config_use_ssl" class="form-check-label"><%= t('data_sources.config_mqtt.ssl.use_ssl_label') %></label>
       </div>
     </div>
