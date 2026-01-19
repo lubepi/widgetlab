@@ -411,7 +411,7 @@ en:
       # Access Rights
       access_rights_title: "Access Rights"
       public_visible: "Publicly visible"
-      public_visible_help: "If enabled, the widget is visible to all users."
+      public_visible_help: "When enabled, the widget is visible to all users. The roles \"Viewer\" and \"No Access\" have no effect in this case."
       users_and_roles: "Users & Roles"
       search_placeholder: "Search (Email or Name)…"
       

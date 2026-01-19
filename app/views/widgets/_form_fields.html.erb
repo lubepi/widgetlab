@@ -272,35 +272,3 @@
     </div>
   </div>
 </div>
-
-<script>
-  (function() {
-    const publicCheckbox = document.getElementById('widget_is_public');
-    const accessSection = document.getElementById('access-section');
-    
-    function toggleAccessSection() {
-      if (publicCheckbox && accessSection) {
-        const isPublic = publicCheckbox.checked;
-        const inputs = accessSection.querySelectorAll('input, select');
-        
-        inputs.forEach(input => {
-          input.disabled = isPublic;
-        });
-        
-        if (isPublic) {
-          accessSection.style.opacity = '0.5';
-          accessSection.style.pointerEvents = 'none';
-        } else {
-          accessSection.style.opacity = '1';
-          accessSection.style.pointerEvents = 'auto';
-        }
-      }
-    }
-    
-    if (publicCheckbox) {
-      publicCheckbox.addEventListener('change', toggleAccessSection);
-      // Initial state
-      toggleAccessSection();
-    }
-  })();
-</script>

@@ -411,7 +411,7 @@ de:
       # Zugriffsrechte
       access_rights_title: "Zugriffsrechte"
       public_visible: "Öffentlich sichtbar"
-      public_visible_help: "Wenn aktiviert, ist das Widget für alle Benutzer sichtbar."
+      public_visible_help: "Wenn aktiviert, ist das Widget für alle Benutzer sichtbar. Die Rollen \"Viewer\" und \"Kein Zugriff\" haben in diesem Fall keine Wirkung."
       users_and_roles: "Benutzer & Rollen"
       search_placeholder: "Suchen (E-Mail oder Name)…"
       
